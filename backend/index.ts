@@ -1,9 +1,14 @@
 import express from "express";
 import logger from "./logger";
 import db from "./config/database";
+import router from "./routes/routes";
 const app = express();
 
 const PORT = process.env.PORT || 4000;
+
+app.use(express.json());
+
+app.use(router);
 
 db.authenticate()
   .then(() => {
@@ -13,10 +18,13 @@ db.authenticate()
     logger.error("Error connecting to database : ", err);
   });
 
-app.get("/", (req, res) => {
-  logger.info("Request received");
-  res.send("Hello World!");
-});
+db.sync()
+  .then(() => {
+    logger.info("Database Synced");
+  })
+  .catch((err) => {
+    logger.error("Error syncing database : ", err);
+  });
 
 app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}`);

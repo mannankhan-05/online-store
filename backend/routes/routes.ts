@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { getAllUsers, registerUser } from "../controllers/user";
+import { getAllUsers, registerUser, loginUser } from "../controllers/user";
 import {
   getAllProducts,
   getProductById,
@@ -11,6 +11,8 @@ import { getAllUsersProducts } from "../controllers/user_product";
 router.get("/users", getAllUsers);
 
 router.post("/registerUser", registerUser);
+
+router.post("/loginUser", loginUser);
 
 router.get("/products", getAllProducts);
 

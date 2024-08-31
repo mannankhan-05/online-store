@@ -1,6 +1,17 @@
 import { Request, Response } from "express";
+import { Model } from "sequelize";
 import product from "../models/product";
 import logger from "../logger";
+import { Mode } from "fs";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  category: string;
+}
 
 // Get all products
 export const getAllProducts = (req: Request, res: Response) => {
@@ -22,9 +33,16 @@ export const getProductById = (req: Request, res: Response) => {
   const productId: number = parseInt(req.params.productId, 10);
   product
     .findByPk(productId)
-    .then((product) => {
-      logger.info(`Product with id ${productId} was retrieved`);
-      res.json(product);
+    .then((product: Model<Product> | null) => {
+      if (product) {
+        logger.info(`Product with id ${productId} was retrieved`);
+        res.json(product);
+      } else {
+        logger.warn(`Product with id ${productId} not found`);
+        res
+          .status(404)
+          .json({ error: `Product with id ${productId} not found` });
+      }
     })
     .catch((err) => {
       logger.error(`Error retrieving product with id ${productId} : ${err}`);

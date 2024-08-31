@@ -19,3 +19,44 @@ export const getAllUsersProducts = (req: Request, res: Response) => {
       res.status(500).json({ error: err });
     });
 };
+
+// Get all the selected products of a user
+export const getUserProducts = (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId, 10);
+  user_product
+    .findAll({ where: { user_id: userId }, include: [user, product] })
+    .then((userProducts) => {
+      logger.info(
+        `All products of user with id ${userId} were retrieved successfully`
+      );
+      res.json(userProducts);
+    })
+    .catch((err) => {
+      logger.error(`Error retrieving all products of user with id ${userId}`);
+      res.status(500).json({ error: err });
+    });
+};
+
+// Add the selected product to the user's list
+export const addUserProduct = async (req: Request, res: Response) => {
+  const { user_id, product_id }: { user_id: number; product_id: number } =
+    req.body;
+
+  await user_product
+    .create({
+      user_id,
+      product_id,
+    })
+    .then((userProduct) => {
+      logger.info(
+        `Product with id ${product_id} was added to the user with id ${user_id}`
+      );
+      res.json(userProduct);
+    })
+    .catch((err) => {
+      logger.error(
+        `Error adding product with id ${product_id} to user with id ${user_id}`
+      );
+      res.status(500).json({ error: err });
+    });
+};

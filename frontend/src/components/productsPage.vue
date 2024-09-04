@@ -12,14 +12,20 @@
         </v-sheet>
       </v-col>
     </v-row>
+
+    <addProduct />
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import addProduct from "./addProduct.vue";
 import axios from "axios";
 
 export default defineComponent({
+  components: {
+    addProduct,
+  },
   data() {
     return {
       products: [] as object[],

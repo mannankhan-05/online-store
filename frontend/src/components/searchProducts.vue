@@ -25,13 +25,13 @@ export default defineComponent({
       search: "" as string,
     };
   },
-  computed: {
-    searchProducts: function () {
-      return this.products.filter((product: any) => {
-        return product.name.match(this.search);
-      });
-    },
-  },
+  // computed: {
+  //   searchProducts: function () {
+  //     return this.products.filter((product: any) => {
+  //       return product.name.match(this.search);
+  //     });
+  //   },
+  // },
 });
 </script>
 

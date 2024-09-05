@@ -15,7 +15,7 @@
       <v-dialog v-model="addProductDialog">
         <v-row justify="center">
           <v-col cols="12" md="6" sm="12">
-            <v-card max-width="600" class="addProductForm">
+            <v-card max-width="600" class="addProductForm pa-4">
               <v-card-title class="text-decoration-underline font-weight-bold"
                 >Add Product</v-card-title
               >
@@ -115,6 +115,7 @@ export default defineComponent({
       this.price = null;
       this.description = "";
       this.picture = "";
+      this.imageUrl = "";
       this.category = "";
     },
     handleFileChange(event: any) {
@@ -130,6 +131,11 @@ export default defineComponent({
 </script>
 
 <style>
+.addProductForm {
+  height: 550px;
+  overflow-y: auto;
+}
+
 .addProductButton {
   position: fixed;
   bottom: 30px;

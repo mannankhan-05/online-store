@@ -1,13 +1,28 @@
 <template>
   <v-container class="pl-3">
-    <v-row>
-      <v-col v-for="product in products" :key="product.id">
-        <v-sheet :elevation="2" max-width="300" :height="360" border rounded>
-          <div class="productName">
+    <v-row justify="center">
+      <v-col
+        v-for="product in products"
+        :key="product.id"
+        cols="12"
+        md="3"
+        sm="6"
+        xs="6"
+      >
+        <v-sheet
+          :elevation="2"
+          max-width="300"
+          :height="360"
+          border
+          rounded
+          class="d-flex flex-column justify-space-between"
+        >
+          <img :src="product.image" class="productImage rounded" />
+          <div class="productName font-weight-bold pl-2">
             {{ product.name }}
           </div>
-          <div>
-            <v-btn class="showFullButton">Show Full</v-btn>
+          <div class="buttonContainer">
+            <v-btn class="bg-black font-weight-md" width="92%">Show Full</v-btn>
           </div>
         </v-sheet>
       </v-col>
@@ -45,11 +60,19 @@ export default defineComponent({
 </script>
 
 <style>
-/* .showFullButton {
+.buttonContainer {
   display: flex;
   justify-content: center;
-  width: 90%;
-  position: absolute;
-  bottom: 5px;
-} */
+  margin-bottom: 10px;
+}
+
+.productImage {
+  width: 100%;
+  height: 50%;
+  object-fit: cover;
+}
+
+.productName {
+  font-size: 20px;
+}
 </style>

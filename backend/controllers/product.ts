@@ -32,7 +32,13 @@ export const getAllProducts = (req: Request, res: Response) => {
     .findAll()
     .then((products) => {
       logger.info("All products were retrieved");
-      res.json(products);
+      const result = products.map((product: any) => {
+        if (product.image) {
+          product.image = `http://localhost:4000/productImages/${product.image}`;
+        }
+        return product;
+      });
+      res.json(result);
     })
     .catch((err) => {
       logger.error(`Error retrieving products: ${err}`);

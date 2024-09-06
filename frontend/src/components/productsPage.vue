@@ -1,8 +1,22 @@
 <template>
   <v-container class="pl-3">
     <v-row justify="center">
+      <v-col cols="12" md="8" sm="8" xs="10">
+        <v-textarea
+          class="searchProducts"
+          clearable
+          label="Search for Products"
+          prepend-inner-icon="mdi-card-search-outline"
+          variant="outlined"
+          rows="1"
+          v-model="search"
+        ></v-textarea>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
       <v-col
-        v-for="product in products"
+        v-for="product in searchProducts"
         :key="product.id"
         cols="12"
         md="3"
@@ -15,14 +29,31 @@
           :height="360"
           border
           rounded
-          class="d-flex flex-column justify-space-between"
+          class="sheet d-flex flex-column justify-space-between"
         >
           <img :src="product.image" class="productImage rounded" />
           <div class="productName font-weight-bold pl-2">
             {{ product.name }}
           </div>
+          <div class="productPrice">
+            <div class="d-inline">{{ product.price }}</div>
+            <p class="dollar d-inline">$</p>
+          </div>
+          <div class="productCategory">
+            <div class="d-inline">
+              <p class="categoryHeadnig font-weight-thin d-inline">
+                category :
+              </p>
+              {{ product.category }}
+            </div>
+          </div>
           <div class="buttonContainer">
-            <v-btn class="bg-black font-weight-md" width="92%">Show Full</v-btn>
+            <v-btn
+              class="bg-black font-weight-md"
+              width="92%"
+              @click="showFullProduct(product.id)"
+              >Show Full</v-btn
+            >
           </div>
         </v-sheet>
       </v-col>
@@ -44,7 +75,17 @@ export default defineComponent({
   data() {
     return {
       products: [] as object[],
+      search: "" as string,
+      selectedProductId: 0 as number,
     };
+  },
+  computed: {
+    // Filtering the products based on the search input
+    searchProducts: function () {
+      return this.products.filter((product: any) => {
+        return product.name.match(this.search);
+      });
+    },
   },
   async mounted() {
     // Fetching all the products from the backend
@@ -56,6 +97,15 @@ export default defineComponent({
       console.log("Error fetching all products : " + err);
     }
   },
+  methods: {
+    showFullProduct(productId: number) {
+      this.selectedProductId = productId;
+      this.$router.push({
+        name: "fullProduct",
+        params: { productId: productId },
+      });
+    },
+  },
 });
 </script>
 
@@ -64,6 +114,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
+  margin-top: auto;
 }
 
 .productImage {
@@ -73,6 +124,63 @@ export default defineComponent({
 }
 
 .productName {
-  font-size: 20px;
+  display: flex;
+  top: 68%;
+  font-size: 22px;
+  margin-top: 10px;
+}
+
+.productPrice {
+  display: flex;
+  align-items: center;
+  top: 72%;
+  margin-left: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(87, 85, 85);
+}
+
+.dollar {
+  color: black;
+  margin-left: 5px;
+}
+
+.productCategory {
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 1mm;
+  font-size: 21px;
+  font-weight: 600;
+  color: black;
+}
+
+.categoryHeadnig {
+  color: black;
+}
+
+.sheet {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sheet:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Increases the shadow for a 'lifted' effect */
+  border-color: #706f6f;
+}
+
+.searchProducts {
+  font-size: 35px;
+  height: 67px;
+  font-weight: 550;
+  position: fixed; /* Fixes the element's position */
+  top: 100px; /* Adjust top distance from the top of the viewport */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px); /* Adjust width as needed */
+  max-width: 800px; /* Set a maximum width */
+  z-index: 1000; /* Ensure it stays on top of other elements */
+  padding: 5px; /* Optional: padding around the text area */
+  background-color: #f0ecec;
+  border-radius: 5px;
 }
 </style>

@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import productsPage from "../components/productsPage.vue";
 import userLogin from "../components/userLogin.vue";
 import userSignUp from "../components/userSignUp.vue";
+import singleProduct from "../components/singleProduct.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,6 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/signUp",
     name: "signUp",
     component: userSignUp,
+  },
+  {
+    path: "/product/:productId",
+    name: "fullProduct",
+    component: singleProduct,
   },
 ];
 

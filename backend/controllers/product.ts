@@ -52,10 +52,17 @@ export const getProductById = (req: Request, res: Response) => {
   const productId: number = parseInt(req.params.productId, 10);
   product
     .findByPk(productId)
-    .then((product: Model<Product> | null) => {
+    .then((product) => {
       if (product) {
         logger.info(`Product with id ${productId} was retrieved`);
-        res.json(product);
+
+        const productData = { ...product.get() }; // .get() converts Sequelize model instance to plain object
+
+        if (productData.image) {
+          productData.image = `http://localhost:4000/productImages/${productData.image}`;
+        }
+
+        res.json(productData);
       } else {
         logger.warn(`Product with id ${productId} not found`);
         res

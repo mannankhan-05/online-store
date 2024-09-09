@@ -15,19 +15,13 @@
 
           <div class="d-none d-sm-flex">
             <router-link :to="{ name: 'login' }">
-              <v-btn
-                variant="tonal"
-                class="bg-blue-grey-lighten-5 mr-5 font-weight-bold"
-              >
+              <v-btn variant="tonal" class="bg-black mr-5 font-weight-bold">
                 Login
               </v-btn>
             </router-link>
 
             <router-link :to="{ name: 'signUp' }">
-              <v-btn
-                variant="tonal"
-                class="bg-blue-grey-lighten-5 mr-8 font-weight-bold"
-              >
+              <v-btn variant="tonal" class="bg-black mr-8 font-weight-bold">
                 Sign Up
               </v-btn>
             </router-link>

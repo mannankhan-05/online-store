@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mb-15">
+  <v-container class="mb-0">
     <v-row>
       <v-col>
         <v-app-bar

@@ -8,7 +8,7 @@
           image="https://picsum.photos/1920/1080?random"
         >
           <router-link :to="{ name: 'home' }">
-            <img class="logo" :src="logo" />
+            <img class="logo" :src="require('../assets/logo.png')" />
           </router-link>
 
           <v-spacer></v-spacer>
@@ -74,12 +74,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import logo from "../assets/logo.png";
 
 export default defineComponent({
   data() {
     return {
-      logo,
       showMenu: false as boolean,
     };
   },

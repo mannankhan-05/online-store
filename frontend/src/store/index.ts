@@ -54,6 +54,18 @@ export default createStore({
         console.error("Error registering User : ", err);
       }
     },
+    async loginUser({ state, commit }, { email, password }) {
+      try {
+        await axios.post("http://localhost:4000/loginUser", {
+          email,
+          password,
+        });
+        state.isUserLoggedIn = true;
+        commit("setIsUserLoggedIn", true);
+      } catch (err) {
+        console.error("Error logging in user: ", err);
+      }
+    },
   },
   modules: {},
 });

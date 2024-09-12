@@ -39,7 +39,7 @@
               :disabled="!email || !password"
               variant="tonal"
               class="loginButton"
-              @click="registerUser"
+              @click="loginUser"
             >
               Login
             </v-btn>
@@ -66,7 +66,23 @@ export default defineComponent({
       email: "",
       password: "",
       passwordVisible: false,
+      loading: false,
     };
+  },
+  methods: {
+    loginUser() {
+      try {
+        this.loading = true;
+        const { email, password } = this;
+        this.$store.dispatch("loginUser", { email, password });
+
+        this.email = "";
+        this.password = "";
+        this.loading = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 });
 </script>

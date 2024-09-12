@@ -16,6 +16,9 @@ app.use(router);
 // to serve static files from the productImages directory
 app.use("/productImages", express.static("productImages"));
 
+// to serve static files from the userImages directory
+app.use("/userImages", express.static("userImages"));
+
 db.authenticate()
   .then(() => {
     logger.info("Connected to Database (postgresql)");

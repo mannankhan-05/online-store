@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import user from "../models/user";
 import { sendMail } from "../mail";
 import logger from "../logger";
+import multer from "multer";
+import path from "path";
 import bcrypt from "bcrypt";
 const salt = 5;
 
@@ -12,6 +14,18 @@ interface User {
   email: string;
   password: string;
 }
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "/userImages");
+  },
+
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Get all users
 export const getAllUsers = (req: Request, res: Response) => {
@@ -28,34 +42,41 @@ export const getAllUsers = (req: Request, res: Response) => {
 };
 
 // Register a new user
-export const registerUser = async (req: Request, res: Response) => {
-  const {
-    name,
-    image,
-    email,
-    password,
-  }: { name: string; image: string; email: string; password: string } =
-    req.body;
+export const registerUser = (req: Request, res: Response) => {
+  upload.single("userImage")(req, res, async (err) => {
+    if (err) {
+      logger.error("Error uploading user image");
+      res.status(500).json({ error: "Error uploading user image" });
+    }
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, salt);
+    const image: string = req.file ? req.file.filename : "";
 
-  await user
-    .create({
+    const {
       name,
-      image,
       email,
-      password: hashedPassword,
-    })
-    .then((user) => {
-      logger.info("New user is registered");
-      sendMail(email, "You are registered using your email ...");
-      res.json(user);
-    })
-    .catch((err) => {
-      logger.error("Error registering new user");
-      res.status(500).json({ error: "Error registering new user", err });
-    });
+      password,
+    }: { name: string; email: string; password: string } = req.body;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await user
+      .create({
+        name,
+        image,
+        email,
+        password: hashedPassword,
+      })
+      .then((user) => {
+        logger.info("New user is registered");
+        sendMail(email, "You are registered using your email ...");
+        res.json(user);
+      })
+      .catch((err) => {
+        logger.error("Error registering new user" + err);
+        res.status(500).json({ error: "Error registering new user", err });
+      });
+  });
 };
 
 // Login an existing user

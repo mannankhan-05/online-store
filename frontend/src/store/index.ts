@@ -1,14 +1,59 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
+import axios from "axios";
 
 export default createStore({
   state: {
+    isUserLoggedIn: localStorage.getItem("isUserLoggedIn") === "true",
+    userId: localStorage.getItem("userId"),
+    userName: localStorage.getItem("userName"),
+    userEmail: localStorage.getItem("userEmail"),
   },
-  getters: {
-  },
+  getters: {},
   mutations: {
+    setIsUserLoggedIn(state, isUserLoggedIn) {
+      state.isUserLoggedIn = isUserLoggedIn;
+      localStorage.setItem("isUserLoggedIn", isUserLoggedIn);
+    },
+    setUserId(state, userId) {
+      state.userId = userId;
+      localStorage.setItem("userId", userId);
+    },
+    setUserName(state, userName) {
+      state.userName = userName;
+      localStorage.setItem("userName", userName);
+    },
+    setUserEmail(state, userEmail) {
+      state.userEmail = userEmail;
+      localStorage.setItem("userEmail", userEmail);
+    },
   },
   actions: {
+    async registerUser({ state, commit }, { name, image, email, password }) {
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/registerUser",
+          {
+            name,
+            userImage: image,
+            email,
+            password,
+          }
+        );
+        state.isUserLoggedIn = true; // means, the user is logged in
+        commit("setIsUserLoggedIn", true);
+
+        const userId: number = response.data.id;
+        commit("setUserId", userId);
+
+        const userName: string = response.data.name;
+        const userEmail: string = response.data.email;
+
+        commit("setUserName", userName);
+        commit("setUserEmail", userEmail);
+      } catch (err) {
+        console.error("Error registering User : ", err);
+      }
+    },
   },
-  modules: {
-  }
-})
+  modules: {},
+});

@@ -5,7 +5,7 @@ import logger from "../logger";
 import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
-const salt = 5;
+const saltRounds = 5;
 
 interface User {
   id: number;
@@ -17,7 +17,7 @@ interface User {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "/userImages");
+    cb(null, "userImages/");
   },
 
   filename: (req, file, cb) => {
@@ -45,7 +45,7 @@ export const getAllUsers = (req: Request, res: Response) => {
 export const registerUser = (req: Request, res: Response) => {
   upload.single("userImage")(req, res, async (err) => {
     if (err) {
-      logger.error("Error uploading user image");
+      logger.error("Error uploading user image" + err);
       res.status(500).json({ error: "Error uploading user image" });
     }
 
@@ -58,7 +58,7 @@ export const registerUser = (req: Request, res: Response) => {
     }: { name: string; email: string; password: string } = req.body;
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     await user
       .create({
@@ -124,7 +124,7 @@ export const editUser = async (req: Request, res: Response) => {
     req.body;
 
   // Hash the password
-  const hashedPassword = await bcrypt.hash(password, salt);
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   await user
     .update(

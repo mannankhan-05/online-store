@@ -11,6 +11,10 @@
             prepend-inner-icon="mdi-email"
             v-model="email"
           ></v-text-field>
+          <p v-if="!emailFormat" class="passwordLength">
+            Email should contain @ and .
+          </p>
+
           <v-text-field
             clearable
             label="Password"
@@ -27,16 +31,14 @@
               </v-icon>
             </template></v-text-field
           >
-
-          <v-checkbox
-            v-model="terms"
-            label="I accept the terms and conditions"
-          ></v-checkbox>
+          <p v-if="!passwordLength" class="passwordLength">
+            Password should be of atleast 8 characters Long
+          </p>
 
           <div class="d-flex justify-center">
             <v-btn
               v-if="!loading"
-              :disabled="!email || !password"
+              :disabled="loginButtonDisabled"
               variant="tonal"
               class="loginButton"
               @click="loginUser"
@@ -84,6 +86,22 @@ export default defineComponent({
       }
     },
   },
+  computed: {
+    passwordLength() {
+      return this.password.length >= 8;
+    },
+    emailFormat() {
+      return this.email.includes("@") && this.email.includes(".");
+    },
+    loginButtonDisabled() {
+      return (
+        !this.passwordLength ||
+        !this.password ||
+        !this.emailFormat ||
+        !this.email
+      );
+    },
+  },
 });
 </script>
 
@@ -101,5 +119,12 @@ export default defineComponent({
   width: 50%;
   font-size: 19px;
   font-weight: 600;
+}
+
+.passwordLength {
+  color: red;
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }
 </style>

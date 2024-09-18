@@ -13,6 +13,7 @@
           ></v-text-field>
           <v-file-input
             clearable
+            name="userImage"
             label="Picture"
             variant="outlined"
             prepend-inner-icon="mdi-camera"
@@ -33,6 +34,10 @@
             prepend-inner-icon="mdi-email"
             v-model="email"
           ></v-text-field>
+          <p v-if="!emailFormat" class="passwordLength">
+            Email should contain @ and .
+          </p>
+
           <v-text-field
             clearable
             label="Password"
@@ -49,6 +54,9 @@
               </v-icon>
             </template></v-text-field
           >
+          <p v-if="!passwordLength" class="passwordLength">
+            Password should be of atleast 8 characters Long
+          </p>
 
           <v-checkbox
             v-model="terms"
@@ -58,7 +66,7 @@
           <div class="d-flex justify-center">
             <v-btn
               v-if="!loading"
-              :disabled="!name || !image || !email || !password"
+              :disabled="signUpButtonDisabled"
               variant="tonal"
               class="signInButton"
               @click="registerUser"
@@ -128,6 +136,25 @@ export default defineComponent({
       }
     },
   },
+  computed: {
+    passwordLength() {
+      return this.password.length >= 8;
+    },
+    emailFormat() {
+      return this.email.includes("@") && this.email.includes(".");
+    },
+    signUpButtonDisabled() {
+      return (
+        !this.name ||
+        !this.image ||
+        !this.email ||
+        !this.password ||
+        !this.terms ||
+        !this.passwordLength ||
+        !this.emailFormat
+      );
+    },
+  },
 });
 </script>
 
@@ -145,5 +172,12 @@ export default defineComponent({
   width: 50%;
   font-size: 19px;
   font-weight: 600;
+}
+
+.passwordLength {
+  color: red;
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }
 </style>

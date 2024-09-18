@@ -28,17 +28,27 @@ export default createStore({
     },
   },
   actions: {
-    async registerUser({ state, commit }, { name, image, email, password }) {
+    async registerUser(
+      { state, commit },
+      { name, image, email, password, router }
+    ) {
       try {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("userImage", image);
+        formData.append("email", email);
+        formData.append("password", password);
+
         const response = await axios.post(
           "http://localhost:4000/registerUser",
+          formData,
           {
-            name,
-            userImage: image,
-            email,
-            password,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
         );
+
         state.isUserLoggedIn = true; // means, the user is logged in
         commit("setIsUserLoggedIn", true);
 
@@ -50,6 +60,10 @@ export default createStore({
 
         commit("setUserName", userName);
         commit("setUserEmail", userEmail);
+
+        // router.push({ name: "Home" });
+        console.log("name: ", userName);
+        console.log("email: ", userEmail);
       } catch (err) {
         console.error("Error registering User : ", err);
       }

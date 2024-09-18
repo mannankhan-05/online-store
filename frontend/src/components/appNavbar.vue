@@ -13,7 +13,7 @@
 
           <v-spacer></v-spacer>
 
-          <div class="d-none d-sm-flex">
+          <div class="d-none d-sm-flex" v-if="this.$store.state.isUserLoggedIn">
             <router-link :to="{ name: 'login' }">
               <v-btn
                 variant="tonal"

@@ -114,6 +114,7 @@ export default defineComponent({
           image,
           email,
           password,
+          router: this.$router,
         });
 
         this.name = "";

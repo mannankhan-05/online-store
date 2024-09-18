@@ -61,7 +61,7 @@ export default createStore({
         commit("setUserName", userName);
         commit("setUserEmail", userEmail);
 
-        // router.push({ name: "Home" });
+        router.push({ name: "user", params: { userId: userId } });
         console.log("name: ", userName);
         console.log("email: ", userEmail);
       } catch (err) {

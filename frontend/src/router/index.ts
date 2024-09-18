@@ -25,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "fullProduct",
     component: singleProduct,
   },
+  {
+    path: "/user/:userId",
+    name: "user",
+    component: productsPage,
+  },
 ];
 
 const router = createRouter({

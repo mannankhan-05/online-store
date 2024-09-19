@@ -101,7 +101,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (isPasswordValid) {
       logger.info(`User is logged In as ${existingUser.name}`);
       sendMail(email, "You are logged in using your email ...");
-      res.sendStatus(200);
+      res.json(existingUser);
     } else {
       logger.error("Invalid Password !.");
       return res.status(401).json({ error: "Invalid Password" });

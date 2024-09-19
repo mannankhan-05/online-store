@@ -13,7 +13,8 @@
 
           <v-spacer></v-spacer>
 
-          <div class="d-none d-sm-flex" v-if="this.$store.state.isUserLoggedIn">
+          <!-- Login and Register buttons -->
+          <div class="d-none d-sm-flex" v-if="!isLoggedIn">
             <router-link :to="{ name: 'login' }">
               <v-btn
                 variant="tonal"
@@ -33,7 +34,58 @@
             </router-link>
           </div>
 
-          <div class="d-flex d-sm-none" @click="showMenu = !showMenu">
+          <!-- Avatar for logged in users -->
+          <div v-if="isLoggedIn" class="avatar">
+            <v-menu
+              v-model="showAvatarMenu"
+              offset-y
+              right
+              transition="slide-y-transition"
+              class="d-flex flex-row-reverse mt-15 mr-3"
+            >
+              <!-- Avatar that triggers the menu -->
+              <template v-slot:activator="{ on, attrs }">
+                <v-avatar
+                  color="surface-variant"
+                  :image="avatarImage"
+                  size="53"
+                  class="mr-5"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="showAvatarMenu = !showAvatarMenu"
+                ></v-avatar>
+              </template>
+
+              <!-- Menu Content (options like Edit Profile, Logout) -->
+              <v-list>
+                <v-list-item>
+                  <v-list-item-title>{{ userName }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
+                </v-list-item>
+
+                <v-divider></v-divider>
+
+                <v-list-item @click="editProfile">
+                  <v-list-item-title
+                    ><v-btn variant="text">Edit</v-btn></v-list-item-title
+                  >
+                </v-list-item>
+
+                <v-list-item @click="logoutUser">
+                  <v-list-item-title
+                    ><v-btn variant="text">Logout</v-btn></v-list-item-title
+                  >
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+
+          <!-- menu bar for smaller screens -->
+          <div
+            class="d-flex d-sm-none"
+            @click="showMenu = !showMenu"
+            v-if="!isLoggedIn"
+          >
             <v-menu
               v-model="showMenu"
               offset-y
@@ -79,7 +131,33 @@ export default defineComponent({
   data() {
     return {
       showMenu: false as boolean,
+      showAvatarMenu: false as boolean,
     };
+  },
+  methods: {
+    logoutUser() {
+      this.$store.dispatch("logoutUser");
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isUserLoggedIn;
+    },
+    avatarImage() {
+      const userImage = this.$store.state.userImage;
+      if (userImage) {
+        // constructing a url for the user image
+        return `http://localhost:4000/userImages/${userImage}`;
+      } else {
+        return "";
+      }
+    },
+    userName() {
+      return this.$store.state.userName;
+    },
+    userEmail() {
+      return this.$store.state.userEmail;
+    },
   },
 });
 </script>
@@ -110,5 +188,9 @@ export default defineComponent({
   border: none;
   background-color: white;
   color: black;
+}
+
+.avatar:hover {
+  cursor: pointer;
 }
 </style>

@@ -76,7 +76,11 @@ export default defineComponent({
       try {
         this.loading = true;
         const { email, password } = this;
-        this.$store.dispatch("loginUser", { email, password });
+        this.$store.dispatch("loginUser", {
+          email,
+          password,
+          router: this.$router,
+        });
 
         this.email = "";
         this.password = "";

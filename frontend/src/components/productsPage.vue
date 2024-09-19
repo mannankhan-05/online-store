@@ -92,7 +92,6 @@ export default defineComponent({
     try {
       const response = await axios.get("http://localhost:4000/products");
       this.products = response.data;
-      console.log(this.products);
     } catch (err) {
       console.log("Error fetching all products : " + err);
     }

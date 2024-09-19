@@ -79,6 +79,25 @@
       </v-col>
     </v-row>
 
+    <!-- when the user is not logged In -->
+    <v-dialog v-model="dialog" class="centered-dialog">
+      <v-card>
+        <v-card-title class="headline">
+          <v-icon>mdi-arrow-top-right-thin</v-icon>
+          <p>Please Login to Add Items to the Cart</p></v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >Close</v-btn
+          >
+          <v-btn color="blue darken-1" text @click="this.$router.push('/login')"
+            >Login</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- Product Description -->
     <v-row>
       <v-col cols="12">
@@ -107,11 +126,15 @@ export default defineComponent({
         category: "",
       } as Record<string, any>,
       quantity: 1,
+      dialog: false,
     };
   },
   computed: {
     totalPrice() {
       return this.selectedProduct.price * this.quantity;
+    },
+    isUserLoggedIn() {
+      return this.$store.state.isUserLoggedIn;
     },
   },
   async mounted() {
@@ -131,6 +154,13 @@ export default defineComponent({
     decreaseQuantity() {
       if (this.quantity > 1) {
         this.quantity--;
+      }
+    },
+    addToCart() {
+      if (!this.isUserLoggedIn) {
+        this.dialog = true;
+      } else {
+        this.dialog = false;
       }
     },
   },
@@ -203,5 +233,17 @@ export default defineComponent({
 .totalPrice {
   font-size: 20px;
   font-weight: bold;
+}
+
+.centered-dialog {
+  max-width: 500px;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+.headline {
+  display: flex;
+  align-items: center;
 }
 </style>

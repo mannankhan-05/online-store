@@ -96,7 +96,7 @@ export default createStore({
         console.error("Error logging in user: ", err);
       }
     },
-    async logoutUser({ state, commit }) {
+    async logoutUser({ state, commit }, { router }) {
       try {
         state.isUserLoggedIn = false;
         commit("setIsUserLoggedIn", false);
@@ -112,6 +112,8 @@ export default createStore({
 
         state.userImage = "";
         commit("setUserImage", "");
+
+        router.push({ name: "home" });
       } catch (err) {
         console.error("Error logging out user: ", err);
       }

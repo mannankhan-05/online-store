@@ -40,7 +40,7 @@
               v-if="!loading"
               :disabled="loginButtonDisabled"
               variant="tonal"
-              class="loginButton"
+              class="loginButton mt-5 mb-5"
               @click="loginUser"
             >
               Login
@@ -54,8 +54,11 @@
               ></v-progress-circular>
             </v-btn>
           </div>
-        </div> </v-col
-    ></v-row>
+
+          <p class="text-decoration-underline">Forget Password ?</p>
+        </div>
+      </v-col></v-row
+    >
   </v-container>
 </template>
 

@@ -136,7 +136,9 @@ export default defineComponent({
   },
   methods: {
     logoutUser() {
-      this.$store.dispatch("logoutUser");
+      this.$store.dispatch("logoutUser", {
+        router: this.$router,
+      });
     },
   },
   computed: {

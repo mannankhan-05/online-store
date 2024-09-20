@@ -13,6 +13,13 @@
 
           <v-spacer></v-spacer>
 
+          <!-- Cart logo -->
+          <router-link :to="{ name: 'cart' }">
+            <v-btn icon class="cartIconButton">
+              <v-icon class="cartIcon">mdi-cart-outline</v-icon>
+            </v-btn>
+          </router-link>
+
           <!-- Login and Register buttons -->
           <div class="d-none d-sm-flex" v-if="!isLoggedIn">
             <router-link :to="{ name: 'login' }">
@@ -194,5 +201,35 @@ export default defineComponent({
 
 .avatar:hover {
   cursor: pointer;
+}
+
+/* Cart Button */
+.cartIconButton {
+  display: inline-flex;
+  margin-right: 23px;
+  background-color: #424242; /* Dark background for the button */
+  border-radius: 50%; /* Circular button */
+  padding: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cartIconButton:hover {
+  background-color: #ff9800; /* Orange color on hover */
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Cart Icon */
+.cartIcon {
+  width: 45px; /* Reduced size for a sleeker look */
+  height: 45px;
+  color: white; /* Icon color */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.cartIconButton:hover .cartIcon {
+  color: #000; /* Change icon color on hover */
 }
 </style>

@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     component: userSignUp,
   },
   {
-    path: "/product/:productId",
+    path: "/user/:userId/product/:productId",
     name: "fullProduct",
     component: singleProduct,
   },
@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
     component: productsPage,
   },
   {
-    path: "/cart",
+    path: "/user/:userId/cart",
     name: "cart",
     component: userCart,
   },

@@ -101,7 +101,7 @@ export default defineComponent({
       this.selectedProductId = productId;
       this.$router.push({
         name: "fullProduct",
-        params: { productId: productId },
+        params: { userId: this.$store.state.userId, productId: productId },
       });
     },
   },

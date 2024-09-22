@@ -20,6 +20,11 @@ user_product.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
   },
   {
     sequelize: db,

@@ -156,11 +156,16 @@ export default defineComponent({
         this.quantity--;
       }
     },
-    addToCart() {
+    async addToCart() {
       if (!this.isUserLoggedIn) {
         this.dialog = true;
       } else {
-        this.dialog = false;
+        // Add the product to the cart
+        await axios.post("http://localhost:4000/addUserProduct", {
+          user_id: this.$route.params.userId,
+          product_id: this.$route.params.productId,
+          quantity: this.quantity,
+        });
       }
     },
   },

@@ -14,7 +14,9 @@
           <v-spacer></v-spacer>
 
           <!-- Cart logo -->
-          <router-link :to="{ name: 'cart' }">
+          <router-link
+            :to="{ name: 'cart', params: { userId: this.$store.state.userId } }"
+          >
             <v-btn icon class="cartIconButton">
               <v-icon class="cartIcon">mdi-cart-outline</v-icon>
             </v-btn>

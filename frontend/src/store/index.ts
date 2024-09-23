@@ -67,7 +67,11 @@ export default createStore({
         commit("setUserEmail", userEmail);
         commit("setUserImage", userImage);
 
-        router.push({ name: "user", params: { userId: userId } });
+        if (userId) {
+          router.push({ name: "user", params: { userId: userId } });
+        } else {
+          console.error("userId is missing, cannot navigate to user profile.");
+        }
       } catch (err) {
         console.error("Error registering User : ", err);
       }
@@ -91,7 +95,11 @@ export default createStore({
         commit("setUserEmail", userEmail);
         commit("setUserImage", userImage);
 
-        router.push({ name: "user", params: { userId: userId } });
+        if (userId) {
+          router.push({ name: "user", params: { userId: userId } });
+        } else {
+          console.error("userId is missing, cannot navigate to user profile.");
+        }
       } catch (err) {
         console.error("Error logging in user: ", err);
       }

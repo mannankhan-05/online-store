@@ -35,9 +35,42 @@
 
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn class="checkout-button" color="primary" large
+        <v-btn @click="checkout" class="checkout-button" color="primary" large
           >Proceed to Checkout</v-btn
         >
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <v-dialog v-model="checkoutDialog" max-width="500">
+          <v-card>
+            <v-card-title class="headline">Order Confirmation</v-card-title>
+            <v-card-text>
+              <p>Thank you for your purchase!</p>
+              <p class="d-inline">Your order id is:</p>
+              <v-chip class="ma-2" color="blue darken-2" dark label large>{{
+                orderNumber
+              }}</v-chip>
+              <p class="d-inline">Your Total Is :</p>
+              <v-chip class="ma-2" color="blue darken-2" dark label large
+                >$
+                {{
+                  userProductsInCart.reduce((acc, item) => {
+                    return acc + item.product.price * item.quantity;
+                  }, 0)
+                }}</v-chip
+              >
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="checkoutDialog = false"
+                >Close</v-btn
+              >
+              <v-btn color="primary">Confirm</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -51,6 +84,8 @@ export default defineComponent({
   data() {
     return {
       userProductsInCart: [] as object[],
+      checkoutDialog: false,
+      orderNumber: "" as string,
     };
   },
   async mounted() {
@@ -59,6 +94,15 @@ export default defineComponent({
     );
     this.userProductsInCart = response.data;
     console.log(this.userProductsInCart);
+  },
+  methods: {
+    checkout() {
+      this.checkoutDialog = true;
+
+      // to generate a random string with characters of the order
+      const randomString: string = Math.random().toString(36).substring(2, 15);
+      this.orderNumber = randomString;
+    },
   },
 });
 </script>
@@ -110,5 +154,16 @@ export default defineComponent({
   width: 100%;
   max-width: 400px;
   margin-top: 20px; /* Space above the button */
+}
+
+.headline {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+v-chip {
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 8px;
 }
 </style>

@@ -48,12 +48,24 @@
             <v-card-title class="headline">Order Confirmation</v-card-title>
             <v-card-text>
               <p>Thank you for your purchase!</p>
-              <p class="d-inline">Your order id is:</p>
-              <v-chip class="ma-2" color="blue darken-2" dark label large>{{
-                orderNumber
-              }}</v-chip>
-              <p class="d-inline">Your Total Is :</p>
-              <v-chip class="ma-2" color="blue darken-2" dark label large
+              <p class="d-inline">Your order Id is:</p>
+              <v-chip
+                class="ma-2 block text-center"
+                style="width: 100%"
+                color="blue darken-2"
+                dark
+                label
+                large
+                >{{ orderNumber }}</v-chip
+              >
+              <p>Your Total Amount Is :</p>
+              <v-chip
+                class="ma-2 block text-center"
+                color="blue darken-2"
+                dark
+                label
+                large
+                style="width: 100%"
                 >$
                 {{
                   userProductsInCart.reduce((acc, item) => {

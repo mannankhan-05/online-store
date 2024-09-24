@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import user from "../models/user";
 import { sendMail } from "../mail";
+import { verificationCode } from "../verificationCodeMail";
 import logger from "../logger";
 import multer from "multer";
 import path from "path";
@@ -143,5 +144,22 @@ export const editUser = async (req: Request, res: Response) => {
     .catch((err) => {
       logger.error(`Error updating user with id ${userId}`);
       res.status(500).json({ error: `Error updating user with id ${userId}` });
+    });
+};
+
+// Forget password
+export const forgetPassword = (req: Request, res: Response) => {
+  const { email }: { email: string } = req.body;
+
+  user
+    .findOne({ where: { email: email } })
+    .then((user) => {
+      logger.info(`User with email ${email} is found`);
+      verificationCode(email);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      logger.error(`Error finding user with email ${email} : `, err);
+      res.status(500);
     });
 };

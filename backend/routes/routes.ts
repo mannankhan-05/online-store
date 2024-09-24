@@ -5,6 +5,7 @@ import {
   registerUser,
   loginUser,
   editUser,
+  forgetPassword,
 } from "../controllers/user";
 import {
   getAllProducts,
@@ -24,6 +25,8 @@ router.post("/registerUser", registerUser);
 router.post("/loginUser", loginUser);
 
 router.put("/editUser/:userId", editUser);
+
+router.post("/forgetPassword", forgetPassword);
 
 router.get("/products", getAllProducts);
 

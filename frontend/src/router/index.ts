@@ -1,9 +1,10 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import productsPage from "../components/productsPage.vue";
-import userLogin from "../components/userLogin.vue";
-import userSignUp from "../components/userSignUp.vue";
-import singleProduct from "../components/singleProduct.vue";
-import userCart from "../components/userCart.vue";
+import productsPage from "@/components/productsPage.vue";
+import userLogin from "@/components/userLogin.vue";
+import userSignUp from "@/components/userSignUp.vue";
+import singleProduct from "@/components/singleProduct.vue";
+import userCart from "@/components/userCart.vue";
+import forgetPassword from "@/components/forgetPassword.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/signUp",
     name: "signUp",
     component: userSignUp,
+  },
+  {
+    path: "/foget-password",
+    name: "forgetPassword",
+    component: forgetPassword,
   },
   {
     path: "/user/:userId/product/:productId",

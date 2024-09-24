@@ -55,7 +55,12 @@
             </v-btn>
           </div>
 
-          <p class="text-decoration-underline">Forget Password ?</p>
+          <p
+            class="text-decoration-underline forgetPassword"
+            @click="forgetPassword"
+          >
+            Forgot Password?
+          </p>
         </div>
       </v-col></v-row
     >
@@ -91,6 +96,9 @@ export default defineComponent({
       } catch (error) {
         console.log(error);
       }
+    },
+    forgetPassword() {
+      this.$router.push({ name: "forgetPassword" });
     },
   },
   computed: {
@@ -133,5 +141,18 @@ export default defineComponent({
   font-size: 13px;
   margin-top: -10px;
   margin-bottom: 10px;
+}
+
+.forgetPassword {
+  font-size: 16px;
+  font-weight: 500;
+  color: #007bff;
+  cursor: pointer;
+  margin: 10px 0;
+  transition: color 0.3s;
+}
+
+.forgetPassword:hover {
+  color: #0056b3;
 }
 </style>

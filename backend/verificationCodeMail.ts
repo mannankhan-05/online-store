@@ -19,11 +19,15 @@ export const verificationCode = async (email: string) => {
     html: `<p>Your Verification code is : <strong>${verificationCode}</strong</p>`,
   };
 
-  transporter.sendMail(mailOptions, (err, res) => {
-    if (err) {
-      logger.error(`Error sending Verification Email : ${err}`);
-    } else {
-      logger.info(`Verification Email sent: ${res.response}`);
-    }
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (err, res) => {
+      if (err) {
+        logger.error(`Error sending Verification Email: ${err}`);
+        reject(err); // Reject the promise on error
+      } else {
+        logger.info(`Verification Email sent: ${res.response}`);
+        resolve(verificationCode); // Resolve the promise with the verification code
+      }
+    });
   });
 };

@@ -15,9 +15,10 @@
 
           <!-- Cart logo -->
           <router-link
+            v-if="isLoggedIn && this.$store.state.userId"
             :to="{ name: 'cart', params: { userId: this.$store.state.userId } }"
           >
-            <v-btn icon class="cartIconButton">
+            <v-btn icon v-if="isLoggedIn" class="cartIconButton">
               <v-icon class="cartIcon">mdi-cart-outline</v-icon>
             </v-btn>
           </router-link>
@@ -75,15 +76,11 @@
                 <v-divider></v-divider>
 
                 <v-list-item @click="editProfile">
-                  <v-list-item-title
-                    ><v-btn variant="text">Edit</v-btn></v-list-item-title
-                  >
+                  <v-list-item-title>Edit</v-list-item-title>
                 </v-list-item>
 
                 <v-list-item @click="logoutUser">
-                  <v-list-item-title
-                    ><v-btn variant="text">Logout</v-btn></v-list-item-title
-                  >
+                  <v-list-item-title> Logout</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>

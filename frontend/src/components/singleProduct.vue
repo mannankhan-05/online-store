@@ -10,6 +10,11 @@
       <v-icon large>mdi-arrow-left-circle</v-icon>
     </v-btn>
 
+    <!-- Cicular after item is added to the cart -->
+    <div v-if="showAddedToCart" class="fadeInOut addedToCartDiv">
+      <div class="addedToCartText">Item added to cart!</div>
+    </div>
+
     <v-row class="product-details-row" justify="center">
       <!-- Product Image -->
       <v-col cols="12" sm="6" md="6" class="d-flex justify-center">
@@ -68,12 +73,21 @@
 
           <!-- Add to Cart Button -->
           <v-btn
+            v-if="!loading"
             class="AddToCartButton"
             variant="outlined"
             large
             @click="addToCart"
           >
             Add To Cart
+          </v-btn>
+
+          <v-btn v-if="loading" variant="tonal" class="signInButton">
+            <v-progress-circular
+              v-if="loading"
+              indeterminate
+              :width="5"
+            ></v-progress-circular>
           </v-btn>
         </v-card>
       </v-col>
@@ -127,6 +141,8 @@ export default defineComponent({
       } as Record<string, any>,
       quantity: 1,
       dialog: false,
+      loading: false,
+      showAddedToCart: false,
     };
   },
   computed: {
@@ -157,6 +173,7 @@ export default defineComponent({
       }
     },
     async addToCart() {
+      this.loading = true;
       if (!this.isUserLoggedIn) {
         this.dialog = true;
       } else {
@@ -167,6 +184,11 @@ export default defineComponent({
           quantity: this.quantity,
         });
       }
+      this.loading = false;
+      this.showAddedToCart = true;
+      setTimeout(() => {
+        this.showAddedToCart = false;
+      }, 4000);
     },
   },
 });
@@ -250,5 +272,67 @@ export default defineComponent({
 .headline {
   display: flex;
   align-items: center;
+}
+
+.addedToCartDiv {
+  width: 100%;
+  height: 35px;
+  border-radius: 3px;
+  background-color: rgb(113, 145, 113);
+  color: white;
+  font-size: 23px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.addedToCartText {
+  margin-left: 8px; /* Space between the spinner and text */
+  font-size: 20px;
+  color: black;
+}
+
+.fadeInOut {
+  animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 0.7;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  80% {
+    opacity: 0.2;
+  }
+  90% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0;
+    display: none; /* Optionally hide element after fading out */
+  }
 }
 </style>

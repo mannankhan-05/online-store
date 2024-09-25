@@ -35,9 +35,18 @@
 
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn @click="checkout" class="checkout-button" color="primary" large
+        <v-btn
+          v-if="userProductsInCart.length != 0"
+          @click="checkout"
+          class="checkout-button"
+          color="primary"
+          large
           >Proceed to Checkout</v-btn
         >
+
+        <h1 class="empty-cart-message" v-if="userProductsInCart.length == 0">
+          Cart Is Empty
+        </h1>
       </v-col>
     </v-row>
 
@@ -105,7 +114,6 @@ export default defineComponent({
       `http://localhost:4000/userProducts/${this.$route.params.userId}`
     );
     this.userProductsInCart = response.data;
-    console.log(this.userProductsInCart);
   },
   methods: {
     checkout() {
@@ -177,5 +185,24 @@ v-chip {
   font-size: 18px;
   padding: 10px;
   border-radius: 8px;
+}
+
+.empty-cart-message {
+  font-size: 2rem; /* Larger font for the message */
+  text-align: center; /* Center the text horizontally */
+  color: rgb(51, 51, 168); /* Light red color to indicate an empty cart */
+  background-color: #f5f5f5; /* Light background to make the message stand out */
+  padding: 20px; /* Add some padding around the text */
+  border-radius: 4px; /* Rounded corners for a softer look */
+  margin-top: 40px; /* Space above the message */
+  margin-bottom: 20px; /* Space below the message */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  font-weight: bold; /* Bold font for emphasis */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for hover effect */
+}
+
+.empty-cart-message:hover {
+  transform: scale(1.03); /* Slight zoom effect on hover */
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
 }
 </style>

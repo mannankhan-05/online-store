@@ -11,14 +11,12 @@
     <!-- Categories Section -->
     <div class="categories pb-10 pt-10">
       <h2 class="text-decoration-underline text-light">Categories</h2>
-      <v-card class="mx-auto" elevation="2" outlined>
-        <v-list>
-          <v-list-item class="category-item">Pants</v-list-item>
-          <v-list-item class="category-item">Shirts</v-list-item>
-          <v-list-item class="category-item">Shoes</v-list-item>
-          <v-list-item class="category-item">Accessories</v-list-item>
-        </v-list>
-      </v-card>
+      <v-list class="category-list">
+        <v-list-item class="category-item">Pants</v-list-item>
+        <v-list-item class="category-item">Shirts</v-list-item>
+        <v-list-item class="category-item">Shoes</v-list-item>
+        <v-list-item class="category-item">Accessories</v-list-item>
+      </v-list>
     </div>
 
     <v-divider></v-divider>
@@ -60,24 +58,28 @@ export default defineComponent({});
 .icon:hover {
   transform: scale(1.2);
   color: #ff9800; /* Orange color on hover for a nice effect */
-  cursor: pointer;
+}
+
+.categories {
+  margin-bottom: 20px; /* Add margin for spacing */
 }
 
 .categories h2 {
   font-size: 1.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* Adjust margin */
   color: #ff9800; /* Accent color for headings */
 }
 
-.v-card {
-  width: 300px;
-  background-color: #424242; /* Dark card background */
+.category-list {
+  padding: 0; /* Remove default padding */
+  list-style: none; /* Remove bullet points */
 }
 
 .category-item {
   font-size: 1.1rem;
-  color: #ffffff;
+  color: #ffffff; /* Text color changed to white */
   transition: color 0.3s ease;
+  cursor: pointer; /* Change cursor to pointer */
 }
 
 .category-item:hover {

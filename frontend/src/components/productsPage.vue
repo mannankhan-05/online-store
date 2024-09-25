@@ -1,5 +1,16 @@
 <template>
   <v-container class="pl-3 mt-15">
+    <v-sheet class="py-4 px-1">
+      <v-chip-group selected-class="text-primary" mandatory>
+        <v-chip text="Clothing"></v-chip>
+        <v-chip text="Shoes"></v-chip>
+        <v-chip text="Electronics"></v-chip>
+        <v-chip text="Books"></v-chip>
+        <v-chip text="Personal Care"></v-chip>
+        <v-chip text="Food"></v-chip>
+        <v-chip text="Beverage"></v-chip>
+      </v-chip-group>
+    </v-sheet>
     <v-row justify="center">
       <v-col cols="12" md="8" sm="8" xs="10">
         <v-textarea

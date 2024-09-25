@@ -152,15 +152,48 @@ export const forgetPassword = async (req: Request, res: Response) => {
   const { email }: { email: string } = req.body;
 
   try {
-    await user.findOne({ where: { email: email } });
+    let myUser = await user.findOne({ where: { email: email } });
+
+    if (!myUser) {
+      logger.error(`No user found with email ${email}`);
+      return res.status(404).json({ error: "User not found" });
+    }
 
     logger.info(`User with email ${email} is found`);
 
+    // Convert Sequelize Model to plain JavaScript object
+    const userData = myUser.toJSON() as User;
+
     const code = await verificationCode(email);
-    console.log("code : " + code);
-    res.json(code); // Send the code in response to frontend
+    res.json({ userId: userData.id, code }); // Send the code and userId in response to frontend
   } catch (err) {
     logger.error(`Error finding user with email ${email}: `, err);
     res.status(500).json({ error: "Error finding user" });
   }
+};
+
+// Reset password
+export const resetPassword = async (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId);
+  const { password }: { password: string } = req.body;
+
+  const hashedPassword: string = await bcrypt.hashSync(password, saltRounds);
+
+  user
+    .update(
+      {
+        password: hashedPassword,
+      },
+      { where: { id: userId } }
+    )
+    .then(() => {
+      logger.info(`Password is reseted for the user with id ${userId}`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      logger.error(
+        `Error resseting password for the user with id ${userId} : ` + err
+      );
+      res.sendStatus(500);
+    });
 };

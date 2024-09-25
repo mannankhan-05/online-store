@@ -75,6 +75,7 @@ export default defineComponent({
       email: "",
       loading: false,
       verificationCode: 0 as number,
+      userId: 0 as number,
       otp: 0 as number,
       code: false as boolean,
     };
@@ -86,15 +87,20 @@ export default defineComponent({
       let response = await axios.post("http://localhost:4000/forgetPassword", {
         email: this.email,
       });
-      this.verificationCode = response.data;
+      this.verificationCode = response.data.code;
+      this.userId = response.data.userId;
       console.log("Verification Code : " + this.verificationCode);
+      console.log("User ID : " + this.userId);
       this.email = "";
       this.loading = false;
       this.code = true;
     },
     submitOtp() {
-      if (this.otp === this.verificationCode) {
-        console.log("OTP Verified");
+      if (Number(this.otp) === this.verificationCode) {
+        this.$router.push({
+          name: "resetPassword",
+          params: { userId: this.userId },
+        });
       } else {
         console.log("Invalid OTP");
       }

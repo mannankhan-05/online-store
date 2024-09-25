@@ -17,6 +17,7 @@ import {
   getAllUsersProducts,
   getUserProducts,
   addUserProduct,
+  deleteProductsFromCart,
 } from "../controllers/user_product";
 
 router.get("/users", getAllUsers);
@@ -42,5 +43,7 @@ router.get("/userProducts", getAllUsersProducts);
 router.get("/userProducts/:userId", getUserProducts);
 
 router.post("/addUserProduct", addUserProduct);
+
+router.delete("/deleteProductsFromCart/:userId", deleteProductsFromCart);
 
 export default router;

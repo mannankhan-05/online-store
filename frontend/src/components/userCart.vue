@@ -88,7 +88,7 @@
               <v-btn color="primary" @click="checkoutDialog = false"
                 >Close</v-btn
               >
-              <v-btn color="primary">Confirm</v-btn>
+              <v-btn color="primary" @click="emptyCart">Confirm</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -122,6 +122,12 @@ export default defineComponent({
       // to generate a random string with characters of the order
       const randomString: string = Math.random().toString(36).substring(2, 15);
       this.orderNumber = randomString;
+    },
+    async emptyCart() {
+      await axios.delete(
+        `http://localhost:4000/deleteProductsFromCart/${this.$route.params.userId}`
+      );
+      this.checkoutDialog = false;
     },
   },
 });

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import user_product from "../models/user_product";
 import user from "../models/user";
 import product from "../models/product";
+import { orderConfirmationMail } from "../orderConfirmationMail";
 import logger from "../logger";
 
 // Get all user_products
@@ -57,6 +58,29 @@ export const addUserProduct = async (req: Request, res: Response) => {
       logger.error(
         `Error adding product with id ${product_id} to user with id ${user_id}`
       );
+      res.status(500).json({ error: err });
+    });
+};
+
+// Delete the selected product from the user's cart
+export const deleteProductsFromCart = (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId, 10);
+  // const { email }: { email: string } = req.body;
+
+  user_product
+    .destroy({ where: { user_id: userId } })
+    .then(() => {
+      logger.info(
+        `All products of user with id ${userId} were deleted from the cart`
+      );
+
+      user.findOne({ where: { id: userId } }).then((user: any) => {
+        orderConfirmationMail(user.email);
+      });
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      logger.error(`Error deleting all products of user with id ${userId}`);
       res.status(500).json({ error: err });
     });
 };

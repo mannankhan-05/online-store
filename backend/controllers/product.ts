@@ -117,3 +117,25 @@ export const createProduct = (req: Request, res: Response) => {
       });
   });
 };
+
+// to get products by category
+export const getProductsByCategory = (req: Request, res: Response) => {
+  const { category }: { category: string } = req.body;
+
+  product
+    .findAll({ where: { category: category } })
+    .then((productsByCategories) => {
+      logger.info(`Products by category : ${category} were retrieved`);
+      const result = productsByCategories.map((product: any) => {
+        if (product.image) {
+          product.image = `http://localhost:4000/productImages/${product.image}`;
+        }
+        return product;
+      });
+      res.json(result);
+    })
+    .catch((err) => {
+      logger.error(`Error retrieving products by category : ${err}`);
+      res.status(500);
+    });
+};

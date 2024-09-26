@@ -12,6 +12,7 @@ import {
   getAllProducts,
   getProductById,
   createProduct,
+  getProductsByCategory,
 } from "../controllers/product";
 import {
   getAllUsersProducts,
@@ -37,6 +38,8 @@ router.get("/products", getAllProducts);
 router.get("/product/:productId", getProductById);
 
 router.post("/addProduct", createProduct);
+
+router.post("/productsByCategory", getProductsByCategory);
 
 router.get("/userProducts", getAllUsersProducts);
 

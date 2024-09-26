@@ -55,7 +55,15 @@
                 </v-file-input>
                 <v-select
                   label="Category"
-                  :items="['shirts', 'pants', 'jackets', 'watches', 'other']"
+                  :items="[
+                    'Clothing',
+                    'Shoes',
+                    'Electronics',
+                    'Books',
+                    'Personal Care',
+                    'Food',
+                    'Beverage',
+                  ]"
                   variant="outlined"
                   v-model="category"
                 >

@@ -1,16 +1,26 @@
 <template>
   <v-container class="pl-3 mt-15">
     <v-sheet class="py-4 px-1">
-      <v-chip-group selected-class="text-primary" mandatory>
-        <v-chip text="Clothing"></v-chip>
-        <v-chip text="Shoes"></v-chip>
-        <v-chip text="Electronics"></v-chip>
-        <v-chip text="Books"></v-chip>
-        <v-chip text="Personal Care"></v-chip>
-        <v-chip text="Food"></v-chip>
-        <v-chip text="Beverage"></v-chip>
-      </v-chip-group>
+      <v-row class="d-flex align-center mt-2" justify="center">
+        <v-chip value="All" class="mr-2" @click="showAllProducts">All</v-chip>
+        <v-chip-group
+          selected-class="text-primary"
+          mandatory
+          v-model="category"
+          @click="sortProductsByCategories"
+        >
+          <v-chip value="Clothing">Clothing</v-chip>
+          <v-chip value="Shoes">Shoes</v-chip>
+          <v-chip value="Electronics">Electronics</v-chip>
+          <v-chip value="Books">Books</v-chip>
+          <v-chip value="Personal Care">Personal Care</v-chip>
+          <v-chip value="Food">Food</v-chip>
+          <v-chip value="Beverage">Beverage</v-chip>
+        </v-chip-group>
+      </v-row>
     </v-sheet>
+
+    <!-- input field for product search functionality -->
     <v-row justify="center">
       <v-col cols="12" md="8" sm="8" xs="10">
         <v-textarea
@@ -25,6 +35,7 @@
       </v-col>
     </v-row>
 
+    <!-- Displaying all the products in a grid -->
     <v-row justify="center">
       <v-col
         v-for="product in searchProducts"
@@ -88,6 +99,7 @@ export default defineComponent({
       products: [] as object[],
       search: "" as string,
       selectedProductId: 0 as number,
+      category: "" as string,
     };
   },
   computed: {
@@ -100,12 +112,13 @@ export default defineComponent({
   },
   async mounted() {
     // Fetching all the products from the backend
-    try {
-      const response = await axios.get("http://localhost:4000/products");
-      this.products = response.data;
-    } catch (err) {
-      console.log("Error fetching all products : " + err);
-    }
+    // try {
+    //   const response = await axios.get("http://localhost:4000/products");
+    //   this.products = response.data;
+    // } catch (err) {
+    //   console.log("Error fetching all products : " + err);
+    // }
+    this.showAllProducts();
   },
   methods: {
     showFullProduct(productId: number) {
@@ -114,6 +127,24 @@ export default defineComponent({
         name: "fullProduct",
         params: { userId: this.$store.state.userId, productId: productId },
       });
+    },
+    async sortProductsByCategories() {
+      console.log(this.category);
+      let response = await axios.post(
+        "http://localhost:4000/productsByCategory",
+        {
+          category: this.category,
+        }
+      );
+      this.products = response.data;
+    },
+    async showAllProducts() {
+      try {
+        const response = await axios.get("http://localhost:4000/products");
+        this.products = response.data;
+      } catch (err) {
+        console.log("Error fetching all products : " + err);
+      }
     },
   },
 });

@@ -65,7 +65,6 @@ export const addUserProduct = async (req: Request, res: Response) => {
 // Delete the selected product from the user's cart
 export const deleteProductsFromCart = (req: Request, res: Response) => {
   const userId: number = parseInt(req.params.userId, 10);
-  // const { email }: { email: string } = req.body;
 
   user_product
     .destroy({ where: { user_id: userId } })

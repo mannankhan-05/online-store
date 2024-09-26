@@ -183,9 +183,9 @@ export default defineComponent({
           product_id: this.$route.params.productId,
           quantity: this.quantity,
         });
+        this.showAddedToCart = true;
       }
       this.loading = false;
-      this.showAddedToCart = true;
       setTimeout(() => {
         this.showAddedToCart = false;
       }, 4000);

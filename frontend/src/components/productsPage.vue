@@ -111,22 +111,22 @@ export default defineComponent({
     },
   },
   async mounted() {
-    // Fetching all the products from the backend
-    // try {
-    //   const response = await axios.get("http://localhost:4000/products");
-    //   this.products = response.data;
-    // } catch (err) {
-    //   console.log("Error fetching all products : " + err);
-    // }
     this.showAllProducts();
   },
   methods: {
     showFullProduct(productId: number) {
       this.selectedProductId = productId;
-      this.$router.push({
-        name: "fullProduct",
-        params: { userId: this.$store.state.userId, productId: productId },
-      });
+      if (this.$store.state.isUserLoggedIn) {
+        this.$router.push({
+          name: "fullProduct",
+          params: { userId: this.$store.state.userId, productId: productId },
+        });
+      } else {
+        this.$router.push({
+          name: "fullProduct",
+          params: { userId: 0, productId: productId },
+        });
+      }
     },
     async sortProductsByCategories() {
       console.log(this.category);

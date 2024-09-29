@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <!-- products in cart -->
     <v-row>
       <v-col
         v-for="item in userProductsInCart"
@@ -33,6 +34,7 @@
       </v-col>
     </v-row>
 
+    <!-- checkout button -->
     <v-row>
       <v-col class="d-flex justify-center">
         <v-btn
@@ -50,7 +52,50 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <!-- stepper for checkout -->
+    <v-overlay v-model="step" v-if="checkoutDialog" class="stepper-overlay">
+      <v-row justify="center">
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-stepper show-actions class="stepper" max-width="600">
+            <v-stepper-header>
+              <v-stepper-step step="1">Order</v-stepper-step>
+              <v-stepper-step step="2">Shipping</v-stepper-step>
+              <v-stepper-step step="3">Confirm</v-stepper-step>
+            </v-stepper-header>
+
+            <!-- Step 1 -->
+            <v-stepper-items>
+              <v-stepper-content step="1">
+                <v-card v-if="step === 1">
+                  <h3 class="text-h6">Order</h3>
+                  <h2>Order</h2>
+                  <v-btn color="primary" @click="step = 2">Next</v-btn>
+                </v-card>
+              </v-stepper-content>
+
+              <!-- Step 2 -->
+              <v-stepper-content step="2">
+                <v-card v-if="step === 2">
+                  <h3 class="text-h6">Shipping</h3>
+                  <v-btn color="primary" @click="step = 1">Back</v-btn>
+                  <v-btn color="primary" @click="step = 3">Next</v-btn>
+                </v-card>
+              </v-stepper-content>
+
+              <!-- Step 3 -->
+              <v-stepper-content step="3">
+                <v-card v-if="step === 3">
+                  <h3 class="text-h6">Confirm</h3>
+                  <v-btn color="primary" @click="step = 2">Back</v-btn>
+                </v-card>
+              </v-stepper-content>
+            </v-stepper-items>
+          </v-stepper>
+        </v-col>
+      </v-row>
+    </v-overlay>
+
+    <!-- <v-row>
       <v-col>
         <v-dialog v-model="checkoutDialog" max-width="500">
           <v-card>
@@ -93,7 +138,7 @@
           </v-card>
         </v-dialog>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
@@ -105,8 +150,9 @@ export default defineComponent({
   data() {
     return {
       userProductsInCart: [] as object[],
-      checkoutDialog: false,
+      checkoutDialog: true,
       orderNumber: "" as string,
+      step: 1,
     };
   },
   async mounted() {
@@ -117,11 +163,10 @@ export default defineComponent({
   },
   methods: {
     checkout() {
-      this.checkoutDialog = true;
-
-      // to generate a random string with characters of the order
-      const randomString: string = Math.random().toString(36).substring(2, 15);
-      this.orderNumber = randomString;
+      // this.checkoutDialog = true;
+      // // to generate a random string with characters of the order
+      // const randomString: string = Math.random().toString(36).substring(2, 15);
+      // this.orderNumber = randomString;
     },
     async emptyCart() {
       await axios.delete(
@@ -179,7 +224,7 @@ export default defineComponent({
 .checkout-button {
   width: 100%;
   max-width: 400px;
-  margin-top: 20px; /* Space above the button */
+  margin-top: 20px;
 }
 
 .headline {
@@ -194,21 +239,33 @@ v-chip {
 }
 
 .empty-cart-message {
-  font-size: 2rem; /* Larger font for the message */
-  text-align: center; /* Center the text horizontally */
-  color: rgb(51, 51, 168); /* Light red color to indicate an empty cart */
-  background-color: #f5f5f5; /* Light background to make the message stand out */
-  padding: 20px; /* Add some padding around the text */
-  border-radius: 4px; /* Rounded corners for a softer look */
-  margin-top: 40px; /* Space above the message */
-  margin-bottom: 20px; /* Space below the message */
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-  font-weight: bold; /* Bold font for emphasis */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for hover effect */
+  font-size: 2rem;
+  text-align: center;
+  color: rgb(51, 51, 168);
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 4px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .empty-cart-message:hover {
-  transform: scale(1.03); /* Slight zoom effect on hover */
-  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  transform: scale(1.03);
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stepper-overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(114, 104, 104, 0.5);
+}
+
+.stepper {
+  margin-top: 10%;
+  max-width: 600px;
+  width: 100%;
 }
 </style>

@@ -55,8 +55,8 @@
     <!-- stepper for checkout -->
     <v-overlay v-model="step" v-if="checkoutDialog" class="stepper-overlay">
       <v-row justify="center">
-        <v-col cols="12" sm="10" md="8" lg="6">
-          <v-stepper show-actions class="stepper" max-width="600">
+        <v-col cols="12" xs="12" sm="10" md="10" lg="8">
+          <v-stepper show-actions class="stepper" width="800">
             <v-stepper-header>
               <v-stepper-step step="1">Order</v-stepper-step>
               <v-stepper-step step="2">Shipping</v-stepper-step>
@@ -263,9 +263,8 @@ v-chip {
   background-color: rgba(114, 104, 104, 0.5);
 }
 
-.stepper {
+/* .stepper {
   margin-top: 10%;
-  max-width: 600px;
-  width: 100%;
-}
+  width: 800px;
+} */
 </style>

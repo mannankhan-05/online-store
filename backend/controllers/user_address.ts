@@ -33,7 +33,7 @@ export const getUserAdressById = (req: Request, res: Response) => {
       res.json(userAddress);
     })
     .catch((err) => {
-      logger.error(`Error retrieving user address with id ${userId}`);
+      logger.error(`Error retrieving user address with id ${userId}` + err);
       res.status(500);
     });
 };
@@ -44,20 +44,23 @@ export const addUserAddress = (req: Request, res: Response) => {
     userId,
     address,
     city,
-  }: { userId: number; address: string; city: string } = req.body;
+    phoneNumber,
+  }: { userId: number; address: string; city: string; phoneNumber: string } =
+    req.body;
 
   user_address
     .create({
       user_id: userId,
       address: address,
       city: city,
+      phoneNumber: phoneNumber,
     })
     .then((userAddress) => {
       logger.info(`Address was added to the user with id ${userId}`);
       res.json(userAddress);
     })
     .catch((err) => {
-      logger.error(`Error adding address to user with id ${userId}`);
+      logger.error(`Error adding address to user with id ${userId}` + err);
       res.status(500);
     });
 };

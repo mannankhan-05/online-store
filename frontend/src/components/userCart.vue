@@ -52,45 +52,111 @@
       </v-col>
     </v-row>
 
-    <!-- stepper for checkout -->
-    <v-overlay v-model="step" v-if="checkoutDialog" class="stepper-overlay">
+    <!-- stepper -->
+    <v-overlay v-model="checkoutDialog" class="stepper-layout">
       <v-row justify="center">
-        <v-col cols="12" xs="12" sm="10" md="10" lg="8">
-          <v-stepper show-actions class="stepper" width="800">
-            <v-stepper-header>
-              <v-stepper-step step="1">Order</v-stepper-step>
-              <v-stepper-step step="2">Shipping</v-stepper-step>
-              <v-stepper-step step="3">Confirm</v-stepper-step>
-            </v-stepper-header>
+        <v-col cols="12" md="12" sm="12">
+          <v-card
+            width="900"
+            elevation="8"
+            border
+            class="mx-auto pa-5 stepper-card"
+          >
+            <v-stepper
+              v-model="step"
+              :items="items"
+              class="stepper"
+              elevation="8"
+            >
+              <!-- step 1 -->
+              <v-stepper-step v-if="step == 1" :complete="step > 1" step="1">
+                <template v-slot:default>
+                  <div class="pa-5">
+                    <div class="input-fields">
+                      <v-row justify="center">
+                        <v-col cols="12" lg="10" md="10" sm="10" xs="10">
+                          <v-text-field
+                            clearable
+                            label="Enter Delivery Address"
+                            placeholder="House # 123, Street # 123, area"
+                            variant="outlined"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" lg="6" md="6" sm="6" xs="12">
+                          <v-text-field
+                            clearable
+                            label="Enter Phone Number"
+                            placeholder="0333-2651785"
+                            variant="outlined"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" lg="6" md="6" sm="6" xs="12">
+                          <v-select
+                            clearable
+                            label="Select City"
+                            :items="[
+                              'Karachi',
+                              'Lahore',
+                              'Islamabad',
+                              'Multan',
+                              'Faisalabad',
+                            ]"
+                            variant="outlined"
+                          ></v-select>
+                        </v-col>
+                      </v-row>
+                    </div>
+                  </div>
+                </template>
+              </v-stepper-step>
+              <!-- <v-stepper-actions>
+                <v-btn color="primary" @click="step++">Next</v-btn>
+              </v-stepper-actions> -->
 
-            <!-- Step 1 -->
-            <v-stepper-items>
-              <v-stepper-content step="1">
-                <v-card v-if="step === 1">
-                  <h3 class="text-h6">Order</h3>
-                  <h2>Order</h2>
-                  <v-btn color="primary" @click="step = 2">Next</v-btn>
-                </v-card>
-              </v-stepper-content>
+              <!-- step 2 -->
+              <v-stepper-step v-if="step == 2" :complete="step > 2" step="2">
+                <template v-slot:default>
+                  <div class="pa-5">
+                    <v-container fluid>
+                      <v-radio-group v-model="payementMethod">
+                        <template v-slot:label>
+                          <div class="text-h6">
+                            Select Your
+                            <strong>Payement Method</strong>
+                          </div>
+                        </template>
+                        <v-radio value="Google">
+                          <template v-slot:label>
+                            <div class="text-subtitle-1">
+                              <strong class="text-success"
+                                >Cash on Dilevery</strong
+                              >
+                            </div>
+                          </template>
+                        </v-radio>
+                        <v-radio value="Duckduckgo">
+                          <template v-slot:label>
+                            <div class="text-subtitle-1">
+                              <strong class="text-primary">Credit Cart</strong>
+                            </div>
+                          </template>
+                        </v-radio>
+                      </v-radio-group>
+                    </v-container>
+                  </div>
+                </template>
+              </v-stepper-step>
 
-              <!-- Step 2 -->
-              <v-stepper-content step="2">
-                <v-card v-if="step === 2">
-                  <h3 class="text-h6">Shipping</h3>
-                  <v-btn color="primary" @click="step = 1">Back</v-btn>
-                  <v-btn color="primary" @click="step = 3">Next</v-btn>
-                </v-card>
-              </v-stepper-content>
-
-              <!-- Step 3 -->
-              <v-stepper-content step="3">
-                <v-card v-if="step === 3">
-                  <h3 class="text-h6">Confirm</h3>
-                  <v-btn color="primary" @click="step = 2">Back</v-btn>
-                </v-card>
-              </v-stepper-content>
-            </v-stepper-items>
-          </v-stepper>
+              <!-- step 3 -->
+              <v-stepper-step v-if="step == 3" :complete="step > 3" step="3">
+                <template v-slot:default>
+                  <div class="pa-5">
+                    <h3 class="text-h6">Step 3</h3>
+                  </div>
+                </template>
+              </v-stepper-step>
+            </v-stepper>
+          </v-card>
         </v-col>
       </v-row>
     </v-overlay>
@@ -153,6 +219,8 @@ export default defineComponent({
       checkoutDialog: true,
       orderNumber: "" as string,
       step: 1,
+      payementMethod: "" as string,
+      items: ["Address", "Payment", "Confirm"],
     };
   },
   async mounted() {
@@ -163,7 +231,8 @@ export default defineComponent({
   },
   methods: {
     checkout() {
-      // this.checkoutDialog = true;
+      this.checkoutDialog = true;
+      this.step = 1;
       // // to generate a random string with characters of the order
       // const randomString: string = Math.random().toString(36).substring(2, 15);
       // this.orderNumber = randomString;
@@ -263,8 +332,19 @@ v-chip {
   background-color: rgba(114, 104, 104, 0.5);
 }
 
-/* .stepper {
-  margin-top: 10%;
-  width: 800px;
-} */
+.stepper-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stepper-card {
+  border-radius: 10px;
+}
+
+.stepper {
+  border-radius: 10px;
+}
 </style>

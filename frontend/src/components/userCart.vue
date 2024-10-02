@@ -62,149 +62,107 @@
             border
             class="mx-auto pa-5 stepper-card"
           >
-            <v-stepper
-              v-model="step"
-              :items="items"
-              class="stepper"
-              elevation="8"
-            >
-              <!-- step 1 -->
-              <v-stepper-step v-if="step == 1" :complete="step > 1" step="1">
-                <template v-slot:default>
-                  <div class="pa-5">
-                    <div class="input-fields">
-                      <v-row justify="center">
-                        <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                          <v-text-field
-                            clearable
-                            label="Enter Delivery Address"
-                            placeholder="House # 123, Street # 123, area"
-                            variant="outlined"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" lg="6" md="6" sm="6" xs="12">
-                          <v-text-field
-                            clearable
-                            label="Enter Phone Number"
-                            placeholder="0333-2651785"
-                            variant="outlined"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" lg="6" md="6" sm="6" xs="12">
-                          <v-select
-                            clearable
-                            label="Select City"
-                            :items="[
-                              'Karachi',
-                              'Lahore',
-                              'Islamabad',
-                              'Multan',
-                              'Faisalabad',
-                            ]"
-                            variant="outlined"
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-                    </div>
+            <v-stepper v-model="step" alt-labels :items="items" hide-actions>
+              <v-stepper-content v-if="step == 1" step="1">
+                <!-- step 1 content -->
+                <div class="pa-5">
+                  <div class="input-fields">
+                    <v-row justify="center">
+                      <v-col cols="12" lg="10" md="10" sm="10" xs="10">
+                        <v-text-field
+                          clearable
+                          label="Enter Delivery Address"
+                          placeholder="House # 123, Street # 123, area"
+                          variant="outlined"
+                          v-model="userDeliveryAddress"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" lg="6" md="6" sm="6" xs="12">
+                        <v-text-field
+                          clearable
+                          label="Enter Phone Number"
+                          placeholder="0333-2651785"
+                          variant="outlined"
+                          v-model="userPhoneNumber"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" lg="6" md="6" sm="6" xs="12">
+                        <v-select
+                          clearable
+                          label="Select City"
+                          :items="[
+                            'Karachi',
+                            'Lahore',
+                            'Islamabad',
+                            'Multan',
+                            'Faisalabad',
+                          ]"
+                          variant="outlined"
+                          v-model="userCity"
+                        ></v-select>
+                      </v-col>
+                    </v-row>
                   </div>
-                </template>
-              </v-stepper-step>
-              <!-- <v-stepper-actions>
-                <v-btn color="primary" @click="step++">Next</v-btn>
-              </v-stepper-actions> -->
-
-              <!-- step 2 -->
-              <v-stepper-step v-if="step == 2" :complete="step > 2" step="2">
-                <template v-slot:default>
-                  <div class="pa-5">
-                    <v-container fluid>
-                      <v-radio-group v-model="payementMethod">
+                </div>
+              </v-stepper-content>
+              <v-stepper-content v-if="step == 2" step="2">
+                <!-- step 2 content -->
+                <div class="pa-5">
+                  <v-container fluid>
+                    <v-radio-group v-model="userPayementMethod">
+                      <template v-slot:label>
+                        <div class="text-h6">
+                          Select Your
+                          <strong>Payement Method</strong>
+                        </div>
+                      </template>
+                      <v-radio :value="1">
                         <template v-slot:label>
-                          <div class="text-h6">
-                            Select Your
-                            <strong>Payement Method</strong>
+                          <div class="text-subtitle-1">
+                            <strong class="text-success"
+                              >Cash on Dilevery</strong
+                            >
                           </div>
                         </template>
-                        <v-radio value="Google">
-                          <template v-slot:label>
-                            <div class="text-subtitle-1">
-                              <strong class="text-success"
-                                >Cash on Dilevery</strong
-                              >
-                            </div>
-                          </template>
-                        </v-radio>
-                        <v-radio value="Duckduckgo">
-                          <template v-slot:label>
-                            <div class="text-subtitle-1">
-                              <strong class="text-primary">Credit Cart</strong>
-                            </div>
-                          </template>
-                        </v-radio>
-                      </v-radio-group>
-                    </v-container>
-                  </div>
-                </template>
-              </v-stepper-step>
-
-              <!-- step 3 -->
-              <v-stepper-step v-if="step == 3" :complete="step > 3" step="3">
-                <template v-slot:default>
-                  <div class="pa-5">
-                    <h3 class="text-h6">Step 3</h3>
-                  </div>
-                </template>
-              </v-stepper-step>
+                      </v-radio>
+                      <v-radio :value="2">
+                        <template v-slot:label>
+                          <div class="text-subtitle-1">
+                            <strong class="text-primary">Credit Cart</strong>
+                          </div>
+                        </template>
+                      </v-radio>
+                    </v-radio-group>
+                  </v-container>
+                </div>
+              </v-stepper-content>
+              <v-stepper-content v-if="step == 3" step="3">
+                <!-- step 3 content -->
+                <div class="pa-5">
+                  <h3 class="text-h6">Step 3</h3>
+                </div>
+              </v-stepper-content>
+              <v-row justify="start" class="ma-5">
+                <v-spacer></v-spacer>
+                <v-btn
+                  v-if="!loading"
+                  color="primary"
+                  @click="orderConfirmationSteps"
+                  :text="step == 3 ? 'Confirm Order' : 'Next'"
+                ></v-btn>
+                <v-btn v-if="loading" color="primary">
+                  <v-progress-circular
+                    v-if="loading"
+                    indeterminate
+                    :width="5"
+                  ></v-progress-circular>
+                </v-btn>
+              </v-row>
             </v-stepper>
           </v-card>
         </v-col>
       </v-row>
     </v-overlay>
-
-    <!-- <v-row>
-      <v-col>
-        <v-dialog v-model="checkoutDialog" max-width="500">
-          <v-card>
-            <v-card-title class="headline">Order Confirmation</v-card-title>
-            <v-card-text>
-              <p>Thank you for your purchase!</p>
-              <p class="d-inline">Your order Id is:</p>
-              <v-chip
-                class="ma-2 block text-center"
-                style="width: 100%"
-                color="blue darken-2"
-                dark
-                label
-                large
-                >{{ orderNumber }}</v-chip
-              >
-              <p>Your Total Amount Is :</p>
-              <v-chip
-                class="ma-2 block text-center"
-                color="blue darken-2"
-                dark
-                label
-                large
-                style="width: 100%"
-                >$
-                {{
-                  userProductsInCart.reduce((acc, item) => {
-                    return acc + item.product.price * item.quantity;
-                  }, 0)
-                }}</v-chip
-              >
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" @click="checkoutDialog = false"
-                >Close</v-btn
-              >
-              <v-btn color="primary" @click="emptyCart">Confirm</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-col>
-    </v-row> -->
   </v-container>
 </template>
 
@@ -217,10 +175,13 @@ export default defineComponent({
     return {
       userProductsInCart: [] as object[],
       checkoutDialog: true,
-      orderNumber: "" as string,
-      step: 1,
-      payementMethod: "" as string,
-      items: ["Address", "Payment", "Confirm"],
+      step: 3 as number,
+      items: ["Address", "Payment", "Confirmation"],
+      loading: false,
+      userDeliveryAddress: "" as string,
+      userPhoneNumber: "" as string,
+      userCity: "" as string,
+      userPayementMethod: 0 as number,
     };
   },
   async mounted() {
@@ -232,16 +193,35 @@ export default defineComponent({
   methods: {
     checkout() {
       this.checkoutDialog = true;
-      this.step = 1;
-      // // to generate a random string with characters of the order
-      // const randomString: string = Math.random().toString(36).substring(2, 15);
-      // this.orderNumber = randomString;
     },
     async emptyCart() {
       await axios.delete(
         `http://localhost:4000/deleteProductsFromCart/${this.$route.params.userId}`
       );
       this.checkoutDialog = false;
+    },
+    async orderConfirmationSteps() {
+      this.loading = true;
+      if (this.step == 1) {
+        await axios.post("http://localhost:4000/addUserAddress", {
+          userId: this.$store.state.userId,
+          address: this.userDeliveryAddress,
+          phoneNumber: this.userPhoneNumber,
+          city: this.userCity,
+        });
+
+        this.userDeliveryAddress = "";
+        this.userPhoneNumber = "";
+        this.userCity = "";
+        this.loading = false;
+        this.step = 2;
+      } else if (this.step == 2) {
+        this.loading = true;
+        console.log("User Payment method : " + this.userPayementMethod);
+        this.step++;
+        this.loading = false;
+      }
+      // if(this.step == 3)
     },
   },
 });

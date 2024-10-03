@@ -139,7 +139,38 @@
               <v-stepper-content v-if="step == 3" step="3">
                 <!-- step 3 content -->
                 <div class="pa-5">
-                  <h3 class="text-h6">Step 3</h3>
+                  <div class="orderId">
+                    <span class="order-label">Order Id :</span>
+                    <strong class="order-value">{{ orderId }}</strong>
+                  </div>
+                  <v-card class="table-card">
+                    <v-table>
+                      <thead>
+                        <tr>
+                          <th class="text-left table-header font-weight-bold">
+                            Quantity
+                          </th>
+                          <th class="text-left table-header font-weight-bold">
+                            Name
+                          </th>
+                          <th class="text-left table-header font-weight-bold">
+                            Price
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="item in userProductsInCart" :key="item.id">
+                          <td class="table-items">{{ item.quantity }}</td>
+                          <td class="table-items">{{ item.product.name }}</td>
+                          <td class="table-items">{{ item.product.price }}$</td>
+                        </tr>
+                      </tbody>
+                    </v-table>
+                  </v-card>
+                  <div class="totalPriceOrder">
+                    <span class="totalPrice-label">Total :</span>
+                    <strong class="total-value">10$</strong>
+                  </div>
                 </div>
               </v-stepper-content>
               <v-row justify="start" class="ma-5">
@@ -182,6 +213,7 @@ export default defineComponent({
       userPhoneNumber: "" as string,
       userCity: "" as string,
       userPayementMethod: 0 as number,
+      orderId: "" as string,
     };
   },
   async mounted() {
@@ -189,10 +221,26 @@ export default defineComponent({
       `http://localhost:4000/userProducts/${this.$route.params.userId}`
     );
     this.userProductsInCart = response.data;
+
+    // generate the order id
+    this.orderId = Math.random().toString(36).slice(2);
+    console.log("order id : " + this.orderId);
   },
+  // computed: {
+  //   totalOrderPrice() {
+  //     this.userProductsInCart.forEach((product) => {
+  //       this.totalSum += product.price;
+  //     });
+  //     return this.totalSum;
+  //   },
+  // },
   methods: {
     checkout() {
       this.checkoutDialog = true;
+
+      // generate the order id
+      // this.orderId = Math.random().toString(36).slice(2);
+      // console.log("order id : " + this.orderId);
     },
     async emptyCart() {
       await axios.delete(
@@ -214,6 +262,7 @@ export default defineComponent({
         this.userPhoneNumber = "";
         this.userCity = "";
         this.loading = false;
+
         this.step = 2;
       } else if (this.step == 2) {
         this.loading = true;
@@ -221,7 +270,11 @@ export default defineComponent({
         this.step++;
         this.loading = false;
       }
-      // if(this.step == 3)
+      // if (this.step == 3) {
+      //   // generate the order id
+      //   this.orderId = Math.random().toString(36).slice(2);
+      //   console.log("order id : " + this.orderId);
+      // }
     },
   },
 });
@@ -326,5 +379,48 @@ v-chip {
 
 .stepper {
   border-radius: 10px;
+}
+
+.table-card {
+  border: 1px solid black;
+}
+
+.orderId,
+.totalPriceOrder {
+  background-color: #e9e3e3;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.totalPriceOrder {
+  margin-top: 20px;
+  justify-content: end;
+}
+
+.order-label,
+.totalPrice-label {
+  font-size: 18px;
+  color: #333;
+  margin-right: 10px; /* Space between label and value */
+}
+
+.order-value,
+.total-value {
+  font-size: 20px;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.table-items,
+.table-header {
+  font-size: 18px;
+}
+
+.total {
+  font-size: 20px;
 }
 </style>

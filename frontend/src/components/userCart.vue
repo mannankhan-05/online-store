@@ -109,7 +109,7 @@
                 <!-- step 2 content -->
                 <div class="pa-5">
                   <v-container fluid>
-                    <v-radio-group v-model="userPayementMethod">
+                    <v-radio-group v-model="userPaymentMethod">
                       <template v-slot:label>
                         <div class="text-h6">
                           Select Your
@@ -169,17 +169,30 @@
                   </v-card>
                   <div class="totalPriceOrder">
                     <span class="totalPrice-label">Total :</span>
-                    <strong class="total-value">10$</strong>
+                    <strong class="total-value">{{ totalOrderAmount }}$</strong>
                   </div>
                 </div>
               </v-stepper-content>
               <v-row justify="start" class="ma-5">
                 <v-spacer></v-spacer>
                 <v-btn
+                  @click="this.checkoutDialog = false"
+                  class="mr-5"
+                  variant="tonal"
+                  >Cancel</v-btn
+                >
+                <v-btn
                   v-if="!loading"
                   color="primary"
                   @click="orderConfirmationSteps"
                   :text="step == 3 ? 'Confirm Order' : 'Next'"
+                  :disabled="
+                    step == 1
+                      ? !userDeliveryAddress || !userPhoneNumber || !userCity
+                      : step == 2
+                      ? !userPaymentMethod
+                      : false
+                  "
                 ></v-btn>
                 <v-btn v-if="loading" color="primary">
                   <v-progress-circular
@@ -205,15 +218,16 @@ export default defineComponent({
   data() {
     return {
       userProductsInCart: [] as object[],
-      checkoutDialog: true,
-      step: 3 as number,
+      checkoutDialog: false,
+      step: 1 as number,
       items: ["Address", "Payment", "Confirmation"],
       loading: false,
       userDeliveryAddress: "" as string,
       userPhoneNumber: "" as string,
       userCity: "" as string,
-      userPayementMethod: 0 as number,
+      userPaymentMethod: 0 as number,
       orderId: "" as string,
+      totalOrderAmount: 0 as number,
     };
   },
   async mounted() {
@@ -224,33 +238,25 @@ export default defineComponent({
 
     // generate the order id
     this.orderId = Math.random().toString(36).slice(2);
-    console.log("order id : " + this.orderId);
+
+    // calculate the total order amount
+    this.userProductsInCart.forEach((item: any) => {
+      this.totalOrderAmount += item.product.price * item.quantity;
+    });
+    return this.totalOrderAmount;
   },
-  // computed: {
-  //   totalOrderPrice() {
-  //     this.userProductsInCart.forEach((product) => {
-  //       this.totalSum += product.price;
-  //     });
-  //     return this.totalSum;
-  //   },
-  // },
   methods: {
     checkout() {
       this.checkoutDialog = true;
-
-      // generate the order id
-      // this.orderId = Math.random().toString(36).slice(2);
-      // console.log("order id : " + this.orderId);
     },
     async emptyCart() {
       await axios.delete(
         `http://localhost:4000/deleteProductsFromCart/${this.$route.params.userId}`
       );
-      this.checkoutDialog = false;
     },
     async orderConfirmationSteps() {
-      this.loading = true;
       if (this.step == 1) {
+        this.loading = true;
         await axios.post("http://localhost:4000/addUserAddress", {
           userId: this.$store.state.userId,
           address: this.userDeliveryAddress,
@@ -266,15 +272,21 @@ export default defineComponent({
         this.step = 2;
       } else if (this.step == 2) {
         this.loading = true;
-        console.log("User Payment method : " + this.userPayementMethod);
         this.step++;
         this.loading = false;
+      } else if (this.step == 3) {
+        this.loading = true;
+        await axios.post("http://localhost:4000/createNewOrder", {
+          orderId: this.orderId,
+          orderItems: this.userProductsInCart.length,
+          orderAmount: this.totalOrderAmount,
+          userId: this.$store.state.userId,
+        });
+
+        this.loading = false;
+        this.checkoutDialog = false;
+        this.emptyCart();
       }
-      // if (this.step == 3) {
-      //   // generate the order id
-      //   this.orderId = Math.random().toString(36).slice(2);
-      //   console.log("order id : " + this.orderId);
-      // }
     },
   },
 });

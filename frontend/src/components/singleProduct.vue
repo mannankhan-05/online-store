@@ -7,7 +7,7 @@
       @click="this.$router.go(-1)"
       elevation="0"
     >
-      <v-icon large>mdi-arrow-left-circle</v-icon>
+      <v-icon large>mdi-menu-left</v-icon>
     </v-btn>
 
     <!-- Cicular after item is added to the cart -->
@@ -75,7 +75,7 @@
           <v-btn
             v-if="!loading"
             class="AddToCartButton"
-            variant="outlined"
+            color="primary"
             large
             @click="addToCart"
           >

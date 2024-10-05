@@ -83,3 +83,24 @@ export const deleteProductsFromCart = async (req: Request, res: Response) => {
       res.status(500).json({ error: err });
     });
 };
+
+// Remove the product from the user's cart
+export const removeProductFromCart = (req: Request, res: Response) => {
+  const { userId, productId }: { userId: number; productId: number } = req.body;
+
+  user_product
+    .destroy({ where: { user_id: userId, product_id: productId } })
+    .then(() => {
+      logger.info(
+        `Product with id ${productId} was removed from the cart of user with id ${userId}`
+      );
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      logger.error(
+        `Error removing product with id ${productId} from the cart of user with id ${userId}`,
+        err
+      );
+      res.status(500);
+    });
+};

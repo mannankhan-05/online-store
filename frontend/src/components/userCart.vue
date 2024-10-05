@@ -25,6 +25,21 @@
             Price: ${{ item.product.price }}
           </v-card-subtitle>
           <v-card-text> Quantity: {{ item.quantity }} </v-card-text>
+          <v-spacer></v-spacer>
+          <v-row justify="end ma-1">
+            <v-tooltip text="Remove From Cart" location="top">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  icon
+                  color="red ma-3 removeFromCartButton"
+                  @click="removeProductFromCart(item.product.id)"
+                >
+                  <v-icon size="x-large">mdi-delete-circle</v-icon>
+                </v-btn>
+              </template>
+            </v-tooltip>
+          </v-row>
         </v-card>
 
         <div class="lines">
@@ -218,7 +233,7 @@ export default defineComponent({
   data() {
     return {
       userProductsInCart: [] as object[],
-      checkoutDialog: false,
+      checkoutDialog: true,
       step: 1 as number,
       items: ["Address", "Payment", "Confirmation"],
       loading: false,
@@ -235,6 +250,15 @@ export default defineComponent({
       `http://localhost:4000/userProducts/${this.$route.params.userId}`
     );
     this.userProductsInCart = response.data;
+
+    // get the user of the user if exists
+    await axios
+      .get(`http://localhost:4000/userAddress/${this.$store.state.userId}`)
+      .then((response) => {
+        this.userDeliveryAddress = response.data.address;
+        this.userPhoneNumber = response.data.phoneNumber;
+        this.userCity = response.data.city;
+      });
 
     // generate the order id
     this.orderId = Math.random().toString(36).slice(2);
@@ -288,6 +312,19 @@ export default defineComponent({
         this.emptyCart();
       }
     },
+    async removeProductFromCart(productId: number) {
+      await axios.delete("http://localhost:4000/removeProductFromCart", {
+        data: {
+          userId: this.$store.state.userId,
+          productId: productId,
+        },
+      });
+
+      // remove the product from the cart
+      this.userProductsInCart = this.userProductsInCart.filter((item: any) => {
+        return item.product.id != productId;
+      });
+    },
   },
 });
 </script>
@@ -313,7 +350,7 @@ export default defineComponent({
 }
 
 .price {
-  color: #1282df;
+  color: #06355c;
   font-size: 16px;
 }
 
@@ -434,5 +471,13 @@ v-chip {
 
 .total {
   font-size: 20px;
+}
+
+.removeFromCartButton {
+  transition: 0.3s ease-in-out;
+}
+
+.removeFromCartButton:hover {
+  scale: 1.02;
 }
 </style>

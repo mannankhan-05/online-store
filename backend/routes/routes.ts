@@ -19,6 +19,7 @@ import {
   getUserProducts,
   addUserProduct,
   deleteProductsFromCart,
+  removeProductFromCart,
 } from "../controllers/user_product";
 import {
   getAllUserAddresses,
@@ -57,6 +58,8 @@ router.get("/userProducts/:userId", getUserProducts);
 router.post("/addUserProduct", addUserProduct);
 
 router.delete("/deleteProductsFromCart/:userId", deleteProductsFromCart);
+
+router.delete("/removeProductFromCart", removeProductFromCart);
 
 // user_address routes :
 router.get("/userAddresses", getAllUserAddresses);

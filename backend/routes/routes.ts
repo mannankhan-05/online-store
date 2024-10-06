@@ -25,6 +25,7 @@ import {
   getAllUserAddresses,
   getUserAdressById,
   addUserAddress,
+  checkUserInformation,
 } from "../controllers/user_address";
 import { createNewOrder } from "../controllers/order";
 
@@ -67,6 +68,8 @@ router.get("/userAddresses", getAllUserAddresses);
 router.get("/userAddress/:userId", getUserAdressById);
 
 router.post("/addUserAddress", addUserAddress);
+
+router.put("/checkUserInformation/:userId", checkUserInformation);
 
 // order routes :
 router.post("/createNewOrder", createNewOrder);

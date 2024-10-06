@@ -233,7 +233,7 @@ export default defineComponent({
   data() {
     return {
       userProductsInCart: [] as object[],
-      checkoutDialog: true,
+      checkoutDialog: false,
       step: 1 as number,
       items: ["Address", "Payment", "Confirmation"],
       loading: false,
@@ -251,15 +251,6 @@ export default defineComponent({
     );
     this.userProductsInCart = response.data;
 
-    // get the user of the user if exists
-    await axios
-      .get(`http://localhost:4000/userAddress/${this.$store.state.userId}`)
-      .then((response) => {
-        this.userDeliveryAddress = response.data.address;
-        this.userPhoneNumber = response.data.phoneNumber;
-        this.userCity = response.data.city;
-      });
-
     // generate the order id
     this.orderId = Math.random().toString(36).slice(2);
 
@@ -270,8 +261,28 @@ export default defineComponent({
     return this.totalOrderAmount;
   },
   methods: {
-    checkout() {
+    async checkout() {
       this.checkoutDialog = true;
+
+      try {
+        // get the information of the user if exists
+        let response = await axios.get(
+          `http://localhost:4000/userAddress/${this.$store.state.userId}`
+        );
+
+        if (response.data) {
+          this.userDeliveryAddress = response.data.address || "";
+          this.userPhoneNumber = response.data.phoneNumber || "";
+          this.userCity = response.data.city || "";
+        } else {
+          // Handle the case when the user address doesn't exist
+          this.userDeliveryAddress = "";
+          this.userPhoneNumber = "";
+          this.userCity = "";
+        }
+      } catch (error) {
+        console.error("Error fetching user address:", error);
+      }
     },
     async emptyCart() {
       await axios.delete(
@@ -281,19 +292,31 @@ export default defineComponent({
     async orderConfirmationSteps() {
       if (this.step == 1) {
         this.loading = true;
-        await axios.post("http://localhost:4000/addUserAddress", {
-          userId: this.$store.state.userId,
-          address: this.userDeliveryAddress,
-          phoneNumber: this.userPhoneNumber,
-          city: this.userCity,
-        });
+        console.log("User Information going");
 
-        this.userDeliveryAddress = "";
-        this.userPhoneNumber = "";
-        this.userCity = "";
-        this.loading = false;
+        try {
+          await axios.put(
+            `http://localhost:4000/checkUserInformation/${this.$store.state.userId}`,
+            {
+              address: this.userDeliveryAddress,
+              phoneNumber: this.userPhoneNumber,
+              city: this.userCity,
+            }
+          );
 
-        this.step = 2;
+          console.log("User Information");
+
+          this.userDeliveryAddress = "";
+          this.userPhoneNumber = "";
+          this.userCity = "";
+          this.loading = false;
+
+          this.step = 2;
+        } catch (err) {
+          console.log(
+            "Error when adding / updating the user information : " + err
+          );
+        }
       } else if (this.step == 2) {
         this.loading = true;
         this.step++;

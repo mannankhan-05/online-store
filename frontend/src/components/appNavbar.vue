@@ -19,7 +19,17 @@
             :to="{ name: 'cart', params: { userId: this.$store.state.userId } }"
           >
             <v-btn icon v-if="isLoggedIn" class="cartIconButton">
-              <v-icon class="cartIcon">mdi-cart-outline</v-icon>
+              <v-badge
+                :content="2"
+                :value="0"
+                color="red"
+                overlap
+                offset-x="0"
+                offset-y="0"
+                class="cartBadge"
+              >
+                <v-icon class="cartIcon">mdi-cart-outline</v-icon>
+              </v-badge>
             </v-btn>
           </router-link>
 

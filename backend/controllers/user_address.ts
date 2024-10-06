@@ -66,7 +66,7 @@ export const addUserAddress = (req: Request, res: Response) => {
 };
 
 // to check if the user has an address, if not, add one else update
-export const checkUserInformation = (req: Request, res: Response) => {
+export const checkUserInformation = async (req: Request, res: Response) => {
   const userId: number = parseInt(req.params.userId);
   const {
     address,
@@ -74,7 +74,7 @@ export const checkUserInformation = (req: Request, res: Response) => {
     phoneNumber,
   }: { address: string; city: string; phoneNumber: string } = req.body;
 
-  user_address
+  await user_address
     .findOne({ where: { user_id: userId } })
     .then((userAddress: any) => {
       if (userAddress) {
@@ -84,7 +84,7 @@ export const checkUserInformation = (req: Request, res: Response) => {
           userAddress.city !== city ||
           userAddress.phoneNumber !== phoneNumber
         ) {
-          return user_address
+          user_address
             .update(
               {
                 address: address,
@@ -95,7 +95,9 @@ export const checkUserInformation = (req: Request, res: Response) => {
             )
             .then(() => {
               logger.info(`Address for user with id ${userId} was updated`);
-              res.status(200);
+              res
+                .status(200)
+                .json({ message: "User  information updated successfully" }); // Return a response
             });
         } else {
           // No updates needed

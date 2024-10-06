@@ -271,9 +271,9 @@ export default defineComponent({
         );
 
         if (response.data) {
-          this.userDeliveryAddress = response.data.address || "";
-          this.userPhoneNumber = response.data.phoneNumber || "";
-          this.userCity = response.data.city || "";
+          this.userDeliveryAddress = response.data.address;
+          this.userPhoneNumber = response.data.phoneNumber;
+          this.userCity = response.data.city;
         } else {
           // Handle the case when the user address doesn't exist
           this.userDeliveryAddress = "";

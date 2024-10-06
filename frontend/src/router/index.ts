@@ -6,6 +6,7 @@ import singleProduct from "@/components/singleProduct.vue";
 import userCart from "@/components/userCart.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import resetPassword from "@/components/resetPassword.vue";
+import editProfile from "@/components/editProfile.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/signUp",
     name: "signUp",
     component: userSignUp,
+  },
+  {
+    path: "/edit-profile/:userId",
+    name: "editProfile",
+    component: editProfile,
   },
   {
     path: "/forget-password",

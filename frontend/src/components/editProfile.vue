@@ -2,8 +2,8 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
-        <div class="signUpForm">
-          <h2 class="mb-10">SignUp</h2>
+        <div class="editProfileForm">
+          <h2 class="mb-10">Edit Profile</h2>
           <v-text-field
             clearable
             label="Name"
@@ -58,23 +58,18 @@
             Password should be of atleast 8 characters Long
           </p>
 
-          <v-checkbox
-            v-model="terms"
-            label="I accept the terms and conditions"
-          ></v-checkbox>
-
           <div class="d-flex justify-center">
             <v-btn
               v-if="!loading"
-              :disabled="signUpButtonDisabled"
+              :disabled="updateButtonDisabled"
               variant="tonal"
-              class="signInButton"
+              class="editProfileButton"
               @click="registerUser"
             >
-              Sign Up
+              Update
             </v-btn>
 
-            <v-btn variant="tonal" class="signInButton" v-if="loading">
+            <v-btn variant="tonal" class="editProfileButton" v-if="loading">
               <v-progress-circular
                 v-if="loading"
                 indeterminate
@@ -98,36 +93,10 @@ export default defineComponent({
       imageUrl: "" as string,
       email: "" as string,
       password: "" as string,
-      terms: false as boolean,
-      loading: false as boolean,
       passwordVisible: false as boolean,
     };
   },
   methods: {
-    async registerUser() {
-      this.loading = true;
-      const { name, image, email, password } = this;
-
-      try {
-        await this.$store.dispatch("registerUser", {
-          name,
-          image,
-          email,
-          password,
-          router: this.$router,
-        });
-
-        this.name = "";
-        this.image = "";
-        this.imageUrl = "";
-        this.email = "";
-        this.password = "";
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.loading = false;
-      }
-    },
     handleFileChange(event: any) {
       const file = event.target.files[0];
       if (file && file instanceof File) {
@@ -138,21 +107,20 @@ export default defineComponent({
     },
   },
   computed: {
-    passwordLength() {
-      return this.password.length >= 8;
-    },
     emailFormat() {
       return this.email.includes("@") && this.email.includes(".");
     },
-    signUpButtonDisabled() {
+    passwordLength() {
+      return this.password.length >= 8;
+    },
+    updateButtonDisabled() {
       return (
         !this.name ||
         !this.image ||
         !this.email ||
         !this.password ||
-        !this.terms ||
-        !this.passwordLength ||
-        !this.emailFormat
+        !this.emailFormat ||
+        !this.passwordLength
       );
     },
   },
@@ -160,7 +128,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.signUpForm {
+.editProfileForm {
   margin: 0 auto;
   max-width: 100%;
   padding: 20px;
@@ -169,7 +137,7 @@ export default defineComponent({
   box-shadow: 0 2px 5px #ccc;
 }
 
-.signInButton {
+.editProfileButton {
   width: 50%;
   font-size: 19px;
   font-weight: 600;

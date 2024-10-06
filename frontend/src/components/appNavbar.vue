@@ -79,18 +79,41 @@
               <!-- Menu Content (options like Edit Profile, Logout) -->
               <v-list>
                 <v-list-item>
-                  <v-list-item-title>{{ userName }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
+                  <v-row justify="center">
+                    <v-col cols="2">
+                      <v-list-item-avatar>
+                        <v-avatar
+                          class="avatarBorder"
+                          :size="50"
+                          :color="avatarColor"
+                        >
+                          <v-img :src="avatarImage"></v-img>
+                        </v-avatar>
+                      </v-list-item-avatar>
+                    </v-col>
+                    <v-col cols="10">
+                      <v-list-item-title>{{ userName }}</v-list-item-title>
+                      <v-list-item-subtitle>{{
+                        userEmail
+                      }}</v-list-item-subtitle>
+                    </v-col>
+                  </v-row>
                 </v-list-item>
 
                 <v-divider></v-divider>
 
                 <v-list-item @click="editProfile">
-                  <v-list-item-title>Edit</v-list-item-title>
+                  <v-list-item-title>
+                    <v-icon class="mr-2">mdi-account-edit-outline</v-icon>
+                    Edit Profile</v-list-item-title
+                  >
                 </v-list-item>
 
                 <v-list-item @click="logoutUser">
-                  <v-list-item-title> Logout</v-list-item-title>
+                  <v-list-item-title>
+                    <v-icon class="mr-2">mdi-logout</v-icon>
+                    Logout</v-list-item-title
+                  >
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -156,6 +179,12 @@ export default defineComponent({
         router: this.$router,
       });
     },
+    editProfile() {
+      this.$router.push({
+        name: "editProfile",
+        params: { userId: this.$store.state.userId },
+      });
+    },
   },
   computed: {
     isLoggedIn() {
@@ -210,6 +239,11 @@ export default defineComponent({
 
 .avatar:hover {
   cursor: pointer;
+}
+
+.avatarBorder {
+  border: 1px solid rgb(78, 76, 76);
+  margin-right: 10px;
 }
 
 /* Cart Button */

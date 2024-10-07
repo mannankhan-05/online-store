@@ -42,6 +42,32 @@ export const getAllUsers = (req: Request, res: Response) => {
     });
 };
 
+// Get a user by id
+export const getUserDetailsById = (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId);
+
+  user
+    .findOne({ where: { id: userId } })
+    .then((user: any) => {
+      if (user) {
+        logger.info(`Details of user with id ${userId} is retrieved`);
+        if (user.image) {
+          user.image = `http://localhost:4000/userImages/${user.image}`;
+        }
+        res.json(user);
+      } else {
+        logger.error(`No user found with id ${userId}`);
+        res.status(404).json({ error: "No user found" });
+      }
+    })
+    .catch((err) => {
+      logger.error(`Error retreiving user with id ${userId} : ` + err);
+      res
+        .status(500)
+        .json({ error: `Error retreiving user with id ${userId}` });
+    });
+};
+
 // Register a new user
 export const registerUser = (req: Request, res: Response) => {
   upload.single("userImage")(req, res, async (err) => {

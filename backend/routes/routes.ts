@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import {
   getAllUsers,
+  getUserDetailsById,
   registerUser,
   loginUser,
   editUser,
@@ -31,6 +32,8 @@ import { createNewOrder } from "../controllers/order";
 
 // user routes :
 router.get("/users", getAllUsers);
+
+router.get("/user/:userId", getUserDetailsById);
 
 router.post("/registerUser", registerUser);
 

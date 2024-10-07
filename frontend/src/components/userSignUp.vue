@@ -30,17 +30,16 @@
           <v-text-field
             clearable
             label="Email"
+            placeholder="Email should contain @ and ."
             variant="outlined"
             prepend-inner-icon="mdi-email"
             v-model="email"
           ></v-text-field>
-          <p v-if="!emailFormat" class="passwordLength">
-            Email should contain @ and .
-          </p>
 
           <v-text-field
             clearable
             label="Password"
+            placeholder="Password should be of atleast 8 characters Long"
             :type="passwordVisible ? 'text' : 'password'"
             variant="outlined"
             prepend-inner-icon="mdi-lock"
@@ -54,9 +53,6 @@
               </v-icon>
             </template></v-text-field
           >
-          <p v-if="!passwordLength" class="passwordLength">
-            Password should be of atleast 8 characters Long
-          </p>
 
           <v-checkbox
             v-model="terms"
@@ -173,12 +169,5 @@ export default defineComponent({
   width: 50%;
   font-size: 19px;
   font-weight: 600;
-}
-
-.passwordLength {
-  color: red;
-  font-size: 13px;
-  margin-top: -10px;
-  margin-bottom: 10px;
 }
 </style>

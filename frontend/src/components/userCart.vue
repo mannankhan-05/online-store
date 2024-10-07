@@ -61,9 +61,35 @@
           >Proceed to Checkout</v-btn
         >
 
-        <h1 class="empty-cart-message" v-if="userProductsInCart.length == 0">
-          Cart Is Empty
-        </h1>
+        <!-- if cart is empty -->
+        <div v-if="userProductsInCart.length == 0">
+          <v-container
+            class="empty-cart-container"
+            justify="center"
+            align="center"
+          >
+            <v-card class="empty-cart-card" elevation="3">
+              <v-card-text class="d-flex flex-column align-center">
+                <v-icon large color="primary" class="emptyCartIcon mb-2">
+                  mdi-cart-outline
+                </v-icon>
+                <h3 class="text-center">Your Cart is Empty</h3>
+                <p class="text-center">
+                  It looks like you haven’t added any items to your cart yet.
+                  Browse our products and start shopping!
+                </p>
+                <v-btn
+                  color="primary"
+                  outlined
+                  class="mt-4 empty-cart-button"
+                  @click="pushToProductsPage"
+                >
+                  Start Shopping
+                </v-btn>
+              </v-card-text>
+            </v-card>
+          </v-container>
+        </div>
       </v-col>
     </v-row>
 
@@ -348,6 +374,12 @@ export default defineComponent({
         return item.product.id != productId;
       });
     },
+    pushToProductsPage() {
+      this.$router.push({
+        name: "user",
+        params: { userId: this.$store.state.userId },
+      });
+    },
   },
 });
 </script>
@@ -412,23 +444,31 @@ v-chip {
   border-radius: 8px;
 }
 
-.empty-cart-message {
-  font-size: 2rem;
-  text-align: center;
-  color: rgb(51, 51, 168);
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 4px;
-  margin-top: 40px;
-  margin-bottom: 20px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.empty-cart-container {
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.empty-cart-message:hover {
-  transform: scale(1.03);
-  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+.empty-cart-card {
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
+
+.empty-cart-button {
+  transition: 0.2s ease-in-out;
+}
+
+.empty-cart-button:hover {
+  scale: 1.02;
+}
+
+.emptyCartIcon {
+  font-size: 48px;
 }
 
 .stepper-overlay {

@@ -7,13 +7,11 @@
           <v-text-field
             clearable
             label="Email"
+            placeholder="Email should contain @ and ."
             variant="outlined"
             prepend-inner-icon="mdi-email"
             v-model="email"
           ></v-text-field>
-          <p v-if="!emailFormat" class="validEmail">
-            Email should contain @ and .
-          </p>
 
           <div class="d-flex justify-center">
             <v-btn
@@ -133,13 +131,6 @@ export default defineComponent({
   font-weight: 550;
 }
 
-.validEmail {
-  color: red;
-  font-size: 13px;
-  margin-top: -10px;
-  margin-bottom: 10px;
-}
-
 .otp-card {
   max-width: 500px;
   background-color: white;
@@ -147,7 +138,6 @@ export default defineComponent({
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Optional OTP Input Styling */
 .otp-input {
   font-size: 24px;
   color: black;

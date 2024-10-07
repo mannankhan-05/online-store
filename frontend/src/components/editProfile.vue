@@ -40,7 +40,7 @@
 
           <v-text-field
             clearable
-            label="Password"
+            label="Leave the password empty if you don't want to change it"
             :type="passwordVisible ? 'text' : 'password'"
             variant="outlined"
             prepend-inner-icon="mdi-lock"
@@ -64,7 +64,7 @@
               :disabled="updateButtonDisabled"
               variant="tonal"
               class="editProfileButton"
-              @click="registerUser"
+              @click="editUser"
             >
               Update
             </v-btn>
@@ -84,6 +84,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+// import axios from "axios";
 
 export default defineComponent({
   data() {
@@ -96,6 +97,19 @@ export default defineComponent({
       passwordVisible: false as boolean,
     };
   },
+  // async mounted() {
+  // let response = await axios.get(
+  //   `http://localhost:4000/user/${this.$route.params.userId}`
+  // );
+  // console.log(response.data);
+  // this.name = response.data.name;
+  // this.image = response.data.image;
+  // this.email = response.data.email;
+
+  // if (response.data.image) {
+  // this.imageUrl = response.data.image;
+  // }
+  // },
   methods: {
     handleFileChange(event: any) {
       const file = event.target.files[0];

@@ -239,6 +239,11 @@ export default defineComponent({
   width: 100%;
   margin-top: 20px;
   font-size: 18px;
+  transition: 0.3s ease-in-out;
+}
+
+.AddToCartButton:hover {
+  transform: scale(1.01);
 }
 
 .descriptionHeading {

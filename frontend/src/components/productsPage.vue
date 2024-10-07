@@ -54,13 +54,21 @@
           class="sheet d-flex flex-column justify-space-between"
         >
           <img :src="product.image" class="productImage rounded" />
-          <div class="productName font-weight-bold pl-2">
-            {{ product.name }}
-          </div>
-          <div class="productPrice">
-            <div class="d-inline">{{ product.price }}</div>
-            <p class="dollar d-inline">$</p>
-          </div>
+          <v-row>
+            <v-col cols="8">
+              <div class="productName font-weight-bold pl-2">
+                {{ product.name }}
+              </div>
+            </v-col>
+            <v-col cols="4">
+              <div class="productPrice mt-2">
+                <p class="dollar d-inline">$</p>
+                <div class="d-inline singleProductPrice">
+                  {{ product.price }}
+                </div>
+              </div>
+            </v-col>
+          </v-row>
           <div class="productCategory">
             <div class="d-inline">
               <p class="categoryHeadnig font-weight-thin d-inline">
@@ -156,11 +164,16 @@ export default defineComponent({
   justify-content: center;
   margin-bottom: 10px;
   margin-top: auto;
+  transition: 0.2s ease-in-out;
+}
+
+.buttonContainer:hover {
+  transform: scale(1.02);
 }
 
 .productImage {
   width: 100%;
-  height: 50%;
+  height: 60%;
   object-fit: cover;
 }
 
@@ -177,8 +190,7 @@ export default defineComponent({
   top: 72%;
   margin-left: 10px;
   font-size: 24px;
-  font-weight: bold;
-  color: rgb(87, 85, 85);
+  color: rgb(59, 58, 58);
 }
 
 .dollar {

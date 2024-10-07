@@ -141,36 +141,69 @@ export const loginUser = async (req: Request, res: Response) => {
 
 // Edit a user by id
 export const editUser = async (req: Request, res: Response) => {
-  const userId: number = parseInt(req.params.userId);
-  const {
-    name,
-    image,
-    email,
-    password,
-  }: { name: string; image: string; email: string; password: string } =
-    req.body;
+  upload.single("userImage")(req, res, async (err) => {
+    if (err) {
+      logger.error("Error uploading user image" + err);
+      res.status(500).json({ error: "Error uploading user image" });
+    }
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const userId: number = parseInt(req.params.userId);
+    const image: string = req.file ? req.file.filename : "";
+    const {
+      name,
+      email,
+      password,
+    }: { name: string; email: string; password: string } = req.body;
 
-  await user
-    .update(
-      {
-        name,
-        image,
-        email,
-        password: hashedPassword,
-      },
-      { where: { id: userId } }
-    )
-    .then((user) => {
-      logger.info(`User with id ${userId} is updated`);
-      res.json(user);
-    })
-    .catch((err) => {
-      logger.error(`Error updating user with id ${userId}`);
-      res.status(500).json({ error: `Error updating user with id ${userId}` });
-    });
+    if (!password) {
+      await user
+        .update(
+          {
+            name,
+            image,
+            email,
+          },
+          { where: { id: userId } }
+        )
+        .then((user: any) => {
+          logger.info(`User with id ${userId} is updated without password`);
+          console.log("Image of the user : " + user.image);
+          res.json(user);
+        })
+        .catch((err) => {
+          logger.error(
+            `Error updating user with id ${userId} without password`
+          );
+          res.status(500).json({
+            error: `Error updating user with id ${userId} without password`,
+          });
+        });
+    } else {
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      await user
+        .update(
+          {
+            name,
+            image,
+            email,
+            password: hashedPassword,
+          },
+          { where: { id: userId } }
+        )
+        .then((user) => {
+          logger.info(`User with id ${userId} is updated`);
+          res.json(user);
+        })
+        .catch((err) => {
+          logger.error(`Error updating user with id ${userId}`);
+          res
+            .status(500)
+            .json({ error: `Error updating user with id ${userId}` });
+        });
+    }
+  });
 };
 
 // Forget password

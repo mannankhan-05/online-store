@@ -104,6 +104,39 @@ export default createStore({
         console.error("Error logging in user: ", err);
       }
     },
+    async editUser(
+      { state, commit },
+      { name, image, email, password, router }
+    ) {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("userImage", image);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      try {
+        const response = await axios.put(
+          `http://localhost:4000/editUser/${state.userId}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // const userName: string = response.data.name;
+        // const userEmail: string = response.data.email;
+        // const userImage: string = response.data.image;
+        const userImage = response.data.image;
+        console.log("userImage: ", userImage);
+
+        commit("setUserName", name);
+        commit("setUserEmail", email);
+        commit("setUserImage", userImage);
+      } catch (err) {
+        console.log("Error at updating the user information : ", err);
+      }
+    },
     async logoutUser({ state, commit }, { router }) {
       try {
         state.isUserLoggedIn = false;

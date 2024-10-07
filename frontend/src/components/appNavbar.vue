@@ -84,7 +84,7 @@
                       <v-list-item-avatar>
                         <v-avatar
                           class="avatarBorder"
-                          :size="50"
+                          :size="60"
                           :color="avatarColor"
                         >
                           <v-img :src="avatarImage"></v-img>

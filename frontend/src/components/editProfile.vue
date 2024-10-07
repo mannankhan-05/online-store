@@ -30,17 +30,16 @@
           <v-text-field
             clearable
             label="Email"
+            placeholder="Email should contain @ and ."
             variant="outlined"
             prepend-inner-icon="mdi-email"
             v-model="email"
           ></v-text-field>
-          <p v-if="!emailFormat" class="passwordLength">
-            Email should contain @ and .
-          </p>
 
           <v-text-field
             clearable
             label="Leave the password empty if you don't want to change it"
+            placeholder="Password should be of atleast 8 characters Long"
             :type="passwordVisible ? 'text' : 'password'"
             variant="outlined"
             prepend-inner-icon="mdi-lock"
@@ -54,9 +53,6 @@
               </v-icon>
             </template></v-text-field
           >
-          <p v-if="!passwordLength" class="passwordLength">
-            Password should be of atleast 8 characters Long
-          </p>
 
           <div class="d-flex justify-center">
             <v-btn
@@ -84,7 +80,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-// import axios from "axios";
+import axios from "axios";
 
 export default defineComponent({
   data() {
@@ -95,6 +91,7 @@ export default defineComponent({
       email: "" as string,
       password: "" as string,
       passwordVisible: false as boolean,
+      loading: false as boolean,
     };
   },
   // async mounted() {
@@ -111,6 +108,52 @@ export default defineComponent({
   // }
   // },
   methods: {
+    async editUser() {
+      this.loading = true;
+      const { name, image, email, password } = this;
+
+      try {
+        await this.$store.dispatch("editUser", {
+          name,
+          image,
+          email,
+          password,
+          router: this.$router,
+        });
+
+        this.name = "";
+        this.image = "";
+        this.imageUrl = "";
+        this.email = "";
+        this.password = "";
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+      // const formData = new FormData();
+      // formData.append("name", this.name);
+      // formData.append("userImage", this.image);
+      // formData.append("email", this.email);
+      // formData.append("password", this.password);
+
+      // try {
+      //   this.loading = true;
+
+      //   await axios.put(
+      //     `http://localhost:4000/editUser/${this.$route.params.userId}`,
+      //     formData,
+      //     {
+      //       headers: {
+      //         "Content-Type": "multipart/form-data",
+      //       },
+      //     }
+      //   );
+      //   this.loading = false;
+      // } catch (err) {
+      //   console.log("Error at updating the user information : ", err);
+      // }
+    },
     handleFileChange(event: any) {
       const file = event.target.files[0];
       if (file && file instanceof File) {
@@ -128,14 +171,7 @@ export default defineComponent({
       return this.password.length >= 8;
     },
     updateButtonDisabled() {
-      return (
-        !this.name ||
-        !this.image ||
-        !this.email ||
-        !this.password ||
-        !this.emailFormat ||
-        !this.passwordLength
-      );
+      return !this.name || !this.image || !this.email || !this.emailFormat;
     },
   },
 });

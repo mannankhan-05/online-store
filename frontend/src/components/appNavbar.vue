@@ -92,8 +92,10 @@
                       </v-list-item-avatar>
                     </v-col>
                     <v-col cols="10">
-                      <v-list-item-title>{{ userName }}</v-list-item-title>
-                      <v-list-item-subtitle>{{
+                      <v-list-item-title class="ml-3">{{
+                        userName
+                      }}</v-list-item-title>
+                      <v-list-item-subtitle class="ml-3">{{
                         userEmail
                       }}</v-list-item-subtitle>
                     </v-col>
@@ -114,6 +116,13 @@
                     <v-icon class="mr-2">mdi-logout</v-icon>
                     Logout</v-list-item-title
                   >
+                </v-list-item>
+                <v-list-item
+                  v-if="!isAdmin"
+                  class="AdminButton"
+                  @click="gotoAdminComponent"
+                >
+                  Be Admin
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -185,10 +194,19 @@ export default defineComponent({
         params: { userId: this.$store.state.userId },
       });
     },
+    gotoAdminComponent() {
+      this.$router.push({
+        name: "beAdmin",
+        params: { userId: this.$store.state.userId },
+      });
+    },
   },
   computed: {
     isLoggedIn() {
       return this.$store.state.isUserLoggedIn;
+    },
+    isAdmin() {
+      return this.$store.state.isAdmin;
     },
     avatarImage() {
       const userImage = this.$store.state.userImage;
@@ -274,5 +292,22 @@ export default defineComponent({
 
 .cartIconButton:hover .cartIcon {
   color: #000; /* Change icon color on hover */
+}
+
+.AdminButton {
+  background-color: #646fa8;
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 26px;
+  font-weight: 700;
+  transition: 0.5s ease-in-out;
+}
+
+.AdminButton:hover {
+  cursor: pointer;
+  background-color: #828ab6;
 }
 </style>

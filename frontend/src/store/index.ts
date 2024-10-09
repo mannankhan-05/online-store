@@ -8,6 +8,7 @@ export default createStore({
     userName: localStorage.getItem("userName"),
     userEmail: localStorage.getItem("userEmail"),
     userImage: localStorage.getItem("userImage"),
+    isAdmin: localStorage.getItem("isAdmin") === "true",
   },
   getters: {},
   mutations: {
@@ -30,6 +31,10 @@ export default createStore({
     setUserImage(state, userImage) {
       state.userImage = userImage;
       localStorage.setItem("userImage", userImage);
+    },
+    setIsAdmin(state, isAdmin) {
+      state.isAdmin = isAdmin;
+      localStorage.setItem("isAdmin", isAdmin);
     },
   },
   actions: {
@@ -61,11 +66,13 @@ export default createStore({
         const userName: string = response.data.name;
         const userEmail: string = response.data.email;
         const userImage: string = response.data.image;
+        const isAdmin: boolean = response.data.isAdmin;
 
         commit("setUserId", userId);
         commit("setUserName", userName);
         commit("setUserEmail", userEmail);
         commit("setUserImage", userImage);
+        commit("setIsAdmin", isAdmin);
 
         if (userId) {
           router.push({ name: "user", params: { userId: userId } });
@@ -89,11 +96,13 @@ export default createStore({
         const userName: string = response.data.name;
         const userEmail: string = response.data.email;
         const userImage: string = response.data.image;
+        const isAdmin: boolean = response.data.isAdmin;
 
         commit("setUserId", userId);
         commit("setUserName", userName);
         commit("setUserEmail", userEmail);
         commit("setUserImage", userImage);
+        commit("setIsAdmin", isAdmin);
 
         if (userId) {
           router.push({ name: "user", params: { userId: userId } });
@@ -124,14 +133,12 @@ export default createStore({
             },
           }
         );
-        // const userName: string = response.data.name;
-        // const userEmail: string = response.data.email;
-        // const userImage: string = response.data.image;
-        const userImage = response.data.image;
-        console.log("userImage: ", userImage);
+        const userName: string = response.data.name;
+        const userEmail: string = response.data.email;
+        const userImage: string = response.data.image;
 
-        commit("setUserName", name);
-        commit("setUserEmail", email);
+        commit("setUserName", userName);
+        commit("setUserEmail", userEmail);
         commit("setUserImage", userImage);
       } catch (err) {
         console.log("Error at updating the user information : ", err);
@@ -153,6 +160,9 @@ export default createStore({
 
         state.userImage = "";
         commit("setUserImage", "");
+
+        state.isAdmin = false;
+        commit("setIsAdmin", false);
 
         router.push({ name: "home" });
       } catch (err) {

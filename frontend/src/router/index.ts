@@ -7,6 +7,7 @@ import userCart from "@/components/userCart.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import resetPassword from "@/components/resetPassword.vue";
 import editProfile from "@/components/editProfile.vue";
+import beAdmin from "@/components/beAdmin.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -38,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/reset-password/:userId",
     name: "resetPassword",
     component: resetPassword,
+  },
+  {
+    path: "/beAdmin/:userId",
+    name: "beAdmin",
+    component: beAdmin,
   },
   {
     path: "/user/:userId/product/:productId",

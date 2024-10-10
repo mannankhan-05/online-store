@@ -41,7 +41,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="6" class="text-right">
+        <v-col cols="6" class="d-flex justify-end">
           <v-card elevation="8" class="userImageCard">
             <img
               :src="`http://localhost:4000/userImages/${this.$store.state.userImage}`"
@@ -52,6 +52,9 @@
         </v-col>
       </v-row>
     </div>
+
+    <v-divider class="mt-5 mb-3"></v-divider>
+    <v-divider></v-divider>
   </v-container>
 </template>
 
@@ -83,8 +86,8 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 260px;
-  height: 260px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

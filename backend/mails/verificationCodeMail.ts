@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import logger from "./logger";
+import logger from "../logger";
 
 export const verificationCode = async (email: string) => {
   let verificationCode: number = Math.floor(100000 + Math.random() * 900000);

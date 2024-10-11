@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import user from "../models/user";
-import { sendMail } from "../mail";
-import { verificationCode } from "../verificationCodeMail";
+import { sendMail } from "../mails/mail";
+import { verificationCode } from "../mails/verificationCodeMail";
 import logger from "../logger";
 import multer from "multer";
 import path from "path";
@@ -253,4 +253,32 @@ export const resetPassword = async (req: Request, res: Response) => {
       );
       res.sendStatus(500);
     });
+};
+
+// Update only user's email if user wanted to when becoming the admin
+export const updateUserEmail = (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId);
+  const { email }: { email: string } = req.body;
+
+  if (!email) {
+    logger.info(
+      "User does not want to update the email before becoming the admin"
+    );
+    res.sendStatus(500);
+  } else {
+    user
+      .update({ email }, { where: { id: userId } })
+      .then(() => {
+        logger.info(
+          `Email is updated for the user with id ${userId} before becoming the admin`
+        );
+        res.json({ email });
+      })
+      .catch((err) => {
+        logger.error(
+          `Error updating email for the user with id ${userId} : ` + err
+        );
+        res.sendStatus(500);
+      });
+  }
 };

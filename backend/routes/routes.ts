@@ -8,6 +8,7 @@ import {
   editUser,
   forgetPassword,
   resetPassword,
+  updateUserEmail,
 } from "../controllers/user";
 import {
   getAllProducts,
@@ -44,6 +45,8 @@ router.put("/editUser/:userId", editUser);
 router.post("/forgetPassword", forgetPassword);
 
 router.put("/resetPassword/:userId", resetPassword);
+
+router.put("/updateUserEmail/:userId", updateUserEmail);
 
 // product routes :
 router.get("/products", getAllProducts);

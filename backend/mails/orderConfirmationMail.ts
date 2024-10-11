@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import logger from "./logger";
+import logger from "../logger";
 
 export const orderConfirmationMail = (email: string) => {
   let transporter = nodemailer.createTransport({

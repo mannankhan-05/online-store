@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import user_product from "../models/user_product";
 import user from "../models/user";
 import product from "../models/product";
-import { orderConfirmationMail } from "../orderConfirmationMail";
+import { orderConfirmationMail } from "../mails/orderConfirmationMail";
 import logger from "../logger";
 
 // Get all user_products

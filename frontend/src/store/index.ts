@@ -144,6 +144,21 @@ export default createStore({
         console.log("Error at updating the user information : ", err);
       }
     },
+    async editUserEmail({ state, commit }, { email }) {
+      try {
+        const response = await axios.put(
+          `http://localhost:4000/updateUserEmail/${state.userId}`,
+          {
+            email,
+          }
+        );
+
+        const userEmail: string = response.data.email;
+        commit("setUserEmail", userEmail);
+      } catch (err) {
+        console.error("Error updating user email: ", err);
+      }
+    },
     async logoutUser({ state, commit }, { router }) {
       try {
         state.isUserLoggedIn = false;

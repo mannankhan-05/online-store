@@ -9,6 +9,7 @@ export default createStore({
     userEmail: localStorage.getItem("userEmail"),
     userImage: localStorage.getItem("userImage"),
     isAdmin: localStorage.getItem("isAdmin") === "true",
+    adminCode: localStorage.getItem("adminCode"),
   },
   getters: {},
   mutations: {
@@ -35,6 +36,10 @@ export default createStore({
     setIsAdmin(state, isAdmin) {
       state.isAdmin = isAdmin;
       localStorage.setItem("isAdmin", isAdmin);
+    },
+    setAdminCode(state, adminCode) {
+      state.adminCode = adminCode;
+      localStorage.setItem("adminCode", adminCode);
     },
   },
   actions: {
@@ -149,14 +154,28 @@ export default createStore({
         const response = await axios.put(
           `http://localhost:4000/updateUserEmail/${state.userId}`,
           {
-            email,
+            email: email,
           }
         );
 
         const userEmail: string = response.data.email;
+        const adminCode: number = response.data.code;
         commit("setUserEmail", userEmail);
+        commit("setAdminCode", adminCode);
       } catch (err) {
         console.error("Error updating user email: ", err);
+      }
+    },
+    async editUserStatus({ state, commit }) {
+      try {
+        const response = await axios.put(
+          `http://localhost:4000/updateUserStatus/${state.userId}`
+        );
+        const isAdmin: boolean = response.data.isAdmin;
+        console.log("isAdmin: ", isAdmin);
+        commit("setIsAdmin", isAdmin);
+      } catch (err) {
+        console.error("Error updating user status: ", err);
       }
     },
     async logoutUser({ state, commit }, { router }) {

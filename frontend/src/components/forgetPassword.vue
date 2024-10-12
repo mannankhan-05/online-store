@@ -53,7 +53,13 @@
               class="my-4"
               input-class="otp-input"
             ></v-otp-input>
-            <v-btn block class="mt-4" @click="submitOtp" color="primary" large>
+            <v-btn
+              block
+              class="submitCodeButton mt-4"
+              @click="submitOtp"
+              color="primary"
+              large
+            >
               Submit
             </v-btn>
           </v-card>
@@ -87,8 +93,6 @@ export default defineComponent({
       });
       this.verificationCode = response.data.code;
       this.userId = response.data.userId;
-      console.log("Verification Code : " + this.verificationCode);
-      console.log("User ID : " + this.userId);
       this.email = "";
       this.loading = false;
       this.code = true;
@@ -115,7 +119,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .resetPassword {
   margin: 0 auto;
   max-width: 100%;
@@ -142,5 +146,13 @@ export default defineComponent({
   font-size: 24px;
   color: black;
   text-align: center;
+}
+
+.submitCodeButton {
+  transition: 0.3s ease-in-out;
+}
+
+.submitCodeButton:hover {
+  transform: scale(1.02);
 }
 </style>

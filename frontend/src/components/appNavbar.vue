@@ -98,6 +98,15 @@
                       <v-list-item-subtitle class="ml-3">{{
                         userEmail
                       }}</v-list-item-subtitle>
+                      <!-- admin badge -->
+                      <div v-if="isAdmin" class="adminBadge">
+                        <v-icon class="pr-2">mdi-security</v-icon>
+                        admin
+                      </div>
+                      <div v-if="!isAdmin" class="adminBadge">
+                        <v-icon class="pr-2">mdi-account-outline</v-icon>
+                        user
+                      </div>
                     </v-col>
                   </v-row>
                 </v-list-item>
@@ -123,6 +132,13 @@
                   @click="gotoAdminComponent"
                 >
                   Be Admin
+                </v-list-item>
+                <v-list-item
+                  v-if="isAdmin"
+                  class="AdminButton"
+                  @click="gotoAdminPanel"
+                >
+                  Admin Panel
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -264,12 +280,11 @@ export default defineComponent({
   margin-right: 10px;
 }
 
-/* Cart Button */
 .cartIconButton {
   display: inline-flex;
   margin-right: 23px;
-  background-color: #424242; /* Dark background for the button */
-  border-radius: 50%; /* Circular button */
+  background-color: #424242;
+  border-radius: 50%;
   padding: 10px;
   transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
   display: flex;
@@ -278,20 +293,19 @@ export default defineComponent({
 }
 
 .cartIconButton:hover {
-  background-color: #ff9800; /* Orange color on hover */
-  transform: scale(1.1); /* Slight zoom effect on hover */
+  background-color: #ff9800;
+  transform: scale(1.07);
 }
 
-/* Cart Icon */
 .cartIcon {
-  width: 45px; /* Reduced size for a sleeker look */
+  width: 45px;
   height: 45px;
-  color: white; /* Icon color */
-  transition: color 0.3s ease; /* Smooth color transition */
+  color: white;
+  transition: color 0.3s ease;
 }
 
 .cartIconButton:hover .cartIcon {
-  color: #000; /* Change icon color on hover */
+  color: #000;
 }
 
 .AdminButton {
@@ -309,5 +323,21 @@ export default defineComponent({
 .AdminButton:hover {
   cursor: pointer;
   background-color: #828ab6;
+}
+
+.adminBadge {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  width: 100px;
+  height: 25px;
+  border: 1px solid rgb(68, 66, 66);
+  color: black;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 26px;
+  padding: 5px;
+  margin-left: 10px;
 }
 </style>

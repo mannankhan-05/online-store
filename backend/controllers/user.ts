@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import user from "../models/user";
 import { sendMail } from "../mails/mail";
 import { verificationCode } from "../mails/verificationCodeMail";
+import { adminCode } from "../mails/adminCodeMail";
 import logger from "../logger";
 import multer from "multer";
 import path from "path";
@@ -256,29 +257,72 @@ export const resetPassword = async (req: Request, res: Response) => {
 };
 
 // Update only user's email if user wanted to when becoming the admin
-export const updateUserEmail = (req: Request, res: Response) => {
+export const updateUserEmail = async (req: Request, res: Response) => {
   const userId: number = parseInt(req.params.userId);
   const { email }: { email: string } = req.body;
 
-  if (!email) {
-    logger.info(
-      "User does not want to update the email before becoming the admin"
-    );
-    res.sendStatus(500);
-  } else {
-    user
-      .update({ email }, { where: { id: userId } })
-      .then(() => {
+  await user
+    .findOne({ where: { id: userId } })
+    .then(async (existingUser: any) => {
+      if (existingUser.email == email) {
         logger.info(
-          `Email is updated for the user with id ${userId} before becoming the admin`
+          "User does not want to update the email before becoming the admin"
         );
-        res.json({ email });
-      })
-      .catch((err) => {
-        logger.error(
-          `Error updating email for the user with id ${userId} : ` + err
-        );
-        res.sendStatus(500);
-      });
-  }
+
+        const code = await adminCode(email);
+        console.log("code: ", code);
+        res.json({ email, code });
+      } else {
+        user
+          .update({ email }, { where: { id: userId } })
+          .then(async () => {
+            logger.info(
+              `Email is updated for the user with id ${userId} before becoming the admin`
+            );
+            const code = await adminCode(email);
+            console.log("code: ", code);
+            res.json({ email, code });
+          })
+          .catch((err) => {
+            logger.error(
+              `Error updating email for the user with id ${userId} : ` + err
+            );
+            res.sendStatus(500);
+          });
+      }
+    });
+};
+
+// To update the isAdmin status of the user from false to true
+export const updateUserStatus = async (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId);
+
+  user
+    .update(
+      {
+        isAdmin: true,
+      },
+      {
+        where: { id: userId },
+      }
+    )
+    .then((affectedRows) => {
+      if (affectedRows[0] === 0) {
+        res.status(404).send("User not found");
+      } else {
+        return user.findByPk(userId); // Fetch updated user
+      }
+    })
+    .then((updatedUser) => {
+      if (updatedUser) {
+        logger.info(`User with id ${userId} is now an admin`);
+        res.json(updatedUser);
+      }
+    })
+    .catch((err) => {
+      logger.error(
+        `Error updating user to admin where user id is ${userId} : ` + err
+      );
+      res.sendStatus(500);
+    });
 };

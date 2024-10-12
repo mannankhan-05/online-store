@@ -58,7 +58,7 @@
 
     <!-- to send the verification code -->
     <v-row justify="center">
-      <v-col cols="12" md="5" sm="6">
+      <v-col cols="12" md="6" sm="8">
         <v-card elevation="8">
           <v-card-title class="headline">Send Verification Code</v-card-title>
           <v-card-text>
@@ -66,7 +66,7 @@
               <v-row>
                 <v-col cols="10">
                   <v-text-field
-                    v-model="userEmail"
+                    v-model="email"
                     label="Email"
                     outlined
                     required
@@ -89,7 +89,7 @@
                 v-if="!loading"
                 color="primary"
                 @click="sendAdminCode"
-                class="mt-4"
+                class="sendCodeButton mt-4"
               >
                 Send Verification Code
               </v-btn>
@@ -105,6 +105,38 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- OTP Overlay -->
+    <v-overlay
+      class="d-flex align-center justify-center"
+      v-model="adminCodeDialog"
+      :value="true"
+      persistent
+      style="z-index: 9999; background-color: rgba(0, 0, 0, 0.6)"
+    >
+      <v-container class="d-flex align-center justify-center" fill-height>
+        <v-col cols="12" sm="12" md="12" lg="12">
+          <v-card class="otp-card pa-4 text-center" outlined>
+            <h2 class="text-center">Enter Admin Code</h2>
+            <v-otp-input
+              v-model="adminCode"
+              length="6"
+              class="my-4"
+              input-class="otp-input"
+            ></v-otp-input>
+            <v-btn
+              block
+              class="submitCodeButton mt-4"
+              @click="submitAdminCode"
+              color="primary"
+              large
+            >
+              Submit
+            </v-btn>
+          </v-card>
+        </v-col>
+      </v-container>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -115,15 +147,15 @@ export default defineComponent({
   name: "beAdmin",
   data() {
     return {
-      editEmailButtonDisabled: true,
-      loading: false,
+      editEmailButtonDisabled: true as boolean,
+      loading: false as boolean,
+      email: "" as string,
+      adminCode: 0 as number,
+      adminCodeDialog: false as boolean,
     };
   },
-  computed: {
-    // to get the user's email
-    userEmail() {
-      return this.$store.state.userEmail;
-    },
+  mounted() {
+    this.email = this.$store.state.userEmail;
   },
   methods: {
     toggleEmailEditButton() {
@@ -131,15 +163,28 @@ export default defineComponent({
     },
     async sendAdminCode() {
       this.loading = true;
-      if (this.userEmail !== this.$store.state.userEmail) {
-        this.$store.dispatch("editUserEmail", this.userEmail);
-        console.log("email updated");
-
-        // send the verification code to the edited email
-      } else {
-        // send the verification code to the user's email
+      if (this.email !== this.$store.state.userEmail) {
+        const { email } = this;
+        await this.$store.dispatch("editUserEmail", {
+          email,
+        });
+        this.loading = false;
+      } else if (this.email === this.$store.state.userEmail) {
+        const { email } = this;
+        await this.$store.dispatch("editUserEmail", {
+          email,
+        });
+        this.loading = false;
+        this.adminCodeDialog = true;
       }
-      this.loading = false;
+    },
+    async submitAdminCode() {
+      if (this.adminCode == this.$store.state.adminCode) {
+        await this.$store.dispatch("editUserStatus");
+      } else if (this.adminCode != this.$store.state.adminCode) {
+        console.log("Invalid Admin Code");
+      }
+      this.adminCodeDialog = false;
     },
   },
 });
@@ -192,5 +237,28 @@ export default defineComponent({
 .email-edit-icon:hover {
   cursor: pointer;
   color: rgb(39, 39, 196);
+}
+
+.otp-card {
+  max-width: 500px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.otp-input {
+  font-size: 24px;
+  color: black;
+  text-align: center;
+}
+
+.submitCodeButton,
+.sendCodeButton {
+  transition: 0.3s ease-in-out;
+}
+
+.submitCodeButton:hover,
+.sendCodeButton:hover {
+  transform: scale(1.02);
 }
 </style>

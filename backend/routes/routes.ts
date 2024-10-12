@@ -9,6 +9,7 @@ import {
   forgetPassword,
   resetPassword,
   updateUserEmail,
+  updateUserStatus,
 } from "../controllers/user";
 import {
   getAllProducts,
@@ -47,6 +48,8 @@ router.post("/forgetPassword", forgetPassword);
 router.put("/resetPassword/:userId", resetPassword);
 
 router.put("/updateUserEmail/:userId", updateUserEmail);
+
+router.put("/updateUserStatus/:userId", updateUserStatus);
 
 // product routes :
 router.get("/products", getAllProducts);

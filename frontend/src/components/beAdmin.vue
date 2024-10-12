@@ -181,6 +181,10 @@ export default defineComponent({
     async submitAdminCode() {
       if (this.adminCode == this.$store.state.adminCode) {
         await this.$store.dispatch("editUserStatus");
+        this.$router.push({
+          name: "adminPanel",
+          params: { userId: this.$store.state.userId },
+        });
       } else if (this.adminCode != this.$store.state.adminCode) {
         console.log("Invalid Admin Code");
       }

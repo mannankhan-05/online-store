@@ -40,6 +40,7 @@
                 variant="tonal"
                 class="loginButton bg-black mr-5 font-weight-bold"
               >
+                <v-icon class="mr-2">mdi-login</v-icon>
                 Login
               </v-btn>
             </router-link>
@@ -49,6 +50,7 @@
                 variant="tonal"
                 class="registerButton bg-black mr-8 font-weight-bold"
               >
+                <v-icon class="mr-2">mdi-account-plus</v-icon>
                 Sign Up
               </v-btn>
             </router-link>
@@ -80,7 +82,7 @@
               <v-list>
                 <v-list-item>
                   <v-row justify="center">
-                    <v-col cols="2">
+                    <v-col cols="3">
                       <v-list-item-avatar>
                         <v-avatar
                           class="avatarBorder"
@@ -91,7 +93,7 @@
                         </v-avatar>
                       </v-list-item-avatar>
                     </v-col>
-                    <v-col cols="10">
+                    <v-col cols="9">
                       <v-list-item-title class="ml-3">{{
                         userName
                       }}</v-list-item-title>
@@ -216,6 +218,12 @@ export default defineComponent({
         params: { userId: this.$store.state.userId },
       });
     },
+    gotoAdminPanel() {
+      this.$router.push({
+        name: "adminPanel",
+        params: { userId: this.$store.state.userId },
+      });
+    },
   },
   computed: {
     isLoggedIn() {
@@ -261,14 +269,13 @@ export default defineComponent({
 .loginButton,
 .registerButton {
   border: 1px solid white;
-  transition: 1s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 .loginButton:hover,
 .registerButton:hover {
-  border: none;
-  background-color: white;
-  color: black;
+  /* border: none; */
+  transform: scale(1.03);
 }
 
 .avatar:hover {

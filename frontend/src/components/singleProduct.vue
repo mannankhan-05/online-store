@@ -1,14 +1,19 @@
 <template>
   <v-container>
     <!-- Back Button -->
-    <v-btn
-      class="backButton d-none d-sm-flex"
-      icon
-      @click="this.$router.go(-1)"
-      elevation="0"
-    >
-      <v-icon large>mdi-menu-left</v-icon>
-    </v-btn>
+    <v-tooltip text="Back To Products" location="top">
+      <template v-slot:activator="{ props }">
+        <v-btn
+          v-bind="props"
+          class="backButton d-none d-sm-flex mt-5"
+          icon
+          @click="this.$router.go(-1)"
+          elevation="0"
+        >
+          <v-icon large>mdi-menu-left</v-icon>
+        </v-btn>
+      </template>
+    </v-tooltip>
 
     <!-- Cicular after item is added to the cart -->
     <div v-if="showAddedToCart" class="fadeInOut addedToCartDiv">

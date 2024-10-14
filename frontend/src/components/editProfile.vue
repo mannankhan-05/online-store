@@ -1,9 +1,11 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="12" sm="8" md="6">
-        <div class="editProfileForm">
-          <h2 class="mb-10">Edit Profile</h2>
+      <v-col cols="12" md="6" sm="8">
+        <v-card max-width="600" class="addProductForm pa-5 elevation-5">
+          <v-card-title class="title text-h5 font-weight-bold text-center mb-4">
+            Edit Profile
+          </v-card-title>
           <v-text-field
             clearable
             label="Name"
@@ -59,7 +61,7 @@
               v-if="!loading"
               :disabled="updateButtonDisabled"
               variant="tonal"
-              class="editProfileButton"
+              class="editProfileButton mt-4 mb-4"
               @click="editUser"
             >
               Update
@@ -73,7 +75,7 @@
               ></v-progress-circular>
             </v-btn>
           </div>
-        </div> </v-col
+        </v-card> </v-col
     ></v-row>
   </v-container>
 </template>

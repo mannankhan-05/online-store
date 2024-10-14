@@ -71,7 +71,7 @@
           </v-row>
           <div class="productCategory">
             <div class="d-inline">
-              <p class="categoryHeadnig font-weight-thin d-inline">
+              <p class="categoryHeading font-weight-thin d-inline">
                 category :
               </p>
               {{ product.category }}
@@ -88,20 +88,14 @@
         </v-sheet>
       </v-col>
     </v-row>
-
-    <addProduct />
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import addProduct from "./addProduct.vue";
 import axios from "axios";
 
 export default defineComponent({
-  components: {
-    addProduct,
-  },
   data() {
     return {
       products: [] as object[],
@@ -189,7 +183,7 @@ export default defineComponent({
   align-items: center;
   top: 72%;
   margin-left: 10px;
-  font-size: 24px;
+  font-size: 20px;
   color: rgb(59, 58, 58);
 }
 
@@ -202,12 +196,13 @@ export default defineComponent({
   text-align: right;
   padding-right: 10px;
   padding-top: 1mm;
+  padding-bottom: 3mm;
   font-size: 21px;
   font-weight: 600;
   color: black;
 }
 
-.categoryHeadnig {
+.categoryHeading {
   color: black;
 }
 

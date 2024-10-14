@@ -9,6 +9,8 @@ import resetPassword from "@/components/resetPassword.vue";
 import editProfile from "@/components/editProfile.vue";
 import beAdmin from "@/components/beAdmin.vue";
 import adminPanel from "@/components/adminPanel.vue";
+import addProduct from "@/components/addProduct.vue";
+import adminProducts from "@/components/adminProducts.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -65,6 +67,16 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user/:userId/cart",
     name: "cart",
     component: userCart,
+  },
+  {
+    path: "/admin/:userId/addProduct",
+    name: "addProduct",
+    component: addProduct,
+  },
+  {
+    path: "/admin/:userId/products",
+    name: "adminProducts",
+    component: adminProducts,
   },
 ];
 

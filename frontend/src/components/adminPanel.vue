@@ -14,7 +14,7 @@
         <v-sheet :height="170" :width="300" border class="sheet-button sheet1">
           <v-tooltip text="Add A Product" location="bottom">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props">mdi-plus</v-icon>
+              <v-icon v-bind="props" @click="pushToAddProduct">mdi-plus</v-icon>
             </template>
           </v-tooltip>
         </v-sheet>
@@ -23,7 +23,9 @@
         <v-sheet :height="170" :width="300" border class="sheet-button sheet2">
           <v-tooltip text="See All Product" location="bottom">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props">mdi-view-list</v-icon>
+              <v-icon v-bind="props" @click="pushToAdminProducts"
+                >mdi-view-list</v-icon
+              >
             </template>
           </v-tooltip>
         </v-sheet>
@@ -53,7 +55,22 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-export default defineComponent({});
+export default defineComponent({
+  methods: {
+    pushToAddProduct() {
+      this.$router.push({
+        name: "addProduct",
+        params: { userId: this.$store.state.userId },
+      });
+    },
+    pushToAdminProducts() {
+      this.$router.push({
+        name: "adminProducts",
+        params: { userId: this.$store.state.userId },
+      });
+    },
+  },
+});
 </script>
 
 <style scoped>

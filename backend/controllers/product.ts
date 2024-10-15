@@ -139,3 +139,57 @@ export const getProductsByCategory = (req: Request, res: Response) => {
       res.status(500);
     });
 };
+
+// to edit a product
+export const editProduct = (req: Request, res: Response) => {
+  upload.single("productImage")(req, res, (err) => {
+    if (err) {
+      logger.error("Error updating the productImage");
+      res.sendStatus(500);
+    }
+
+    const productId: number = parseInt(req.params.productId, 10);
+    const image: string = req.file ? req.file.filename : "";
+
+    const {
+      name,
+      price,
+      description,
+    }: { name: string; price: number; description: string } = req.body;
+
+    product
+      .update(
+        {
+          name,
+          price,
+          description,
+          image,
+        },
+        { where: { id: productId } }
+      )
+      .then(() => {
+        logger.info(`Product with id ${productId} is updated`);
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        logger.error(`Error updating product with id ${productId} : ${err}`);
+        res.sendStatus(500);
+      });
+  });
+};
+
+// to delete a product
+export const deleteProduct = (req: Request, res: Response) => {
+  const productId: number = parseInt(req.params.productId, 10);
+
+  product
+    .destroy({ where: { id: productId } })
+    .then(() => {
+      logger.info(`Product with id ${productId} is deleted`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      logger.error(`Error deleting product with id ${productId} : ${err}`);
+      res.sendStatus(500);
+    });
+};

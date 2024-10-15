@@ -16,6 +16,8 @@ import {
   getProductById,
   createProduct,
   getProductsByCategory,
+  editProduct,
+  deleteProduct,
 } from "../controllers/product";
 import {
   getAllUsersProducts,
@@ -59,6 +61,10 @@ router.get("/product/:productId", getProductById);
 router.post("/addProduct", createProduct);
 
 router.post("/productsByCategory", getProductsByCategory);
+
+router.put("/editProduct/:productId", editProduct);
+
+router.delete("/deleteProduct/:productId", deleteProduct);
 
 // user_product routes :
 router.get("/userProducts", getAllUsersProducts);

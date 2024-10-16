@@ -3,6 +3,20 @@ import order from "../models/order";
 import user from "../models/user";
 import logger from "../logger";
 
+// Get all orders
+export const getAllOrders = async (req: Request, res: Response) => {
+  await order
+    .findAll()
+    .then((orders) => {
+      logger.info("All orders are fetched");
+      res.json(orders);
+    })
+    .catch((err) => {
+      logger.error("Error fetching all orders" + err);
+      res.status(500);
+    });
+};
+
 // Create a new order
 export const createNewOrder = async (req: Request, res: Response) => {
   const {

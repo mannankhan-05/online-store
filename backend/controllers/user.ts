@@ -32,10 +32,23 @@ const upload = multer({ storage: storage });
 // Get all users
 export const getAllUsers = (req: Request, res: Response) => {
   user
-    .findAll()
-    .then((users) => {
+    .findAll({ where: { isAdmin: false } })
+    .then((users: any) => {
       logger.info("All users were retrieved");
-      res.json(users);
+
+      if (users) {
+        // Modify image URLs for all users
+        users.forEach((user: any) => {
+          if (user.image) {
+            user.image = `http://localhost:4000/userImages/${user.image}`;
+          }
+        });
+
+        res.json(users);
+      } else {
+        logger.error("Error retrieving users");
+        res.status(404).json({ error: "No users found" });
+      }
     })
     .catch((err) => {
       logger.error(`Error retrieving users: ${err}`);

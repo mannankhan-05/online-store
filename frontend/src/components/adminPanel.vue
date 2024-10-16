@@ -34,7 +34,9 @@
         <v-sheet :height="170" :width="300" border class="sheet-button sheet3">
           <v-tooltip text="See All Users" location="bottom">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props">mdi-account-multiple-outline</v-icon>
+              <v-icon v-bind="props" @click="gotoAllUsers"
+                >mdi-account-multiple-outline</v-icon
+              >
             </template>
           </v-tooltip>
         </v-sheet>
@@ -43,7 +45,9 @@
         <v-sheet :height="170" :width="300" border class="sheet-button sheet4">
           <v-tooltip text="View Orders" location="bottom">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props">mdi-cart-arrow-down</v-icon>
+              <v-icon v-bind="props" @click="gotoAllOrders"
+                >mdi-cart-arrow-down</v-icon
+              >
             </template>
           </v-tooltip>
         </v-sheet>
@@ -66,6 +70,18 @@ export default defineComponent({
     pushToAdminProducts() {
       this.$router.push({
         name: "adminProducts",
+        params: { userId: this.$store.state.userId },
+      });
+    },
+    gotoAllUsers() {
+      this.$router.push({
+        name: "allUsers",
+        params: { userId: this.$store.state.userId },
+      });
+    },
+    gotoAllOrders() {
+      this.$router.push({
+        name: "allOrders",
         params: { userId: this.$store.state.userId },
       });
     },

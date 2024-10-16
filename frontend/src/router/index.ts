@@ -11,6 +11,8 @@ import beAdmin from "@/components/beAdmin.vue";
 import adminPanel from "@/components/adminPanel.vue";
 import addProduct from "@/components/addProduct.vue";
 import adminProducts from "@/components/adminProducts.vue";
+import allUsers from "@/components/allUsers.vue";
+import allOrders from "@/components/allOrders.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -77,6 +79,16 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin/:userId/products",
     name: "adminProducts",
     component: adminProducts,
+  },
+  {
+    path: "/admin/:userId/allUsers",
+    name: "allUsers",
+    component: allUsers,
+  },
+  {
+    path: "/admin/:userId/allOrders",
+    name: "allOrders",
+    component: allOrders,
   },
 ];
 

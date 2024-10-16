@@ -32,7 +32,7 @@ import {
   addUserAddress,
   checkUserInformation,
 } from "../controllers/user_address";
-import { createNewOrder } from "../controllers/order";
+import { createNewOrder, getAllOrders } from "../controllers/order";
 
 // user routes :
 router.get("/users", getAllUsers);
@@ -87,6 +87,8 @@ router.post("/addUserAddress", addUserAddress);
 router.put("/checkUserInformation/:userId", checkUserInformation);
 
 // order routes :
+router.get("/orders", getAllOrders);
+
 router.post("/createNewOrder", createNewOrder);
 
 export default router;

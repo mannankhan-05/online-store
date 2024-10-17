@@ -249,7 +249,6 @@ export default defineComponent({
   background-color: #f0ecec;
   border-radius: 5px;
 }
-
 /* .searchProducts {
   font-size: 18px;
   height: 56px;

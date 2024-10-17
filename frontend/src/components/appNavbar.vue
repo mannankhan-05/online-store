@@ -128,19 +128,29 @@
                     Logout</v-list-item-title
                   >
                 </v-list-item>
-                <v-list-item
-                  v-if="!isAdmin"
-                  class="AdminButton"
-                  @click="gotoAdminComponent"
-                >
-                  Be Admin
+                <v-list-item class="list" v-if="!isAdmin">
+                  <v-btn
+                    @click="gotoAdminComponent"
+                    color="primary"
+                    class="adminPanelButton"
+                  >
+                    <v-icon class="mr-3"
+                      >mdi-arrow-top-right-thin-circle-outline</v-icon
+                    >
+                    Be Admin</v-btn
+                  >
                 </v-list-item>
-                <v-list-item
-                  v-if="isAdmin"
-                  class="AdminButton"
-                  @click="gotoAdminPanel"
-                >
-                  Admin Panel
+                <v-list-item class="list" v-if="isAdmin">
+                  <v-btn
+                    @click="gotoAdminPanel"
+                    color="primary"
+                    class="adminPanelButton"
+                  >
+                    <v-icon class="mr-3"
+                      >mdi-arrow-top-right-thin-circle-outline</v-icon
+                    >
+                    Admin Panel</v-btn
+                  >
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -315,21 +325,13 @@ export default defineComponent({
   color: #000;
 }
 
-.AdminButton {
-  background-color: #646fa8;
-  color: white;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 26px;
-  font-weight: 700;
-  transition: 0.5s ease-in-out;
+.adminPanelButton {
+  width: 100%;
+  transition: 0.3s ease-in-out;
 }
 
-.AdminButton:hover {
-  cursor: pointer;
-  background-color: #828ab6;
+.adminPanelButton:hover {
+  transform: scale(1.04);
 }
 
 .adminBadge {

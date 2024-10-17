@@ -42,8 +42,16 @@
       </v-row>
     </v-sheet>
 
+    <!-- Displaying the empty icon if the searched product doesn't exists -->
+    <v-empty-state
+      v-if="searchProducts.length === 0"
+      icon="mdi-magnify"
+      title="We couldn't find a match."
+      text="We couldn't find any product matching your search"
+    ></v-empty-state>
+
     <!-- Displaying all the products in a grid -->
-    <v-row justify="center">
+    <v-row justify="center" v-else>
       <v-col
         v-for="product in searchProducts"
         :key="product.id"
@@ -230,7 +238,7 @@ export default defineComponent({
 
 .sheet:hover {
   transform: scale(1.01);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Increases the shadow for a 'lifted' effect */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   border-color: #706f6f;
 }
 
@@ -249,24 +257,6 @@ export default defineComponent({
   background-color: #f0ecec;
   border-radius: 5px;
 }
-/* .searchProducts {
-  font-size: 18px;
-  height: 56px;
-  border-radius: 30px;
-  background: linear-gradient(to right, #f0ecec, #ffffff);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease;
-} */
-
-/* .searchProducts:hover,
-.searchProducts:focus {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.searchProducts input::placeholder {
-  color: #aaa;
-  opacity: 0.7;
-} */
 
 .upButton {
   display: flex;

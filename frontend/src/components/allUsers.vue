@@ -37,6 +37,14 @@
       </v-card>
     </v-row>
 
+    <!-- Displaying the empty icon if the searched user doesn't exists -->
+    <v-empty-state
+      v-if="searchUsers.length === 0"
+      icon="mdi-magnify"
+      title="We couldn't find a match."
+      text="We couldn't find any user that matches your search"
+    ></v-empty-state>
+
     <!-- All Users Table -->
     <v-row justify="center">
       <v-col

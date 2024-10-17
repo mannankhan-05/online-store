@@ -1,11 +1,33 @@
 <template>
   <v-container class="pl-3 mt-15">
-    <v-sheet class="py-4 px-1">
+    <!-- input field for product search functionality -->
+    <v-row justify="center">
+      <v-col cols="12" md="8" sm="8" xs="10">
+        <v-text-field
+          class="searchProducts"
+          clearable
+          label="Search for Products"
+          prepend-inner-icon="mdi-card-search-outline"
+          v-model="search"
+          variant="outlined"
+          placeholder="Search for products..."
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
+    <v-sheet class="py-4 mb-4 px-1">
       <v-row class="d-flex align-center mt-2" justify="center">
-        <v-chip value="All" class="mr-2" @click="showAllProducts">All</v-chip>
+        <v-chip
+          variant="label"
+          value="All"
+          class="mr-2"
+          @click="showAllProducts"
+          >All</v-chip
+        >
         <v-chip-group
           selected-class="text-primary"
           mandatory
+          variant="label"
           v-model="category"
           @click="sortProductsByCategories"
         >
@@ -19,21 +41,6 @@
         </v-chip-group>
       </v-row>
     </v-sheet>
-
-    <!-- input field for product search functionality -->
-    <v-row justify="center">
-      <v-col cols="12" md="8" sm="8" xs="10">
-        <v-textarea
-          class="searchProducts"
-          clearable
-          label="Search for Products"
-          prepend-inner-icon="mdi-card-search-outline"
-          variant="outlined"
-          rows="1"
-          v-model="search"
-        ></v-textarea>
-      </v-col>
-    </v-row>
 
     <!-- Displaying all the products in a grid -->
     <v-row justify="center">
@@ -88,6 +95,11 @@
         </v-sheet>
       </v-col>
     </v-row>
+
+    <!-- up button -->
+    <div class="upButton" @click="scrollToTop">
+      <v-icon icon="mdi-arrow-up"></v-icon>
+    </div>
   </v-container>
 </template>
 
@@ -147,6 +159,12 @@ export default defineComponent({
       } catch (err) {
         console.log("Error fetching all products : " + err);
       }
+    },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
   },
 });
@@ -230,5 +248,43 @@ export default defineComponent({
   padding: 5px; /* Optional: padding around the text area */
   background-color: #f0ecec;
   border-radius: 5px;
+}
+
+/* .searchProducts {
+  font-size: 18px;
+  height: 56px;
+  border-radius: 30px;
+  background: linear-gradient(to right, #f0ecec, #ffffff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+} */
+
+/* .searchProducts:hover,
+.searchProducts:focus {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.searchProducts input::placeholder {
+  color: #aaa;
+  opacity: 0.7;
+} */
+
+.upButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  box-shadow: 1px 1px 5px 1px orange;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  transition: 0.3s ease-in-out;
+}
+
+.upButton:hover {
+  cursor: pointer;
+  transform: scale(1.06);
 }
 </style>

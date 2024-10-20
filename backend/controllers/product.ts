@@ -27,23 +27,28 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Get all products
-export const getAllProducts = (req: Request, res: Response) => {
-  product
-    .findAll()
-    .then((products) => {
-      logger.info("All products were retrieved");
-      const result = products.map((product: any) => {
-        if (product.image) {
-          product.image = `http://localhost:4000/productImages/${product.image}`;
-        }
-        return product;
-      });
-      res.json(result);
-    })
-    .catch((err) => {
-      logger.error(`Error retrieving products: ${err}`);
-      res.status(500).json({ error: "Error retrieving products" });
+export const getAllProducts = async (req: Request, res: Response) => {
+  const limit = parseInt(req.query.limit as string) || 8;
+  const offset = (parseInt(req.query.page as string) || 0) * limit;
+
+  try {
+    const { count, rows: products } = await product.findAndCountAll({
+      limit,
+      offset,
     });
+
+    const result = products.map((product: any) => {
+      if (product.image) {
+        product.image = `http://localhost:4000/productImages/${product.image}`;
+      }
+      return product;
+    });
+
+    res.json({ products: result, totalProducts: count }); // Send total products for pagination
+  } catch (err) {
+    logger.error(`Error retrieving products: ${err}`);
+    res.status(500).json({ error: "Error retrieving products" });
+  }
 };
 
 // Get a product by id

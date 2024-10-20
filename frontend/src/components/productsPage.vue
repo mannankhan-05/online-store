@@ -119,6 +119,10 @@ export default defineComponent({
       search: "" as string,
       selectedProductId: 0 as number,
       category: "" as string,
+      limit: 8, // Number of products per page
+      page: 0, // Current page
+      totalPages: 0, // Total number of pages
+      isLoading: false, // To prevent multiple loads
     };
   },
   computed: {
@@ -131,6 +135,7 @@ export default defineComponent({
   },
   async mounted() {
     this.showAllProducts();
+    window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
   },
   methods: {
     showFullProduct(productId: number) {
@@ -159,18 +164,45 @@ export default defineComponent({
     },
     async showAllProducts() {
       try {
-        const response = await axios.get("http://localhost:4000/products");
-        this.products = response.data;
+        const response = await axios.get("http://localhost:4000/products", {
+          params: {
+            limit: this.limit, // Pass the limit
+            page: this.page, // Pass the current page (offset = page * limit)
+          },
+        });
+        // When loading more, append the products instead of replacing
+        if (this.page === 0) {
+          this.products = response.data.products; // Initial load
+        } else {
+          this.products = [...this.products, ...response.data.products]; // Append new products
+        }
+        this.totalPages = Math.ceil(response.data.totalProducts / this.limit); // Calculate total pages
       } catch (err) {
-        console.log("Error fetching all products : " + err);
+        console.log("Error fetching all products: " + err);
       }
     },
-    scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+    async loadMoreProducts() {
+      if (!this.isLoading && this.page < this.totalPages - 1) {
+        this.isLoading = true; // Set loading to prevent multiple triggers
+        this.page += 1;
+        await this.showAllProducts();
+        this.isLoading = false; // Reset loading after fetching products
+      }
     },
+    handleScroll() {
+      // Detect when user is near the bottom of the page
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.scrollHeight - 100; // 100px before the bottom
+      if (scrollPosition >= threshold) {
+        this.loadMoreProducts();
+      }
+    },
+  },
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   },
 });
 </script>

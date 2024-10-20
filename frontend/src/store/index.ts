@@ -10,6 +10,8 @@ export default createStore({
     userImage: localStorage.getItem("userImage"),
     isAdmin: localStorage.getItem("isAdmin") === "true",
     adminCode: localStorage.getItem("adminCode"),
+    userProductsInCart: [],
+    showCartBadge: false,
   },
   getters: {},
   mutations: {
@@ -40,6 +42,15 @@ export default createStore({
     setAdminCode(state, adminCode) {
       state.adminCode = adminCode;
       localStorage.setItem("adminCode", adminCode);
+    },
+    setUserProductsInCart(state, userProductsInCart) {
+      state.userProductsInCart = userProductsInCart;
+    },
+    hideCartBadge(state) {
+      state.showCartBadge = false;
+    },
+    showCartBadge(state) {
+      state.showCartBadge = true;
     },
   },
   actions: {
@@ -201,6 +212,16 @@ export default createStore({
         router.push({ name: "home" });
       } catch (err) {
         console.error("Error logging out user: ", err);
+      }
+    },
+    async getUserProductsInCart({ state, commit }) {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/userProducts/${state.userId}`
+        );
+        commit("setUserProductsInCart", response.data);
+      } catch (err) {
+        console.error("Error getting user products in cart: ", err);
       }
     },
   },

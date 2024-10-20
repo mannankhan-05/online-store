@@ -20,7 +20,8 @@
           >
             <v-btn icon v-if="isLoggedIn" class="cartIconButton">
               <v-badge
-                :content="2"
+                v-if="this.$store.state.showCartBadge"
+                :content="this.$store.state.userProductsInCart.length"
                 :value="0"
                 color="red"
                 overlap
@@ -30,6 +31,7 @@
               >
                 <v-icon class="cartIcon">mdi-cart-outline</v-icon>
               </v-badge>
+              <v-icon v-else class="cartIcon">mdi-cart-outline</v-icon>
             </v-btn>
           </router-link>
 

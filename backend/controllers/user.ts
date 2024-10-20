@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import user from "../models/user";
-import { sendMail } from "../mails/mail";
+import { signUpMail } from "../mails/registrationMail";
+import { signInMail } from "../mails/loginMail";
 import { verificationCode } from "../mails/verificationCodeMail";
 import { adminCode } from "../mails/adminCodeMail";
 import logger from "../logger";
@@ -110,7 +111,7 @@ export const registerUser = (req: Request, res: Response) => {
       })
       .then((user) => {
         logger.info("New user is registered");
-        sendMail(email, "You are registered using your email ...");
+        signUpMail(email);
         res.json(user);
       })
       .catch((err) => {
@@ -141,7 +142,7 @@ export const loginUser = async (req: Request, res: Response) => {
     );
     if (isPasswordValid) {
       logger.info(`User is logged In as ${existingUser.name}`);
-      sendMail(email, "You are logged in using your email ...");
+      signInMail(email);
       res.json(existingUser);
     } else {
       logger.error("Invalid Password !.");

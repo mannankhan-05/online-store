@@ -15,15 +15,9 @@
       </v-col>
     </v-row>
 
+    <!-- Category filter chips -->
     <v-sheet class="py-4 mb-4 px-1">
       <v-row class="d-flex align-center mt-2" justify="center">
-        <v-chip
-          variant="label"
-          value="All"
-          class="mr-2"
-          @click="showAllProducts"
-          >All</v-chip
-        >
         <v-chip-group
           selected-class="text-primary"
           mandatory
@@ -31,6 +25,9 @@
           v-model="category"
           @click="sortProductsByCategories"
         >
+          <v-chip variant="label" class="mr-2" @click="showAllProducts"
+            >All</v-chip
+          >
           <v-chip value="Clothing">Clothing</v-chip>
           <v-chip value="Shoes">Shoes</v-chip>
           <v-chip value="Electronics">Electronics</v-chip>
@@ -51,7 +48,7 @@
     ></v-empty-state>
 
     <!-- Displaying all the products in a grid -->
-    <v-row justify="center" v-else>
+    <v-row v-else justify="center">
       <v-col
         v-for="product in searchProducts"
         :key="product.id"

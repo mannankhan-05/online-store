@@ -188,6 +188,9 @@ export default defineComponent({
           product_id: this.$route.params.productId,
           quantity: this.quantity,
         });
+
+        await this.$store.dispatch("getUserProductsInCart");
+        await this.$store.commit("showCartBadge");
         this.showAddedToCart = true;
       }
       this.loading = false;

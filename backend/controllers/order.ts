@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { orderConfirmationMail } from "../mails/orderConfirmationMail";
 import order from "../models/order";
 import user from "../models/user";
 import logger from "../logger";
@@ -25,10 +26,10 @@ export const createNewOrder = async (req: Request, res: Response) => {
     orderAmount,
     userId,
   }: {
-    orderId: String;
-    orderItems: Number;
-    orderAmount: Number;
-    userId: Number;
+    orderId: string;
+    orderItems: number;
+    orderAmount: number;
+    userId: number;
   } = req.body;
 
   await order
@@ -40,6 +41,14 @@ export const createNewOrder = async (req: Request, res: Response) => {
     })
     .then((order) => {
       logger.info("New order is created");
+
+      // get user email
+      const usersOrder = user
+        .findOne({ where: { id: userId } })
+        .then((u: any) => {
+          orderConfirmationMail(u.email, orderId, orderAmount);
+        });
+
       res.json(order);
     })
     .catch((err) => {

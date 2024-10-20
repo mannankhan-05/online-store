@@ -22,7 +22,7 @@
           ></v-img>
           <v-card-title class="title">{{ item.product.name }}</v-card-title>
           <v-card-subtitle class="price">
-            Price: ${{ item.product.price }}
+            Price: ${{ item.product.price * item.quantity }}
           </v-card-subtitle>
           <v-card-text> Quantity: {{ item.quantity }} </v-card-text>
           <v-spacer></v-spacer>
@@ -203,7 +203,9 @@
                         <tr v-for="item in userProductsInCart" :key="item.id">
                           <td class="table-items">{{ item.quantity }}</td>
                           <td class="table-items">{{ item.product.name }}</td>
-                          <td class="table-items">{{ item.product.price }}$</td>
+                          <td class="table-items">
+                            {{ item.product.price * item.quantity }}$
+                          </td>
                         </tr>
                       </tbody>
                     </v-table>
@@ -280,6 +282,9 @@ export default defineComponent({
     // generate the order id
     this.orderId = Math.random().toString(36).slice(2);
 
+    // hiding the cart badge
+    this.$store.commit("hideCartBadge");
+
     // calculate the total order amount
     this.userProductsInCart.forEach((item: any) => {
       this.totalOrderAmount += item.product.price * item.quantity;
@@ -314,6 +319,8 @@ export default defineComponent({
       await axios.delete(
         `http://localhost:4000/deleteProductsFromCart/${this.$route.params.userId}`
       );
+
+      this.userProductsInCart = [];
     },
     async orderConfirmationSteps() {
       if (this.step == 1) {

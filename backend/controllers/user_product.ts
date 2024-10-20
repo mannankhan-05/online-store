@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import user_product from "../models/user_product";
 import user from "../models/user";
 import product from "../models/product";
-import { orderConfirmationMail } from "../mails/orderConfirmationMail";
 import logger from "../logger";
 
 // Get all user_products
@@ -40,13 +39,17 @@ export const getUserProducts = (req: Request, res: Response) => {
 
 // Add the selected product to the user's list
 export const addUserProduct = async (req: Request, res: Response) => {
-  const { user_id, product_id }: { user_id: number; product_id: number } =
-    req.body;
+  const {
+    user_id,
+    product_id,
+    quantity,
+  }: { user_id: number; product_id: number; quantity: number } = req.body;
 
   await user_product
     .create({
       user_id,
       product_id,
+      quantity,
     })
     .then((userProduct) => {
       logger.info(
@@ -72,10 +75,6 @@ export const deleteProductsFromCart = async (req: Request, res: Response) => {
       logger.info(
         `All products of user with id ${userId} were deleted from the cart`
       );
-
-      user.findOne({ where: { id: userId } }).then((user: any) => {
-        orderConfirmationMail(user.email);
-      });
       res.sendStatus(200);
     })
     .catch((err) => {

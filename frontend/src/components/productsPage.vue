@@ -197,12 +197,12 @@ export default defineComponent({
         this.loadMoreProducts();
       }
     },
-  },
-  scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
   },
 });
 </script>

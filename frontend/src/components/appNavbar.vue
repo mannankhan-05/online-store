@@ -18,7 +18,11 @@
             v-if="isLoggedIn && this.$store.state.userId"
             :to="{ name: 'cart', params: { userId: this.$store.state.userId } }"
           >
-            <v-btn icon v-if="isLoggedIn" class="cartIconButton">
+            <v-btn
+              icon
+              v-if="isLoggedIn"
+              class="cartIconButton d-none d-sm-flex"
+            >
               <v-badge
                 v-if="this.$store.state.showCartBadge"
                 :content="this.$store.state.userProductsInCart.length"
@@ -124,7 +128,14 @@
                   >
                 </v-list-item>
 
-                <v-list-item @click="logoutUser">
+                <v-list-item @click="gotoCart" class="d-flex d-sm-none">
+                  <v-list-item-title>
+                    <v-icon class="mr-2">mdi-cart-outline</v-icon>
+                    Cart</v-list-item-title
+                  >
+                </v-list-item>
+
+                <v-list-item @click="logoutDialog = true">
                   <v-list-item-title>
                     <v-icon class="mr-2">mdi-logout</v-icon>
                     Logout</v-list-item-title
@@ -199,6 +210,38 @@
         </v-app-bar>
       </v-col>
     </v-row>
+
+    <v-row justify="center">
+      <v-col cols="12" xs="12" sm="8" md="4">
+        <v-dialog v-model="logoutDialog" max-width="400">
+          <v-card class="pa-3 elevation-5">
+            <v-card-title class="title text-h5 font-weight-bold">
+              Logout
+            </v-card-title>
+            <p class="pl-3 mb-3">Are you sure you want to logout?</p>
+            <v-divider class="mt-3 mb-3"></v-divider>
+            <v-card-actions class="d-flex justify-center">
+              <v-btn
+                color="blue darken-1"
+                variant="tonal"
+                text
+                @click="logoutDialog = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="primary"
+                variant="outlined"
+                text
+                @click="logoutUser"
+              >
+                Logout
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -210,17 +253,25 @@ export default defineComponent({
     return {
       showMenu: false as boolean,
       showAvatarMenu: false as boolean,
+      logoutDialog: false as boolean,
     };
   },
   methods: {
-    logoutUser() {
-      this.$store.dispatch("logoutUser", {
+    async logoutUser() {
+      await this.$store.dispatch("logoutUser", {
         router: this.$router,
       });
+      this.logoutDialog = false;
     },
     editProfile() {
       this.$router.push({
         name: "editProfile",
+        params: { userId: this.$store.state.userId },
+      });
+    },
+    gotoCart() {
+      this.$router.push({
+        name: "cart",
         params: { userId: this.$store.state.userId },
       });
     },

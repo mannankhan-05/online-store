@@ -135,9 +135,16 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 
+interface UserCartProducts {
+  user_id: number;
+  product_id: number;
+  quantity: number;
+}
+
 export default defineComponent({
   data() {
     return {
+      userProductsInCart: [] as UserCartProducts[],
       selectedProduct: {
         name: "",
         image: "",
@@ -160,6 +167,12 @@ export default defineComponent({
   },
   async mounted() {
     try {
+      // user's all products in the cart
+      let userProducts = await axios.get(
+        `http://localhost:4000/userProducts/${this.$store.state.userId}`
+      );
+      this.userProductsInCart = userProducts.data;
+
       const response = await axios.get(
         `http://localhost:4000/product/${this.$route.params.productId}`
       );
@@ -182,16 +195,32 @@ export default defineComponent({
       if (!this.isUserLoggedIn) {
         this.dialog = true;
       } else {
-        // Add the product to the cart
-        await axios.post("http://localhost:4000/addUserProduct", {
-          user_id: this.$route.params.userId,
-          product_id: this.$route.params.productId,
-          quantity: this.quantity,
-        });
+        // Check if the product is already in the cart
+        if (
+          this.userProductsInCart.some(
+            (product) =>
+              product.product_id ===
+              parseInt(
+                Array.isArray(this.$route.params.productId)
+                  ? this.$route.params.productId[0] // Use the first element if it's an array
+                  : this.$route.params.productId // Otherwise, use it as is
+              )
+          )
+        ) {
+          // Update the quantity of the product in the cart
+          console.log("Product already in the cart");
+        } else {
+          // Add the product to the cart if it's not already there
+          await axios.post("http://localhost:4000/addUserProduct", {
+            user_id: this.$route.params.userId,
+            product_id: this.$route.params.productId,
+            quantity: this.quantity,
+          });
 
-        await this.$store.dispatch("getUserProductsInCart");
-        await this.$store.commit("showCartBadge");
-        this.showAddedToCart = true;
+          await this.$store.dispatch("getUserProductsInCart");
+          await this.$store.commit("showCartBadge");
+          this.showAddedToCart = true;
+        }
       }
       this.loading = false;
       setTimeout(() => {

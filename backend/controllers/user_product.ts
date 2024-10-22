@@ -103,3 +103,27 @@ export const removeProductFromCart = (req: Request, res: Response) => {
       res.status(500);
     });
 };
+
+// Update the quantity of the product in the user's cart by 1
+// export const incrementProductQuantity = (req: Request, res: Response) => {
+//   const userId: number = req.params.userId;
+//   const productId: number = req.params.productId;
+
+//   user_product
+//     .put({
+//       // This avoids to first query the current quantity, allowing you to perform the update directly in the database.
+//       quantity: sequelize.literal("quantity + 1"),
+//       where: {
+//         user_id: userId,
+//         product_id: productId,
+//       },
+//     })
+//     .then(() => {
+//       logger.info("Product quantity was incremented successfully");
+//       res.sendStatus(200);
+//     })
+//     .catch((err) => {
+//       logger.error("Error incrementing product quantity", err);
+//       res.status(500);
+//     });
+// };

@@ -13,6 +13,23 @@
 
           <v-spacer></v-spacer>
 
+          <!-- Users total orders -->
+          <router-link
+            v-if="isLoggedIn && this.$store.state.userId"
+            :to="{
+              name: 'userAllOrders',
+              params: { userId: this.$store.state.userId },
+            }"
+          >
+            <v-btn
+              icon
+              v-if="isLoggedIn"
+              class="cartIconButton d-none d-sm-flex"
+            >
+              <v-icon class="cartIcon">mdi-view-list</v-icon>
+            </v-btn>
+          </router-link>
+
           <!-- Cart logo -->
           <router-link
             v-if="isLoggedIn && this.$store.state.userId"

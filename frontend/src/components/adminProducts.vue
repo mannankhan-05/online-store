@@ -28,7 +28,7 @@
         <v-card class="productCard mx-auto" max-width="400">
           <v-img class="productImage" height="200" :src="product.image"></v-img>
           <v-card-title>
-            <h2>{{ product.name }}</h2>
+            <h4>{{ product.name }}</h4>
           </v-card-title>
           <v-card-text>
             <p>{{ product.price }}$</p>
@@ -169,13 +169,36 @@ export default defineComponent({
       editProductDialog: false as boolean,
       imageUrl: "" as string,
       loading: false as boolean,
+      limit: 8, // Number of products per page
+      page: 0, // Current page
+      totalPages: 0, // Total number of pages
+      isLoading: false, // To prevent multiple loads
     };
   },
   async mounted() {
-    let response = await axios.get("http://localhost:4000/products");
-    this.products = response.data;
+    this.showAllProducts();
+    window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
   },
   methods: {
+    async showAllProducts() {
+      try {
+        const response = await axios.get("http://localhost:4000/products", {
+          params: {
+            limit: this.limit, // Pass the limit
+            page: this.page, // Pass the current page (offset = page * limit)
+          },
+        });
+        // When loading more, append the products instead of replacing
+        if (this.page === 0) {
+          this.products = response.data.products; // Initial load
+        } else {
+          this.products = [...this.products, ...response.data.products]; // Append new products
+        }
+        this.totalPages = Math.ceil(response.data.totalProducts / this.limit); // Calculate total pages
+      } catch (err) {
+        console.log("Error fetching all products: " + err);
+      }
+    },
     async editProduct(productId: number) {
       // Get product by id
       let response = await axios.get(
@@ -221,6 +244,22 @@ export default defineComponent({
         this.imageUrl = URL.createObjectURL(file);
       } else {
         this.imageUrl = "";
+      }
+    },
+    async loadMoreProducts() {
+      if (!this.isLoading && this.page < this.totalPages - 1) {
+        this.isLoading = true; // Set loading to prevent multiple triggers
+        this.page += 1;
+        await this.showAllProducts();
+        this.isLoading = false; // Reset loading after fetching products
+      }
+    },
+    handleScroll() {
+      // Detect when user is near the bottom of the page
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.scrollHeight - 100; // 100px before the bottom
+      if (scrollPosition >= threshold) {
+        this.loadMoreProducts();
       }
     },
   },

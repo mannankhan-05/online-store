@@ -18,6 +18,24 @@ export const getAllOrders = async (req: Request, res: Response) => {
     });
 };
 
+// Get order by user's id
+export const getOrderByUserId = (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId);
+
+  order
+    .findAll({ where: { user_id: userId } })
+    .then((usersAllOrders) => {
+      logger.info(`Fetched all the Orders of user with id : ${userId}`);
+      res.json(usersAllOrders);
+    })
+    .catch((err) => {
+      logger.error(
+        `Error fetching all the Orders of user with id : ${userId} : ${err}`
+      );
+      res.sendStatus(500);
+    });
+};
+
 // Create a new order
 export const createNewOrder = async (req: Request, res: Response) => {
   const {

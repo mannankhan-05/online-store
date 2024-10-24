@@ -1,5 +1,12 @@
 <template>
   <v-container>
+    <v-row>
+      <v-col cols="12">
+        <h1 class="text-center mb-3">Cart</h1>
+        <v-divider></v-divider>
+      </v-col>
+    </v-row>
+
     <!-- products in cart -->
     <v-row>
       <v-col
@@ -257,10 +264,37 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  category: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+  image: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+}
+
+interface CartItem {
+  id: number;
+  user_id: number;
+  product_id: number;
+  quantity: number;
+  product: Product;
+  user: User;
+}
+
 export default defineComponent({
   data() {
     return {
-      userProductsInCart: [] as object[],
+      userProductsInCart: [] as CartItem[],
       checkoutDialog: false,
       step: 1 as number,
       items: ["Address", "Payment", "Confirmation"],
@@ -356,12 +390,21 @@ export default defineComponent({
         this.loading = false;
       } else if (this.step == 3) {
         this.loading = true;
+        // create the order in the database
         await axios.post("http://localhost:4000/createNewOrder", {
           orderId: this.orderId,
           orderItems: this.userProductsInCart.length,
           orderAmount: this.totalOrderAmount,
           userId: this.$store.state.userId,
         });
+
+        // create order items in the database
+        for (let i = 0; i < this.userProductsInCart.length; i++) {
+          await axios.post("http://localhost:4000/createOrderItem", {
+            orderId: this.orderId,
+            productId: this.userProductsInCart[i].product.id,
+          });
+        }
 
         this.loading = false;
         this.checkoutDialog = false;

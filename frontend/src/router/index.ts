@@ -14,6 +14,7 @@ import adminProducts from "@/components/adminProducts.vue";
 import allUsers from "@/components/allUsers.vue";
 import allOrders from "@/components/allOrders.vue";
 import userAllOrders from "@/components/userAllOrders.vue";
+import orderDetailsPage from "@/components/orderDetailsPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -95,6 +96,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user/:userId/allOrders",
     name: "userAllOrders",
     component: userAllOrders,
+  },
+  {
+    path: "/user/:userId/order/:orderId",
+    name: "orderDetails",
+    component: orderDetailsPage,
   },
 ];
 

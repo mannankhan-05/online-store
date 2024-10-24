@@ -2,7 +2,8 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h2 class="text-center mb-6">Your All Orders</h2>
+        <h1 class="text-center mb-3">Order History</h1>
+        <v-divider></v-divider>
       </v-col>
 
       <v-col
@@ -40,6 +41,7 @@
               color="primary"
               variant="outlined"
               width="100%"
+              @click="viewOrderDetails(order.order_id)"
               >View Details</v-btn
             >
           </v-card-actions>
@@ -64,6 +66,14 @@ export default defineComponent({
       `http://localhost:4000/orders/${this.$store.state.userId}`
     );
     this.userOrders = response.data;
+  },
+  methods: {
+    viewOrderDetails(orderId: number) {
+      this.$router.push({
+        name: "orderDetails",
+        params: { userId: this.$store.state.userId, orderId: orderId },
+      });
+    },
   },
 });
 </script>

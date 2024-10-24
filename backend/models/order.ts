@@ -8,11 +8,12 @@ order.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      // primaryKey: true,
       autoIncrement: true,
     },
     order_id: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     order_items: {

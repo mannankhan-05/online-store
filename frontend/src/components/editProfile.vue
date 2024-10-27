@@ -95,19 +95,6 @@ export default defineComponent({
       loading: false as boolean,
     };
   },
-  // async mounted() {
-  // let response = await axios.get(
-  //   `http://localhost:4000/user/${this.$route.params.userId}`
-  // );
-  // console.log(response.data);
-  // this.name = response.data.name;
-  // this.image = response.data.image;
-  // this.email = response.data.email;
-
-  // if (response.data.image) {
-  // this.imageUrl = response.data.image;
-  // }
-  // },
   methods: {
     async editUser() {
       this.loading = true;
@@ -132,28 +119,6 @@ export default defineComponent({
       } finally {
         this.loading = false;
       }
-      // const formData = new FormData();
-      // formData.append("name", this.name);
-      // formData.append("userImage", this.image);
-      // formData.append("email", this.email);
-      // formData.append("password", this.password);
-
-      // try {
-      //   this.loading = true;
-
-      //   await axios.put(
-      //     `http://localhost:4000/editUser/${this.$route.params.userId}`,
-      //     formData,
-      //     {
-      //       headers: {
-      //         "Content-Type": "multipart/form-data",
-      //       },
-      //     }
-      //   );
-      //   this.loading = false;
-      // } catch (err) {
-      //   console.log("Error at updating the user information : ", err);
-      // }
     },
     handleFileChange(event: any) {
       const file = event.target.files[0];

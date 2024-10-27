@@ -3,9 +3,11 @@
     <v-row>
       <v-col cols="12">
         <h1 class="text-center mb-3">Order History</h1>
-        <v-divider></v-divider>
+        <v-divider :thickness="2"></v-divider>
       </v-col>
+    </v-row>
 
+    <v-row>
       <v-col
         v-for="(order, index) in userOrders"
         :key="index"

@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <h1 class="text-center mb-3">Cart</h1>
-        <v-divider></v-divider>
+        <v-divider :thickness="2"></v-divider>
       </v-col>
     </v-row>
 
@@ -101,162 +101,153 @@
     </v-row>
 
     <!-- stepper -->
-    <v-overlay v-model="checkoutDialog" class="stepper-layout">
-      <v-row justify="center">
-        <v-col cols="12" md="12" sm="12">
-          <v-card
-            width="900"
-            elevation="8"
-            border
-            class="mx-auto pa-5 stepper-card"
-          >
-            <v-stepper v-model="step" alt-labels :items="items" hide-actions>
-              <v-stepper-content v-if="step == 1" step="1">
-                <!-- step 1 content -->
-                <div class="pa-5">
-                  <div class="input-fields">
-                    <v-row justify="center">
-                      <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                        <v-text-field
-                          clearable
-                          label="Enter Delivery Address"
-                          placeholder="House # 123, Street # 123, area"
-                          variant="outlined"
-                          v-model="userDeliveryAddress"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" lg="6" md="6" sm="6" xs="12">
-                        <v-text-field
-                          clearable
-                          label="Enter Phone Number"
-                          placeholder="0333-2651785"
-                          variant="outlined"
-                          v-model="userPhoneNumber"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" lg="6" md="6" sm="6" xs="12">
-                        <v-select
-                          clearable
-                          label="Select City"
-                          :items="[
-                            'Karachi',
-                            'Lahore',
-                            'Islamabad',
-                            'Multan',
-                            'Faisalabad',
-                          ]"
-                          variant="outlined"
-                          v-model="userCity"
-                        ></v-select>
-                      </v-col>
-                    </v-row>
-                  </div>
-                </div>
-              </v-stepper-content>
-              <v-stepper-content v-if="step == 2" step="2">
-                <!-- step 2 content -->
-                <div class="pa-5">
-                  <v-container fluid>
-                    <v-radio-group v-model="userPaymentMethod">
-                      <template v-slot:label>
-                        <div class="text-h6">
-                          Select Your
-                          <strong>Payement Method</strong>
-                        </div>
-                      </template>
-                      <v-radio :value="1">
-                        <template v-slot:label>
-                          <div class="text-subtitle-1">
-                            <strong class="text-success"
-                              >Cash on Dilevery</strong
-                            >
-                          </div>
-                        </template>
-                      </v-radio>
-                      <v-radio :value="2">
-                        <template v-slot:label>
-                          <div class="text-subtitle-1">
-                            <strong class="text-primary">Credit Cart</strong>
-                          </div>
-                        </template>
-                      </v-radio>
-                    </v-radio-group>
-                  </v-container>
-                </div>
-              </v-stepper-content>
-              <v-stepper-content v-if="step == 3" step="3">
-                <!-- step 3 content -->
-                <div class="pa-5">
-                  <div class="orderId">
-                    <span class="order-label">Order Id :</span>
-                    <strong class="order-value">{{ orderId }}</strong>
-                  </div>
-                  <v-card class="table-card">
-                    <v-table>
-                      <thead>
-                        <tr>
-                          <th class="text-left table-header font-weight-bold">
-                            Quantity
-                          </th>
-                          <th class="text-left table-header font-weight-bold">
-                            Name
-                          </th>
-                          <th class="text-left table-header font-weight-bold">
-                            Price
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="item in userProductsInCart" :key="item.id">
-                          <td class="table-items">{{ item.quantity }}</td>
-                          <td class="table-items">{{ item.product.name }}</td>
-                          <td class="table-items">
-                            {{ item.product.price * item.quantity }}$
-                          </td>
-                        </tr>
-                      </tbody>
-                    </v-table>
-                  </v-card>
-                  <div class="totalPriceOrder">
-                    <span class="totalPrice-label">Total :</span>
-                    <strong class="total-value">{{ totalOrderAmount }}$</strong>
-                  </div>
-                </div>
-              </v-stepper-content>
-              <v-row justify="start" class="ma-5">
-                <v-spacer></v-spacer>
-                <v-btn
-                  @click="this.checkoutDialog = false"
-                  class="mr-5"
-                  variant="tonal"
-                  >Cancel</v-btn
-                >
-                <v-btn
-                  v-if="!loading"
-                  color="primary"
-                  @click="orderConfirmationSteps"
-                  :text="step == 3 ? 'Confirm Order' : 'Next'"
-                  :disabled="
-                    step == 1
-                      ? !userDeliveryAddress || !userPhoneNumber || !userCity
-                      : step == 2
-                      ? !userPaymentMethod
-                      : false
-                  "
-                ></v-btn>
-                <v-btn v-if="loading" color="primary">
-                  <v-progress-circular
-                    v-if="loading"
-                    indeterminate
-                    :width="5"
-                  ></v-progress-circular>
-                </v-btn>
+    <v-dialog
+      v-model="checkoutDialog"
+      max-width="800"
+      class="stepper-layout stepper-card"
+    >
+      <v-stepper v-model="step" alt-labels :items="items" hide-actions>
+        <v-stepper-content v-if="step == 1" step="1">
+          <!-- step 1 content -->
+          <div class="pa-5">
+            <div class="input-fields">
+              <v-row justify="center">
+                <v-col cols="12" lg="10" md="10" sm="10" xs="10">
+                  <v-text-field
+                    clearable
+                    label="Enter Delivery Address"
+                    placeholder="House # 123, Street # 123, area"
+                    variant="outlined"
+                    v-model="userDeliveryAddress"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" lg="6" md="6" sm="6" xs="12">
+                  <v-text-field
+                    clearable
+                    label="Enter Phone Number"
+                    placeholder="0333-2651785"
+                    variant="outlined"
+                    v-model="userPhoneNumber"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" lg="6" md="6" sm="6" xs="12">
+                  <v-select
+                    clearable
+                    label="Select City"
+                    :items="[
+                      'Karachi',
+                      'Lahore',
+                      'Islamabad',
+                      'Multan',
+                      'Faisalabad',
+                    ]"
+                    variant="outlined"
+                    v-model="userCity"
+                  ></v-select>
+                </v-col>
               </v-row>
-            </v-stepper>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-overlay>
+            </div>
+          </div>
+        </v-stepper-content>
+        <v-stepper-content v-if="step == 2" step="2">
+          <!-- step 2 content -->
+          <div class="pa-5">
+            <v-container fluid>
+              <v-radio-group v-model="userPaymentMethod">
+                <template v-slot:label>
+                  <div class="text-h6">
+                    Select Your
+                    <strong>Payement Method</strong>
+                  </div>
+                </template>
+                <v-radio :value="1">
+                  <template v-slot:label>
+                    <div class="text-subtitle-1">
+                      <strong class="text-success">Cash on Dilevery</strong>
+                    </div>
+                  </template>
+                </v-radio>
+                <v-radio :value="2">
+                  <template v-slot:label>
+                    <div class="text-subtitle-1">
+                      <strong class="text-primary">Credit Cart</strong>
+                    </div>
+                  </template>
+                </v-radio>
+              </v-radio-group>
+            </v-container>
+          </div>
+        </v-stepper-content>
+        <v-stepper-content v-if="step == 3" step="3">
+          <!-- step 3 content -->
+          <div class="pa-5">
+            <div class="orderId">
+              <span class="order-label">Order Id :</span>
+              <strong class="order-value">{{ orderId }}</strong>
+            </div>
+            <v-card class="table-card">
+              <v-table>
+                <thead>
+                  <tr>
+                    <th class="text-left table-header font-weight-bold">
+                      Quantity
+                    </th>
+                    <th class="text-left table-header font-weight-bold">
+                      Name
+                    </th>
+                    <th class="text-left table-header font-weight-bold">
+                      Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in userProductsInCart" :key="item.id">
+                    <td class="table-items">{{ item.quantity }}</td>
+                    <td class="table-items">{{ item.product.name }}</td>
+                    <td class="table-items">
+                      {{ item.product.price * item.quantity }}$
+                    </td>
+                  </tr>
+                </tbody>
+              </v-table>
+            </v-card>
+            <div class="totalPriceOrder">
+              <span class="totalPrice-label">Total :</span>
+              <strong class="total-value">{{ totalOrderAmount }}$</strong>
+            </div>
+          </div>
+        </v-stepper-content>
+        <v-row justify="start" class="ma-5">
+          <v-spacer></v-spacer>
+          <v-btn
+            @click="this.checkoutDialog = false"
+            class="mr-5"
+            variant="tonal"
+            >Cancel</v-btn
+          >
+          <v-btn
+            v-if="!loading"
+            color="primary"
+            @click="orderConfirmationSteps"
+            :text="step == 3 ? 'Confirm Order' : 'Next'"
+            :disabled="
+              step == 1
+                ? !userDeliveryAddress || !userPhoneNumber || !userCity
+                : step == 2
+                ? !userPaymentMethod
+                : false
+            "
+          ></v-btn>
+          <v-btn v-if="loading" color="primary">
+            <v-progress-circular
+              v-if="loading"
+              indeterminate
+              :width="5"
+            ></v-progress-circular>
+          </v-btn>
+        </v-row>
+      </v-stepper>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -536,7 +527,7 @@ v-chip {
 }
 
 .stepper-card {
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .stepper {

@@ -31,8 +31,10 @@ export default defineComponent({
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=SUSE:wght@100..800&display=swap");
 body {
-  font-family: "SUSE", sans-serif;
+  /* font-family: "SUSE", sans-serif; */
+  font-family: "Nunito", sans-serif;
 }
 </style>

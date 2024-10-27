@@ -145,6 +145,13 @@
                   >
                 </v-list-item>
 
+                <v-list-item @click="gotoAllOrders" class="d-flex d-sm-none">
+                  <v-list-item-title>
+                    <v-icon class="mr-2">mdi-view-list</v-icon>
+                    Your Orders</v-list-item-title
+                  >
+                </v-list-item>
+
                 <v-list-item @click="gotoCart" class="d-flex d-sm-none">
                   <v-list-item-title>
                     <v-icon class="mr-2">mdi-cart-outline</v-icon>
@@ -289,6 +296,12 @@ export default defineComponent({
     gotoCart() {
       this.$router.push({
         name: "cart",
+        params: { userId: this.$store.state.userId },
+      });
+    },
+    gotoAllOrders() {
+      this.$router.push({
+        name: "userAllOrders",
         params: { userId: this.$store.state.userId },
       });
     },

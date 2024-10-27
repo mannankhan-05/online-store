@@ -39,6 +39,7 @@ import {
 } from "../controllers/order";
 import {
   getAllOrderItems,
+  getOrderDetailsById,
   getOrderItemsById,
   createOrderItem,
 } from "../controllers/order_item";
@@ -104,6 +105,8 @@ router.post("/createNewOrder", createNewOrder);
 
 // order_item routes :
 router.get("/orderItems", getAllOrderItems);
+
+router.get("/orderDetails/:orderId", getOrderDetailsById);
 
 router.get("/orderItems/:orderId", getOrderItemsById);
 

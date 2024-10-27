@@ -27,6 +27,30 @@ export const getAllOrderItems = (req: Request, res: Response) => {
     });
 };
 
+// Get order details by order_id
+export const getOrderDetailsById = (req: Request, res: Response) => {
+  const orderId: string = req.params.orderId;
+  const limit = parseInt(req.query.limit as string) || 1;
+  order_item
+    .findAll({
+      limit,
+      where: { order_id: orderId },
+      include: [
+        {
+          model: order,
+        },
+      ],
+    })
+    .then((orderDetails) => {
+      logger.info("Fetched order details by order id");
+      res.json(orderDetails);
+    })
+    .catch((err) => {
+      logger.error("Error fetching order details by order id");
+      res.sendStatus(500);
+    });
+};
+
 // Get product details by order_item id
 export const getOrderItemsById = (req: Request, res: Response) => {
   const orderId: string = req.params.orderId;
@@ -36,19 +60,22 @@ export const getOrderItemsById = (req: Request, res: Response) => {
       where: { order_id: orderId },
       include: [
         {
-          model: order,
-        },
-        {
           model: product,
         },
       ],
     })
-    .then((order_items) => {
+    .then((order_items: any) => {
       logger.info("Fetched order items by order id");
+      order_items.forEach((item: any) => {
+        if (item.product && item.product.image) {
+          item.product.image = `http://localhost:4000/productImages/${item.product.image}`;
+        }
+      });
+
       res.json(order_items);
     })
     .catch((err) => {
-      logger.error("Error fetching order items by order id");
+      logger.error("Error fetching order items by order id" + err);
       res.sendStatus(500);
     });
 };

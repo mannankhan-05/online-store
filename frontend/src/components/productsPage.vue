@@ -102,7 +102,7 @@
     </v-row>
 
     <!-- up button -->
-    <div class="upButton" @click="scrollToTop">
+    <div class="upButton d-none d-sm-flex" @click="scrollToTop">
       <v-icon icon="mdi-arrow-up"></v-icon>
     </div>
   </v-container>
@@ -297,8 +297,8 @@ export default defineComponent({
   box-shadow: 1px 1px 5px 1px orange;
   border-radius: 50%;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 40px;
+  right: 40px;
   transition: 0.3s ease-in-out;
 }
 

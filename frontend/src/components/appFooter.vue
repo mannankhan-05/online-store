@@ -37,23 +37,43 @@
           <!-- <v-col cols="12" lg="6" md="6" sm="6" xs="12"> -->
           <v-card class="contact-us-card" width="500">
             <div class="contact-form">
-              <h1 class="contact-us-heading mb-7">Contact Us</h1>
-              <form @submit.prevent="submitForm" class="pl-4 pr-4 pt-2 pb-5">
+              <h1 class="contact-us-heading mb-7">How Can We Help ?</h1>
+              <form class="pl-4 pr-4 pt-2 pb-5">
                 <div class="form-group">
                   <v-text-field
                     variant="outlined"
                     type="text"
-                    label="Name"
+                    label="Your's Name"
                     required
+                    v-model="name"
                   ></v-text-field>
                 </div>
                 <div class="form-group">
                   <v-text-field
                     variant="outlined"
                     type="email"
-                    label="Email"
+                    label="Your's Email"
                     required
+                    v-model="email"
                   ></v-text-field>
+                </div>
+                <div class="form-group">
+                  <v-select
+                    clearable
+                    chips
+                    label="Subject"
+                    :items="[
+                      'General Inquiry',
+                      'Report a Bug',
+                      'Suggestions for Improvement',
+                      'Compliment',
+                      'Complaint',
+                      'Other',
+                    ]"
+                    variant="outlined"
+                    v-model="subject"
+                  >
+                  </v-select>
                 </div>
                 <div class="form-group">
                   <label for="message">Your Remarks:</label>
@@ -62,14 +82,28 @@
                     type="text"
                     aria-label="Your Remarks"
                     required
+                    v-model="remarks"
                   ></v-textarea>
                 </div>
                 <div class="submitButtonContainer">
                   <v-btn
+                    v-if="!loading"
                     class="submitButton bg-light-green-lighten-1 pa-2"
                     style="width: 92%"
+                    @click="submitFeedback"
                   >
                     Submit
+                  </v-btn>
+                  <v-btn
+                    variant="tonal"
+                    class="d-flex justify-center submitButton bg-light-green-lighten-1 pa-2"
+                    v-if="loading"
+                  >
+                    <v-progress-circular
+                      v-if="loading"
+                      indeterminate
+                      :width="5"
+                    ></v-progress-circular>
                   </v-btn>
                 </div>
               </form>
@@ -84,21 +118,38 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   data() {
     return {
-      formData: {
-        name: "",
-        email: "",
-        message: "",
-      },
+      name: "",
+      email: "",
+      subject: "",
+      remarks: "",
+      loading: false,
     };
   },
   methods: {
-    submitForm() {
-      console.log("Form submitted:", this.formData);
-      this.formData = { name: "", email: "", message: "" };
+    async submitFeedback() {
+      try {
+        this.loading = true;
+        await axios.post("http://localhost:4000/addFeedback", {
+          name: this.name,
+          email: this.email,
+          subject: this.subject,
+          remarks: this.remarks,
+        });
+
+        this.name = "";
+        this.email = "";
+        this.subject = "";
+        this.remarks = "";
+
+        this.loading = false;
+      } catch (err) {
+        console.log("Error adding a feedback : " + err);
+      }
     },
   },
 });

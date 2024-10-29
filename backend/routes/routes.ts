@@ -43,6 +43,7 @@ import {
   getOrderItemsById,
   createOrderItem,
 } from "../controllers/order_item";
+import { getAllFeedbacks, addFeedback } from "../controllers/feedback";
 
 // user routes :
 router.get("/users", getAllUsers);
@@ -111,5 +112,10 @@ router.get("/orderDetails/:orderId", getOrderDetailsById);
 router.get("/orderItems/:orderId", getOrderItemsById);
 
 router.post("/createOrderItem", createOrderItem);
+
+// feedback routes :
+router.get("/feedbacks", getAllFeedbacks);
+
+router.post("/addFeedback", addFeedback);
 
 export default router;

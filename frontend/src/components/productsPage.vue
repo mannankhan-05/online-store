@@ -39,6 +39,25 @@
       </v-row>
     </v-sheet>
 
+    <!-- Displaying the skeleton loader when the products are loading -->
+    <v-row>
+      <v-col
+        v-for="product in searchProducts"
+        :key="product.id"
+        cols="12"
+        md="3"
+        sm="6"
+        xs="6"
+      >
+        <v-skeleton-loader
+          v-if="productsLoading"
+          class="mx-auto border"
+          max-width="300"
+          type="image, article"
+        ></v-skeleton-loader>
+      </v-col>
+    </v-row>
+
     <!-- Displaying the empty icon if the searched product doesn't exists -->
     <v-empty-state
       v-if="searchProducts.length === 0"
@@ -48,7 +67,7 @@
     ></v-empty-state>
 
     <!-- Displaying all the products in a grid -->
-    <v-row v-else justify="center">
+    <v-row v-else justify="center" v-show="!productsLoading">
       <v-col
         v-for="product in searchProducts"
         :key="product.id"
@@ -119,10 +138,11 @@ export default defineComponent({
       search: "" as string,
       selectedProductId: 0 as number,
       category: "" as string,
-      limit: 8, // Number of products per page
-      page: 0, // Current page
-      totalPages: 0, // Total number of pages
+      limit: 8, // no. of products per page
+      page: 0, // current page
+      totalPages: 0, // total number of pages
       isLoading: false, // To prevent multiple loads
+      productsLoading: false as boolean,
     };
   },
   computed: {
@@ -163,10 +183,14 @@ export default defineComponent({
       this.products = response.data;
     },
     async showAllProducts() {
+      this.productsLoading = true;
+      await setTimeout(() => {
+        this.productsLoading = false;
+      }, 600);
       try {
         const response = await axios.get("http://localhost:4000/products", {
           params: {
-            limit: this.limit, // Pass the limit
+            limit: this.limit,
             page: this.page, // Pass the current page (offset = page * limit)
           },
         });

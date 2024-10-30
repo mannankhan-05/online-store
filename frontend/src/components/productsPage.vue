@@ -11,7 +11,7 @@
           v-model="search"
           variant="outlined"
           placeholder="Search for products..."
-        ></v-text-field>
+        />
       </v-col>
     </v-row>
 
@@ -309,7 +309,12 @@ export default defineComponent({
   z-index: 1000;
   padding: 5px;
   background-color: #f0ecec;
-  border-radius: 5px;
+  /* border: 1px solid black;
+  border-radius: 40px;
+  max-width: 100%;
+  height: 67px;
+  top: 100px;
+  left: 10%; */
 }
 
 .upButton {
@@ -318,7 +323,8 @@ export default defineComponent({
   align-items: center;
   width: 50px;
   height: 50px;
-  box-shadow: 1px 1px 5px 1px orange;
+  background-color: orange;
+  color: white;
   border-radius: 50%;
   position: fixed;
   bottom: 40px;
@@ -328,6 +334,6 @@ export default defineComponent({
 
 .upButton:hover {
   cursor: pointer;
-  transform: scale(1.06);
+  transform: scale(1.1);
 }
 </style>

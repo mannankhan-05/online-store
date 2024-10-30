@@ -51,14 +51,18 @@
                 variant="outlined"
                 ><v-icon>mdi-minus</v-icon></v-btn
               >
-              <v-text-field
-                v-model="quantity"
-                variant="outlined"
-                type="number"
-                min="1"
-                label="Quantity"
-                class="quantity-field"
-              ></v-text-field>
+              <v-row>
+                <v-col cols="12" xs="12">
+                  <v-text-field
+                    v-model="quantity"
+                    variant="outlined"
+                    type="number"
+                    min="1"
+                    label="Quantity"
+                    class="quantity-field"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
               <v-btn
                 @click="increaseQuantity"
                 class="inc-dec-buttons"
@@ -67,6 +71,7 @@
               >
             </v-col>
 
+            <!-- Total Price -->
             <v-col cols="6" class="d-flex justify-end align-center">
               <div>
                 <v-chip class="totalPrice" color="primary" dark>
@@ -243,9 +248,13 @@ export default defineComponent({
 .singleProductImage {
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  border: 1px solid #bebcbc;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+.singleProductImage:hover {
+  transform: scale(1.05);
 }
 
 .product-details-card {
@@ -253,9 +262,9 @@ export default defineComponent({
 }
 
 .singleProductName {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: bold;
-  color: #424242;
+  color: #333333;
 }
 
 .category-text {
@@ -268,7 +277,7 @@ export default defineComponent({
 }
 
 .quantity-field {
-  width: 25%;
+  width: 100px;
   margin-top: 19px;
 }
 
@@ -276,11 +285,14 @@ export default defineComponent({
   width: 100%;
   margin-top: 20px;
   font-size: 18px;
-  transition: 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #1e88e5, #42a5f5);
+  color: white;
 }
-
 .AddToCartButton:hover {
-  transform: scale(1.01);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .descriptionHeading {
@@ -290,8 +302,9 @@ export default defineComponent({
 
 .singleProductDescription {
   font-size: 18px;
-  color: #616161;
-  line-height: 1.5;
+  color: #5f6368;
+  line-height: 1.6;
+  padding: 10px 0;
 }
 
 .inc-dec-buttons {
@@ -317,18 +330,16 @@ export default defineComponent({
 }
 
 .addedToCartDiv {
-  width: 100%;
-  height: 35px;
-  border-radius: 3px;
-  background-color: rgb(113, 145, 113);
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgba(76, 175, 80, 0.9);
   color: white;
-  font-size: 23px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  animation: fadeOut 4s forwards;
 }
 
 .addedToCartText {

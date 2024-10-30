@@ -91,6 +91,7 @@
                     class="submitButton bg-light-green-lighten-1 pa-2"
                     style="width: 92%"
                     @click="submitFeedback"
+                    :disabled="!name || !email || !subject || !remarks"
                   >
                     Submit
                   </v-btn>

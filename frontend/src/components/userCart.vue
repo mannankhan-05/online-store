@@ -36,14 +36,18 @@
           <v-row justify="end ma-1">
             <v-tooltip text="Remove From Cart" location="top">
               <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  icon
-                  color="red ma-3 removeFromCartButton"
+                <div
+                  class="removeFromCartContainer"
                   @click="removeProductFromCart(item.product.id)"
                 >
-                  <v-icon size="x-large">mdi-delete-circle</v-icon>
-                </v-btn>
+                  <v-icon
+                    class="removeFromCartButton"
+                    color="red"
+                    size="x-large"
+                    v-bind="props"
+                    >mdi-delete-circle</v-icon
+                  >
+                </div>
               </template>
             </v-tooltip>
           </v-row>
@@ -577,11 +581,30 @@ v-chip {
   font-size: 20px;
 }
 
+.removeFromCartContainer {
+  border-radius: 50%;
+  margin-right: 13px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  transition: 0.3s ease-in-out;
+}
+
+.removeFromCartContainer:hover {
+  background-color: rgb(212, 207, 207);
+}
+
 .removeFromCartButton {
+  width: 100%;
+  height: 100%;
+  font-size: 40px;
   transition: 0.3s ease-in-out;
 }
 
 .removeFromCartButton:hover {
-  scale: 1.02;
+  cursor: pointer;
+  scale: 1.1;
 }
 </style>

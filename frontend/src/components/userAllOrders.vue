@@ -2,54 +2,67 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-center mb-3">Order History</h1>
-        <v-divider :thickness="2"></v-divider>
+        <div v-if="userOrders.length !== 0">
+          <h1 class="text-center mb-3">Order History</h1>
+          <v-divider :thickness="2"></v-divider>
+        </div>
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col
-        v-for="(order, index) in userOrders"
-        :key="index"
-        cols="12"
-        xs="12"
-        sm="6"
-        md="4"
-        lg="4"
-      >
-        <v-card class="ordersCard mx-auto" elevation="3">
-          <v-card-title class="d-flex justify-space-between align-center">
-            <div class="orderId">
-              <span> Order ID: {{ order.order_id }} </span>
-            </div>
-          </v-card-title>
+    <v-empty-state
+      v-if="userOrders.length === 0"
+      class="mt-10"
+      icon="mdi-cart-outline"
+      headline="No Orders Yet"
+      text="After placing an order, you can view it here."
+      @click:action="onClickAction"
+    ></v-empty-state>
 
-          <v-card-subtitle class="orderDate">
-            <v-divider></v-divider>
-            Order Date: {{ new Date(order.order_date).toLocaleDateString() }}
-            <v-divider></v-divider>
-          </v-card-subtitle>
+    <div v-else>
+      <v-row>
+        <v-col
+          v-for="(order, index) in userOrders"
+          :key="index"
+          cols="12"
+          xs="12"
+          sm="6"
+          md="4"
+          lg="4"
+        >
+          <v-card class="ordersCard mx-auto" elevation="3">
+            <v-card-title class="d-flex justify-space-between align-center">
+              <div class="orderId">
+                <span> Order ID: {{ order.order_id }} </span>
+              </div>
+            </v-card-title>
 
-          <v-card-text class="orderAmount">
-            <div class="d-flex justify-space-between align-center">
-              <span>Total Amount:</span>
-              <strong>${{ order.order_amount.toFixed(2) }}</strong>
-            </div>
-          </v-card-text>
+            <v-card-subtitle class="orderDate">
+              <v-divider></v-divider>
+              Order Date: {{ new Date(order.order_date).toLocaleDateString() }}
+              <v-divider></v-divider>
+            </v-card-subtitle>
 
-          <v-card-actions class="cardActions">
-            <v-btn
-              class="viewDetailsButton"
-              color="primary"
-              variant="outlined"
-              width="100%"
-              @click="viewOrderDetails(order.order_id)"
-              >View Details</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+            <v-card-text class="orderAmount">
+              <div class="d-flex justify-space-between align-center">
+                <span>Total Amount:</span>
+                <strong>${{ order.order_amount.toFixed(2) }}</strong>
+              </div>
+            </v-card-text>
+
+            <v-card-actions class="cardActions">
+              <v-btn
+                class="viewDetailsButton"
+                color="primary"
+                variant="outlined"
+                width="100%"
+                @click="viewOrderDetails(order.order_id)"
+                >View Details</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 

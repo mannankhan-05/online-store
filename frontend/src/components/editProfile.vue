@@ -1,11 +1,16 @@
 <template>
   <v-container>
+    <!-- Header Section -->
     <v-row justify="center">
       <v-col cols="12" md="6" sm="8">
-        <v-card max-width="600" class="addProductForm pa-5 elevation-5">
-          <v-card-title class="title text-h5 font-weight-bold text-center mb-4">
-            Edit Profile
-          </v-card-title>
+        <h2 class="header-title">User Profile Management</h2>
+        <v-divider :thickness="2" class="border-opacity-50"></v-divider>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="6" sm="8">
+        <v-card class="edit-profile-card" :elevation="8">
+          <v-card-title class="edit-profile-title">Edit Profile</v-card-title>
           <v-text-field
             clearable
             label="Name"
@@ -41,7 +46,7 @@
           <v-text-field
             clearable
             label="Leave the password empty if you don't want to change it"
-            placeholder="Password should be of atleast 8 characters Long"
+            placeholder="Password should be at least 8 characters long"
             :type="passwordVisible ? 'text' : 'password'"
             variant="outlined"
             prepend-inner-icon="mdi-lock"
@@ -53,30 +58,32 @@
                   passwordVisible ? "mdi-eye-off-outline" : "mdi-eye-outline"
                 }}
               </v-icon>
-            </template></v-text-field
-          >
+            </template>
+          </v-text-field>
 
-          <div class="d-flex justify-center">
+          <div class="button-container">
             <v-btn
               v-if="!loading"
               :disabled="updateButtonDisabled"
-              variant="tonal"
-              class="editProfileButton mt-4 mb-4"
+              variant="contained"
+              class="edit-profile-button"
               @click="editUser"
             >
               Update
             </v-btn>
 
-            <v-btn variant="tonal" class="editProfileButton" v-if="loading">
+            <v-btn variant="contained" class="loading-button" v-if="loading">
               <v-progress-circular
                 v-if="loading"
                 indeterminate
                 :width="5"
+                color="white"
               ></v-progress-circular>
             </v-btn>
           </div>
-        </v-card> </v-col
-    ></v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -86,13 +93,13 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
-      name: "" as string,
-      image: "" as string,
-      imageUrl: "" as string,
-      email: "" as string,
-      password: "" as string,
-      passwordVisible: false as boolean,
-      loading: false as boolean,
+      name: "",
+      image: "",
+      imageUrl: "",
+      email: "",
+      password: "",
+      passwordVisible: false,
+      loading: false,
     };
   },
   methods: {
@@ -144,25 +151,58 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.editProfileForm {
-  margin: 0 auto;
-  max-width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px #ccc;
+.header-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: rgba(32, 93, 114, 1);
 }
 
-.editProfileButton {
-  width: 50%;
-  font-size: 19px;
+.edit-profile-card {
+  background-color: rgba(32, 93, 114, 0.85);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-title {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.v-text-field,
+.v-file-input {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.edit-profile-button {
+  width: 100%;
+  font-size: 18px;
   font-weight: 600;
+  color: black;
+  border: none;
+  background-color: white;
+  transition: 0.3s ease-in-out;
 }
 
-.passwordLength {
-  color: red;
-  font-size: 13px;
-  margin-top: -10px;
-  margin-bottom: 10px;
+.edit-profile-button:hover {
+  background-color: rgba(91, 115, 124, 0.85);
+  color: white;
+}
+
+.loading-button {
+  width: 100%;
+  justify-content: center;
 }
 </style>

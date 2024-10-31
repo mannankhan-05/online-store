@@ -2,8 +2,8 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
-        <div class="signUpForm">
-          <h2 class="mb-10">SignUp</h2>
+        <v-card class="signUpForm" :elevation="8">
+          <h2 class="signUp-title">Sign Up</h2>
           <v-text-field
             clearable
             label="Name"
@@ -35,11 +35,10 @@
             prepend-inner-icon="mdi-email"
             v-model="email"
           ></v-text-field>
-
           <v-text-field
             clearable
             label="Password"
-            placeholder="Password should be of atleast 8 characters Long"
+            placeholder="Password should be at least 8 characters"
             :type="passwordVisible ? 'text' : 'password'"
             variant="outlined"
             prepend-inner-icon="mdi-lock"
@@ -51,35 +50,34 @@
                   passwordVisible ? "mdi-eye-off-outline" : "mdi-eye-outline"
                 }}
               </v-icon>
-            </template></v-text-field
-          >
-
+            </template>
+          </v-text-field>
           <v-checkbox
             v-model="terms"
             label="I accept the terms and conditions"
           ></v-checkbox>
-
-          <div class="d-flex justify-center">
+          <div class="button-container">
             <v-btn
               v-if="!loading"
               :disabled="signUpButtonDisabled"
-              variant="tonal"
-              class="signInButton"
+              variant="contained"
+              class="signUpButton"
               @click="registerUser"
             >
               Sign Up
             </v-btn>
-
-            <v-btn variant="tonal" class="signInButton" v-if="loading">
+            <v-btn variant="contained" class="loadingButton" v-if="loading">
               <v-progress-circular
                 v-if="loading"
                 indeterminate
                 :width="5"
+                color="primary"
               ></v-progress-circular>
             </v-btn>
           </div>
-        </div> </v-col
-    ></v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -89,14 +87,14 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
-      name: "" as string,
-      image: "" as string,
-      imageUrl: "" as string,
-      email: "" as string,
-      password: "" as string,
-      terms: false as boolean,
-      loading: false as boolean,
-      passwordVisible: false as boolean,
+      name: "",
+      image: "",
+      imageUrl: "",
+      email: "",
+      password: "",
+      terms: false,
+      loading: false,
+      passwordVisible: false,
     };
   },
   methods: {
@@ -157,17 +155,58 @@ export default defineComponent({
 
 <style scoped>
 .signUpForm {
-  margin: 0 auto;
-  max-width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px #ccc;
+  background-color: rgba(32, 93, 114, 0.85); /* Matching theme */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.signInButton {
-  width: 50%;
-  font-size: 19px;
+.signUp-title {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.v-text-field,
+.v-file-input {
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.signUpButton {
+  width: 100%;
+  font-size: 18px;
   font-weight: 600;
+  color: black;
+  background-color: white;
+  transition: 0.3s ease-in-out;
+}
+
+.signUpButton:hover {
+  background-color: rgba(91, 115, 124, 0.85);
+  color: white;
+}
+
+.v-text-field,
+.v-file-input {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 20px;
+}
+
+.signUpButton:hover {
+  background-color: rgb(221, 215, 215);
+  transition: 0.3s ease-in-out;
+}
+
+.loadingButton {
+  width: 100%;
+  justify-content: center;
 }
 </style>

@@ -45,6 +45,10 @@ import {
   createOrderItem,
 } from "../controllers/order_item";
 import { getAllFeedbacks, addFeedback } from "../controllers/feedback";
+import {
+  getAProductCategory,
+  addProductCategory,
+} from "../controllers/product_category";
 
 // user routes :
 router.get("/users", getAllUsers);
@@ -120,5 +124,10 @@ router.post("/createOrderItem", createOrderItem);
 router.get("/feedbacks", getAllFeedbacks);
 
 router.post("/addFeedback", addFeedback);
+
+// product_category routes :
+router.get("/getByCategory", getAProductCategory);
+
+router.post("/addProductCategory", addProductCategory);
 
 export default router;

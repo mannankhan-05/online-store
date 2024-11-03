@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+import product_category from "./product_category";
 import db from "../config/database";
 
 class product extends Model {}
@@ -27,7 +28,7 @@ product.init(
       allowNull: false,
     },
     category: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     stock: {
@@ -41,5 +42,10 @@ product.init(
     timestamps: true,
   }
 );
+
+// Define the relationship: a product belongs to a category
+product.belongsTo(product_category, { foreignKey: "category_id" });
+// A category can have many products
+product_category.hasMany(product, { foreignKey: "category_id" });
 
 export default product;

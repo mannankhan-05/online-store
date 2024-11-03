@@ -112,12 +112,21 @@ export default defineComponent({
   },
   methods: {
     async addProduct() {
+      const response = await axios.get("http://localhost:4000/getByCategory", {
+        params: {
+          category: this.category,
+        },
+      });
+
+      let categoryId = response.data.id;
+      console.log(categoryId);
+
       const formData = new FormData();
       formData.append("name", this.name);
       formData.append("price", this.price != null ? this.price.toString() : "");
       formData.append("description", this.description);
       formData.append("productImage", this.picture);
-      formData.append("category", this.category);
+      formData.append("category", categoryId);
       formData.append("stock", this.stock != null ? this.stock.toString() : "");
 
       await axios.post("http://localhost:4000/addProduct", formData, {

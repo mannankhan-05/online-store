@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Model } from "sequelize";
 import product from "../models/product";
+import product_category from "../models/product_category";
 import logger from "../logger";
 import multer from "multer";
 import path from "path";
@@ -35,6 +36,11 @@ export const getAllProducts = async (req: Request, res: Response) => {
     const { count, rows: products } = await product.findAndCountAll({
       limit,
       offset,
+      include: [
+        {
+          model: product_category,
+        },
+      ],
     });
 
     const result = products.map((product: any) => {
@@ -100,7 +106,7 @@ export const createProduct = (req: Request, res: Response) => {
       name: string;
       price: number;
       description: string;
-      category: string;
+      category: number;
       stock: number;
     } = req.body;
 

@@ -5,11 +5,12 @@
         <v-app-bar
           scroll-behavior="fade-image inverted"
           scroll-threshold="0"
-          image="https://picsum.photos/1920/1080?random"
+          class="navbar-background"
         >
           <router-link :to="{ name: 'home' }">
-            <img class="logo" :src="require('../assets/logo.png')" />
+            <img class="logo" :src="require('../assets/storeLogo.png')" />
           </router-link>
+          <h1 class="nex-cart-heading">NexCart</h1>
 
           <v-spacer></v-spacer>
 
@@ -235,33 +236,30 @@
       </v-col>
     </v-row>
 
+    <!-- Logout Dialog -->
     <v-row justify="center">
       <v-col cols="12" xs="12" sm="8" md="4">
-        <v-dialog v-model="logoutDialog" max-width="400">
+        <v-dialog v-model="logoutDialog" max-width="440">
           <v-card class="pa-3 elevation-5">
-            <v-card-title class="title text-h5 font-weight-bold">
+            <v-card-title
+              class="d-flex justify-center text-h5 font-weight-bold"
+            >
+              <v-icon>mdi-logout</v-icon>
               Logout
             </v-card-title>
-            <p class="pl-3 mb-3">Are you sure you want to logout?</p>
-            <v-divider class="mt-3 mb-3"></v-divider>
-            <v-card-actions class="d-flex justify-center">
-              <v-btn
-                color="blue darken-1"
-                variant="tonal"
-                text
-                @click="logoutDialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="primary"
-                variant="outlined"
-                text
-                @click="logoutUser"
-              >
-                Logout
-              </v-btn>
-            </v-card-actions>
+            <p class="d-flex justify-center pl-3 mb-3 mt-7">
+              Are you sure you want to logout from your account ?
+            </p>
+            <v-divider class="mt-3 mb-7"></v-divider>
+            <v-btn
+              class="mb-3"
+              variant="outlined"
+              text
+              @click="logoutDialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn class="bg-black" text @click="logoutUser"> Logout </v-btn>
           </v-card>
         </v-dialog>
       </v-col>
@@ -345,6 +343,11 @@ export default defineComponent({
 </script>
 
 <style>
+.navbar-background {
+  background-color: #e3e6e9 !important;
+  color: white;
+}
+
 .logo {
   width: 55px;
   height: 55px;
@@ -353,10 +356,18 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   display: flex;
+  transition: 0.3s ease-in-out;
 }
 
 .logo:hover {
   cursor: pointer;
+  transform: scale(1.04);
+}
+
+.nex-cart-heading {
+  margin-top: 30px;
+  margin-left: 7px;
+  color: rgb(43, 41, 41);
 }
 
 .loginButton,

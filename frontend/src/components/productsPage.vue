@@ -138,7 +138,7 @@ export default defineComponent({
       search: "" as string,
       selectedProductId: 0 as number,
       category: "" as string,
-      limit: 8, // no. of products per page
+      limit: 4, // no. of products per page
       page: 0, // current page
       totalPages: 0, // total number of pages
       isLoading: false, // To prevent multiple loads

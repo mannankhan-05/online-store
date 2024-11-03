@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import store from "../store";
 import productsPage from "@/components/productsPage.vue";
 import userLogin from "@/components/userLogin.vue";
 import userSignUp from "@/components/userSignUp.vue";
@@ -15,11 +16,22 @@ import allUsers from "@/components/allUsers.vue";
 import allOrders from "@/components/allOrders.vue";
 import userAllOrders from "@/components/userAllOrders.vue";
 import orderDetailsPage from "@/components/orderDetailsPage.vue";
+import landingPage from "@/components/landingPage.vue";
+
+// function to check login status
+function isLoggedIn(): boolean {
+  return store.state.isUserLoggedIn;
+}
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
+    component: landingPage,
+  },
+  {
+    path: "/products",
+    name: "products",
     component: productsPage,
   },
   {
@@ -107,6 +119,28 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const publicPages = [
+    "/",
+    "/login",
+    "/signUp",
+    "/forget-password",
+    "/reset-password",
+  ];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = isLoggedIn();
+
+  if (authRequired && !loggedIn) {
+    return next("/");
+  }
+
+  if (to.path == "/" && loggedIn) {
+    return next(`/user/${store.state.userId}`);
+  }
+
+  next();
 });
 
 export default router;

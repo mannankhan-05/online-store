@@ -28,7 +28,7 @@ const upload = multer({ storage: storage });
 
 // Get all products
 export const getAllProducts = async (req: Request, res: Response) => {
-  const limit = parseInt(req.query.limit as string) || 8;
+  const limit = parseInt(req.query.limit as string) || 4;
   const offset = (parseInt(req.query.page as string) || 0) * limit;
 
   try {

@@ -37,6 +37,7 @@
           <v-card-title class="singleProductName">
             {{ selectedProduct.name }}
           </v-card-title>
+          {{ selectedProduct.stock }}
 
           <v-card-subtitle class="category-text">
             Category: {{ selectedProduct.category }}
@@ -155,6 +156,7 @@ export default defineComponent({
         image: "",
         description: "",
         category: "",
+        stock: 0,
       } as Record<string, any>,
       quantity: 1,
       dialog: false,
@@ -221,6 +223,13 @@ export default defineComponent({
             product_id: this.$route.params.productId,
             quantity: this.quantity,
           });
+
+          // await axios.put(
+          //   `http://localhost:4000/decrementStock/${this.$route.params.productId}`,
+          //   {
+          //     quantity: this.quantity,
+          //   }
+          // );
 
           await this.$store.dispatch("getUserProductsInCart");
           await this.$store.commit("showCartBadge");

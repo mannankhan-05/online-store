@@ -17,6 +17,7 @@ import {
   createProduct,
   getProductsByCategory,
   editProduct,
+  decrementStockByOne,
   deleteProduct,
 } from "../controllers/product";
 import {
@@ -74,6 +75,8 @@ router.post("/addProduct", createProduct);
 router.post("/productsByCategory", getProductsByCategory);
 
 router.put("/editProduct/:productId", editProduct);
+
+router.put("/decrementStock/:productId", decrementStockByOne);
 
 router.delete("/deleteProduct/:productId", deleteProduct);
 

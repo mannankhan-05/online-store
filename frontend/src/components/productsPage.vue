@@ -110,10 +110,14 @@
           </div>
           <div class="buttonContainer">
             <v-btn
+              v-if="product.stock > 0"
               class="bg-black font-weight-md"
               width="92%"
               @click="showFullProduct(product.id)"
               >Show Full</v-btn
+            >
+            <v-btn v-else color="red" variant="outlined" width="92%"
+              >Out Of Stock</v-btn
             >
           </div>
         </v-sheet>

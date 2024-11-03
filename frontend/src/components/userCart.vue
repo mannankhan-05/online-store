@@ -399,6 +399,14 @@ export default defineComponent({
             orderId: this.orderId,
             productId: this.userProductsInCart[i].product.id,
           });
+
+          // decrement the stock of the product
+          await axios.put(
+            `http://localhost:4000/decrementStock/${this.userProductsInCart[i].product.id}`,
+            {
+              quantity: this.userProductsInCart[i].quantity,
+            }
+          );
         }
 
         this.loading = false;

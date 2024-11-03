@@ -95,11 +95,13 @@ export const createProduct = (req: Request, res: Response) => {
       price,
       description,
       category,
+      stock,
     }: {
       name: string;
       price: number;
       description: string;
       category: string;
+      stock: number;
     } = req.body;
 
     const image: string = req.file ? req.file.filename : "";
@@ -111,6 +113,7 @@ export const createProduct = (req: Request, res: Response) => {
         description,
         image,
         category,
+        stock,
       })
       .then((product) => {
         logger.info(`A new product is created`);
@@ -145,6 +148,43 @@ export const getProductsByCategory = (req: Request, res: Response) => {
     });
 };
 
+// to decrement the stock of a product
+export const decrementStockByOne = (req: Request, res: Response) => {
+  const productId: number = parseInt(req.params.productId, 10);
+  const quantity: number = req.body.quantity;
+
+  product
+    .findByPk(productId)
+    .then((product: any) => {
+      if (product.stock > 0) {
+        product
+          .update(
+            { stock: product.stock - quantity },
+            { where: { id: productId } }
+          )
+          .then(() => {
+            logger.info(`Stock of product with id ${productId} is decremented`);
+            res.sendStatus(200);
+          })
+          .catch((err: unknown) => {
+            logger.error(
+              `Error decrementing stock of product with id ${productId} : ${err}`
+            );
+            res.sendStatus(500);
+          });
+      } else {
+        logger.warn(`Stock of product with id ${productId} is 0`);
+        res.sendStatus(400);
+      }
+    })
+    .catch((err) => {
+      logger.error(
+        `Error retrieving product with id ${productId} to decrement stock : ${err}`
+      );
+      res.sendStatus(500);
+    });
+};
+
 // to edit a product
 export const editProduct = (req: Request, res: Response) => {
   upload.single("productImage")(req, res, (err) => {
@@ -160,7 +200,9 @@ export const editProduct = (req: Request, res: Response) => {
       name,
       price,
       description,
-    }: { name: string; price: number; description: string } = req.body;
+      stock,
+    }: { name: string; price: number; description: string; stock: number } =
+      req.body;
 
     product
       .update(
@@ -169,6 +211,7 @@ export const editProduct = (req: Request, res: Response) => {
           price,
           description,
           image,
+          stock,
         },
         { where: { id: productId } }
       )

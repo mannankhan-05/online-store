@@ -74,6 +74,14 @@
               v-model="category"
               class="mb-4"
             ></v-select>
+            <v-text-field
+              label="Stock"
+              required
+              variant="outlined"
+              type="number"
+              v-model="stock"
+              class="mb-4"
+            ></v-text-field>
           </v-card-text>
           <v-card-actions class="d-flex justify-end">
             <v-btn color="primary" @click="addProduct" class="px-5">
@@ -95,6 +103,7 @@ export default defineComponent({
     return {
       name: "" as string,
       price: 0 as number | null,
+      stock: 0 as number | null,
       description: "" as string,
       picture: "" as string,
       category: "" as string,
@@ -109,6 +118,7 @@ export default defineComponent({
       formData.append("description", this.description);
       formData.append("productImage", this.picture);
       formData.append("category", this.category);
+      formData.append("stock", this.stock != null ? this.stock.toString() : "");
 
       await axios.post("http://localhost:4000/addProduct", formData, {
         headers: {
@@ -118,6 +128,7 @@ export default defineComponent({
 
       this.name = "";
       this.price = null;
+      this.stock = null;
       this.description = "";
       this.picture = "";
       this.imageUrl = "";

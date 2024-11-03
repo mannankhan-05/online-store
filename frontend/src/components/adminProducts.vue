@@ -124,6 +124,16 @@
                 {{ text }}
               </template>
             </v-file-input>
+
+            <v-text-field
+              v-model="editingProduct.stock"
+              variant="outlined"
+              label="Stock Available"
+              prepend-icon="mdi-cash"
+              required
+              type="number"
+              prefix="$"
+            ></v-text-field>
           </v-form>
         </v-card-text>
 
@@ -165,6 +175,7 @@ export default defineComponent({
         price: 0 as number,
         description: "" as string,
         image: "" as string,
+        stock: 0 as number,
       },
       editProductDialog: false as boolean,
       imageUrl: "" as string,

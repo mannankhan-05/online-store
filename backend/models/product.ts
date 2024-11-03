@@ -30,6 +30,10 @@ product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize: db,

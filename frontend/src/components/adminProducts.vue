@@ -226,8 +226,9 @@ export default defineComponent({
       formData.append("price", this.editingProduct.price.toString());
       formData.append("description", this.editingProduct.description);
       formData.append("productImage", this.editingProduct.image);
+      formData.append("stock", String(this.editingProduct.stock));
 
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:4000/editProduct/${this.editingProduct.id}`,
         formData,
         {

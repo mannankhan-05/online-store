@@ -44,8 +44,8 @@ product.init(
 );
 
 // Define the relationship: a product belongs to a category
-product.belongsTo(product_category, { foreignKey: "category_id" });
+product.belongsTo(product_category, { foreignKey: "category" });
 // A category can have many products
-product_category.hasMany(product, { foreignKey: "category_id" });
+product_category.hasMany(product, { foreignKey: "category" });
 
 export default product;

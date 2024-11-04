@@ -40,7 +40,7 @@
           {{ selectedProduct.stock }}
 
           <v-card-subtitle class="category-text">
-            Category: {{ selectedProduct.category }}
+            Category: {{ selectedProduct.product_category?.category }}
           </v-card-subtitle>
 
           <!-- Quantity Selector -->

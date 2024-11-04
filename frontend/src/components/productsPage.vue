@@ -105,7 +105,7 @@
               <p class="categoryHeading font-weight-thin d-inline">
                 category :
               </p>
-              {{ product.category }}
+              {{ product.product_category.category }}
             </div>
           </div>
           <div class="buttonContainer">
@@ -177,7 +177,6 @@ export default defineComponent({
       }
     },
     async sortProductsByCategories() {
-      console.log(this.category);
       let response = await axios.post(
         "http://localhost:4000/productsByCategory",
         {
@@ -185,6 +184,28 @@ export default defineComponent({
         }
       );
       this.products = response.data;
+
+      // let response1 = await axios.get(
+      //   "http://localhost:4000/AllProductsByCategories",
+      //   {
+      //     params: {
+      //       category: this.category,
+      //     },
+      //   }
+      // );
+      // let categoryId = response1.data.id;
+      // console.log(response1.data.id);
+      // console.log(categoryId);
+
+      // let response2 = await axios.post(
+      //   "http://localhost:4000/productsByCategory",
+      //   {
+      //     params: {
+      //       category: categoryId,
+      //     },
+      //   }
+      // );
+      // this.products = response2.data;
     },
     async showAllProducts() {
       this.productsLoading = true;

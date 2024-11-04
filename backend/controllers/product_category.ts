@@ -2,6 +2,25 @@ import { Request, Response } from "express";
 import product_category from "../models/product_category";
 import logger from "../logger";
 
+// get all product by categories
+export const getAllProductByCategories = async (
+  req: Request,
+  res: Response
+) => {
+  const category = req.query.category as string;
+
+  product_category
+    .findAll({ where: { category: category } })
+    .then((productsByCategories) => {
+      logger.info(`Retrieved all products by categories`);
+      res.json(productsByCategories);
+    })
+    .catch((err) => {
+      logger.error(`Error retrieving products by categories: ${err}`);
+      res.status(500);
+    });
+};
+
 // get a product categories
 export const getAProductCategory = async (req: Request, res: Response) => {
   const category = req.query.category as string;

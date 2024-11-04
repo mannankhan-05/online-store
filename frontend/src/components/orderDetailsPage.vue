@@ -105,7 +105,7 @@
                   <div class="productField">
                     <strong>Category : </strong>
                     <span class="productDetails">{{
-                      item.product.category
+                      item.product.product_category.category
                     }}</span>
                   </div>
                   <v-divider class="my-3"></v-divider>

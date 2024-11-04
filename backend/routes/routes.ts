@@ -46,6 +46,7 @@ import {
 } from "../controllers/order_item";
 import { getAllFeedbacks, addFeedback } from "../controllers/feedback";
 import {
+  getAllProductByCategories,
   getAProductCategory,
   addProductCategory,
 } from "../controllers/product_category";
@@ -126,6 +127,8 @@ router.get("/feedbacks", getAllFeedbacks);
 router.post("/addFeedback", addFeedback);
 
 // product_category routes :
+router.get("/AllProductsByCategories", getAllProductByCategories);
+
 router.get("/getByCategory", getAProductCategory);
 
 router.post("/addProductCategory", addProductCategory);

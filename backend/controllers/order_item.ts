@@ -3,6 +3,7 @@ import logger from "../logger";
 import order_item from "../models/order_item";
 import order from "../models/order";
 import product from "../models/product";
+import product_category from "../models/product_category";
 
 // Get all order items
 export const getAllOrderItems = (req: Request, res: Response) => {
@@ -61,6 +62,11 @@ export const getOrderItemsById = (req: Request, res: Response) => {
       include: [
         {
           model: product,
+          include: [
+            {
+              model: product_category,
+            },
+          ],
         },
       ],
     })

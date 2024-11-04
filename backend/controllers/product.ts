@@ -62,7 +62,13 @@ export const getProductById = (req: Request, res: Response) => {
   // 10 is the radix parameter which specifies the base of the number in below line
   const productId: number = parseInt(req.params.productId, 10);
   product
-    .findByPk(productId)
+    .findByPk(productId, {
+      include: [
+        {
+          model: product_category,
+        },
+      ],
+    })
     .then((product) => {
       if (product) {
         logger.info(`Product with id ${productId} was retrieved`);
@@ -134,7 +140,7 @@ export const createProduct = (req: Request, res: Response) => {
 
 // to get products by category
 export const getProductsByCategory = (req: Request, res: Response) => {
-  const { category }: { category: string } = req.body;
+  const { category }: { category: number } = req.body;
 
   product
     .findAll({ where: { category: category } })

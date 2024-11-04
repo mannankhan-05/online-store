@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <!-- heading of admin panel -->
+    <!-- Heading of admin panel -->
     <v-row justify="center" class="admin-heading">
       <v-col>
         <v-card elevation="3" class="pt-3 pb-3 rounded admin-panel-card">
@@ -9,67 +9,68 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12" md="6" sm="6" xs="10" class="d-flex justify-center">
+    <v-row class="button-row">
+      <!-- Add Product Button -->
+      <v-col cols="12" md="4" sm="6" xs="10" class="d-flex justify-center">
         <v-sheet
-          :height="170"
-          :width="300"
-          border
-          class="sheet-button sheet1 fade-in"
+          :height="200"
+          :width="350"
+          class="sheet-button fade-in sheet-add-product"
+          @click="pushToAddProduct"
         >
-          <v-tooltip text="Add A Product" location="bottom">
-            <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" @click="pushToAddProduct">mdi-plus</v-icon>
-            </template>
-          </v-tooltip>
+          <v-icon class="icon-style">mdi-plus</v-icon>
+          <h3 class="button-text">Add Product</h3>
         </v-sheet>
       </v-col>
-      <v-col cols="12" md="6" sm="6" xs="10" class="d-flex justify-center">
+
+      <!-- See All Products Button -->
+      <v-col cols="12" md="4" sm="6" xs="10" class="d-flex justify-center">
         <v-sheet
-          :height="170"
-          :width="300"
-          border
-          class="sheet-button sheet2 fade-in"
+          :height="200"
+          :width="350"
+          class="sheet-button fade-in sheet-view-products"
+          @click="pushToAdminProducts"
         >
-          <v-tooltip text="See All Products" location="bottom">
-            <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" @click="pushToAdminProducts"
-                >mdi-view-list</v-icon
-              >
-            </template>
-          </v-tooltip>
+          <v-icon class="icon-style">mdi-view-list</v-icon>
+          <h3 class="button-text">See All Products</h3>
         </v-sheet>
       </v-col>
-      <v-col cols="12" md="6" sm="6" xs="10" class="d-flex justify-center">
+
+      <!-- See All Users Button -->
+      <v-col cols="12" md="4" sm="6" xs="10" class="d-flex justify-center">
         <v-sheet
-          :height="170"
-          :width="300"
-          border
-          class="sheet-button sheet3 fade-in"
+          :height="200"
+          :width="350"
+          class="sheet-button fade-in sheet-view-users"
+          @click="gotoAllUsers"
         >
-          <v-tooltip text="See All Users" location="bottom">
-            <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" @click="gotoAllUsers"
-                >mdi-account-multiple-outline</v-icon
-              >
-            </template>
-          </v-tooltip>
+          <v-icon class="icon-style">mdi-account-multiple-outline</v-icon>
+          <h3 class="button-text">See All Users</h3>
         </v-sheet>
       </v-col>
-      <v-col cols="12" md="6" sm="6" xs="10" class="d-flex justify-center">
+
+      <!-- View Orders Button -->
+      <v-col cols="12" md="4" sm="6" xs="10" class="d-flex justify-center">
         <v-sheet
-          :height="170"
-          :width="300"
-          border
-          class="sheet-button sheet4 fade-in"
+          :height="200"
+          :width="350"
+          class="sheet-button fade-in sheet-view-orders"
+          @click="gotoAllOrders"
         >
-          <v-tooltip text="View Orders" location="bottom">
-            <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" @click="gotoAllOrders"
-                >mdi-cart-arrow-down</v-icon
-              >
-            </template>
-          </v-tooltip>
+          <v-icon class="icon-style">mdi-cart-arrow-down</v-icon>
+          <h3 class="button-text">View Orders</h3>
+        </v-sheet>
+      </v-col>
+
+      <!-- Add Product Categories Button -->
+      <v-col cols="12" md="4" sm="6" xs="10" class="d-flex justify-center">
+        <v-sheet
+          :height="200"
+          :width="350"
+          class="sheet-button fade-in sheet-add-category"
+        >
+          <v-icon class="icon-style">mdi-tag-plus</v-icon>
+          <h3 class="button-text">Add Product Category</h3>
         </v-sheet>
       </v-col>
     </v-row>
@@ -82,28 +83,16 @@ import { defineComponent } from "vue";
 export default defineComponent({
   methods: {
     pushToAddProduct() {
-      this.$router.push({
-        name: "addProduct",
-        params: { userId: this.$store.state.userId },
-      });
+      this.$router.push({ name: "addProduct" });
     },
     pushToAdminProducts() {
-      this.$router.push({
-        name: "adminProducts",
-        params: { userId: this.$store.state.userId },
-      });
+      this.$router.push({ name: "adminProducts" });
     },
     gotoAllUsers() {
-      this.$router.push({
-        name: "allUsers",
-        params: { userId: this.$store.state.userId },
-      });
+      this.$router.push({ name: "allUsers" });
     },
     gotoAllOrders() {
-      this.$router.push({
-        name: "allOrders",
-        params: { userId: this.$store.state.userId },
-      });
+      this.$router.push({ name: "allOrders" });
     },
   },
 });
@@ -117,15 +106,77 @@ export default defineComponent({
 }
 
 .headline {
-  font-size: 2rem;
-  color: #1976d2;
-  text-transform: uppercase;
+  font-size: 2.5rem;
+  color: #1e88e5;
+  font-weight: bold;
 }
 
 /* Admin panel card */
 .admin-panel-card {
-  border-radius: 15px;
+  border-radius: 12px;
   animation: fadeInUp 0.5s ease-out;
+}
+
+/* Sheet button styles */
+.sheet-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  border-radius: 20px;
+  color: white;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.6s ease forwards;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-style {
+  font-size: 50px;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+/* Button text styling */
+.button-text {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Modern gradients for each button */
+.sheet-add-product {
+  background: linear-gradient(135deg, #ff9800, #ffb74d);
+}
+
+.sheet-view-products {
+  background: linear-gradient(135deg, #4caf50, #81c784);
+}
+
+.sheet-view-users {
+  background: linear-gradient(135deg, #2196f3, #64b5f6);
+}
+
+.sheet-view-orders {
+  background: linear-gradient(135deg, #f44336, #e57373);
+}
+
+.sheet-add-category {
+  background: linear-gradient(135deg, #ab47bc, #ba68c8);
+}
+
+/* Adding hover and focus effects */
+.sheet-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.sheet-button:focus {
+  outline: none;
+  transform: scale(1.05);
 }
 
 /* Animation keyframes */
@@ -140,53 +191,24 @@ export default defineComponent({
   }
 }
 
-/* Sheet buttons */
-.sheet-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 40px;
-  border-radius: 20px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-.sheet-button:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Individual sheet button colors */
-.sheet1 {
-  background-color: #ff9800;
-}
-
-.sheet2 {
-  background-color: #4caf50;
-}
-
-.sheet3 {
-  background-color: #2196f3;
-}
-
-.sheet4 {
-  background-color: #f44336;
-}
-
-/* Adding a delay for the fade-in animation */
-.sheet1 {
+/* Adding delays for fade-in animation */
+.sheet-add-product {
   animation-delay: 0.1s;
 }
-.sheet2 {
+
+.sheet-view-products {
   animation-delay: 0.2s;
 }
-.sheet3 {
+
+.sheet-view-users {
   animation-delay: 0.3s;
 }
-.sheet4 {
+
+.sheet-view-orders {
   animation-delay: 0.4s;
+}
+
+.sheet-add-category {
+  animation-delay: 0.5s;
 }
 </style>

@@ -2,7 +2,10 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-center mb-3">Cart</h1>
+        <h1 class="text-center mb-3">
+          <v-icon>mdi-cart-arrow-down</v-icon>
+          Cart
+        </h1>
         <v-divider :thickness="2"></v-divider>
       </v-col>
     </v-row>

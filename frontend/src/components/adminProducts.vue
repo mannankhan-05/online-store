@@ -15,6 +15,14 @@
       </template>
     </v-tooltip>
 
+    <!-- Header Section -->
+    <v-row justify="center">
+      <v-col cols="12" md="6" sm="12">
+        <h2 class="header-title">Product Administration Dashboard</h2>
+        <v-divider :thickness="2" class="border-opacity-50"></v-divider>
+      </v-col>
+    </v-row>
+
     <!-- Product that admin can update or delete -->
     <v-row justify="center">
       <v-col

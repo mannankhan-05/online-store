@@ -15,12 +15,18 @@
       </template>
     </v-tooltip>
 
+    <!-- Header Section -->
     <v-row justify="center">
-      <v-col cols="12" md="6" sm="12">
-        <v-card max-width="600" class="addProductForm pa-5 elevation-5">
-          <v-card-title class="title text-h5 font-weight-bold text-center mb-4">
-            Add Product
-          </v-card-title>
+      <v-col cols="12" md="6" sm="8" xs="12">
+        <h3 class="header-title">Product Management</h3>
+        <v-divider :thickness="2" class="border-opacity-50"></v-divider>
+      </v-col>
+    </v-row>
+    <!-- Add product form -->
+    <v-row justify="center">
+      <v-col cols="12" md="6" sm="8">
+        <v-card class="add-product-card" :elevation="8">
+          <v-card-title class="add-product-title">Add Product</v-card-title>
           <v-card-text>
             <v-text-field
               label="Name"
@@ -61,15 +67,7 @@
             </v-file-input>
             <v-select
               label="Category"
-              :items="[
-                'Clothing',
-                'Shoes',
-                'Electronics',
-                'Books',
-                'Personal Care',
-                'Food',
-                'Beverage',
-              ]"
+              :items="categories"
               variant="outlined"
               v-model="category"
               class="mb-4"
@@ -83,11 +81,26 @@
               class="mb-4"
             ></v-text-field>
           </v-card-text>
-          <v-card-actions class="d-flex justify-end">
-            <v-btn color="primary" @click="addProduct" class="px-5">
+          <div class="button-container">
+            <v-btn
+              v-if="!loading"
+              :disabled="addButtonDisabled"
+              variant="contained"
+              class="add-product-button"
+              @click="addProduct"
+            >
               Add Product
             </v-btn>
-          </v-card-actions>
+
+            <v-btn variant="contained" class="loading-button" v-if="loading">
+              <v-progress-circular
+                v-if="loading"
+                indeterminate
+                :width="5"
+                color="white"
+              ></v-progress-circular>
+            </v-btn>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -101,6 +114,7 @@ import axios from "axios";
 export default defineComponent({
   data() {
     return {
+      categories: [] as string[],
       name: "" as string,
       price: 0 as number | null,
       stock: 0 as number | null,
@@ -109,6 +123,13 @@ export default defineComponent({
       category: "" as string,
       imageUrl: "" as string,
     };
+  },
+  async mounted() {
+    let response = await axios.get("http://localhost:4000/allCategories");
+    // Map response data to extract category names
+    this.categories = response.data.map(
+      (item: { category: string }) => item.category
+    );
   },
   methods: {
     async addProduct() {
@@ -152,10 +173,77 @@ export default defineComponent({
       }
     },
   },
+  computed: {
+    addButtonDisabled() {
+      return (
+        !this.name ||
+        !this.price ||
+        !this.description ||
+        !this.picture ||
+        !this.category ||
+        !this.stock
+      );
+    },
+  },
 });
 </script>
 
 <style>
+.header-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: rgba(32, 93, 114, 1);
+}
+
+.add-product-card {
+  background-color: rgba(32, 93, 114, 0.85);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-product-title {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.v-text-field,
+.v-file-input {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.add-product-button {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  color: black;
+  border: none;
+  background-color: white;
+  transition: 0.3s ease-in-out;
+}
+
+.add-product-button:hover {
+  background-color: rgba(91, 115, 124, 0.85);
+  color: white;
+}
+
+.loading-button {
+  width: 100%;
+  justify-content: center;
+}
+
 .addProductForm {
   border-radius: 12px;
   background-color: #f9f9f9;

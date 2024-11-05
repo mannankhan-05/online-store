@@ -177,35 +177,38 @@ export default defineComponent({
       }
     },
     async sortProductsByCategories() {
-      let response = await axios.post(
-        "http://localhost:4000/productsByCategory",
-        {
-          category: this.category,
-        }
-      );
-      this.products = response.data;
-
-      // let response1 = await axios.get(
-      //   "http://localhost:4000/AllProductsByCategories",
-      //   {
-      //     params: {
-      //       category: this.category,
-      //     },
-      //   }
-      // );
-      // let categoryId = response1.data.id;
-      // console.log(response1.data.id);
-      // console.log(categoryId);
-
-      // let response2 = await axios.post(
+      // let response = await axios.post(
       //   "http://localhost:4000/productsByCategory",
       //   {
-      //     params: {
-      //       category: categoryId,
-      //     },
+      //     category: this.category,
       //   }
       // );
-      // this.products = response2.data;
+      // this.products = response.data;
+
+      try {
+        let response1 = await axios.post(
+          "http://localhost:4000/AllProductsByCategories",
+          {
+            category: this.category,
+          }
+        );
+        let categoryId = response1.data.id;
+        console.log(categoryId);
+
+        if (categoryId) {
+          let response2 = await axios.post(
+            "http://localhost:4000/productsByCategory",
+            {
+              category: categoryId,
+            }
+          );
+          this.products = response2.data;
+        } else {
+          this.products = [];
+        }
+      } catch (err) {
+        console.log("Error fetching products by category: " + err);
+      }
     },
     async showAllProducts() {
       this.productsLoading = true;

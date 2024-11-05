@@ -68,10 +68,58 @@
           :height="200"
           :width="350"
           class="sheet-button fade-in sheet-add-category"
+          @click="addProductCategoryDialog = true"
         >
           <v-icon class="icon-style">mdi-tag-plus</v-icon>
           <h3 class="button-text">Add Product Category</h3>
         </v-sheet>
+      </v-col>
+
+      <!-- Add Product Category Dialog -->
+      <v-col cols="12" xs="12" sm="8" md="4">
+        <v-dialog v-model="addProductCategoryDialog" max-width="440" persistant>
+          <v-card class="pa-3 elevation-5">
+            <v-card-title
+              class="d-flex justify-center text-h5 font-weight-bold"
+            >
+              <v-icon class="mr-3">mdi-plus-circle-outline</v-icon>
+              Product Category
+            </v-card-title>
+            <v-text-field
+              clearable
+              class="mb-6 mt-10"
+              variant="outlined"
+              label="Name Of Category"
+              type="text"
+              v-model="category"
+            >
+            </v-text-field>
+            <v-btn
+              class="mb-3"
+              variant="outlined"
+              text
+              @click="addProductCategoryDialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              v-if="!loading"
+              class="bg-black"
+              text
+              :disabled="!category"
+              @click="addCategory"
+            >
+              add
+            </v-btn>
+            <v-btn variant="tonal" class="d-flex justify-center" v-if="loading">
+              <v-progress-circular
+                v-if="loading"
+                indeterminate
+                :width="5"
+              ></v-progress-circular>
+            </v-btn>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -79,8 +127,16 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import axios from "axios";
 
 export default defineComponent({
+  data() {
+    return {
+      addProductCategoryDialog: false as boolean,
+      category: "" as string,
+      loading: false as boolean,
+    };
+  },
   methods: {
     pushToAddProduct() {
       this.$router.push({ name: "addProduct" });
@@ -93,6 +149,16 @@ export default defineComponent({
     },
     gotoAllOrders() {
       this.$router.push({ name: "allOrders" });
+    },
+    async addCategory() {
+      this.loading = true;
+      await axios.post("http://localhost:4000/addProductCategory", {
+        category: this.category,
+      });
+
+      this.category = "";
+      this.loading = false;
+      this.addProductCategoryDialog = false;
     },
   },
 });

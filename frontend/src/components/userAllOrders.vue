@@ -3,7 +3,10 @@
     <v-row>
       <v-col cols="12">
         <div v-if="userOrders.length !== 0">
-          <h1 class="text-center mb-3">Order History</h1>
+          <h1 class="text-center mb-3">
+            <v-icon>mdi-history</v-icon>
+            Order History
+          </h1>
           <v-divider :thickness="2"></v-divider>
         </div>
       </v-col>

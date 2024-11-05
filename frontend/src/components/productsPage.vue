@@ -1,22 +1,22 @@
 <template>
-  <v-container class="pl-3 mt-15">
+  <v-container class="pl-3 mt-6">
     <!-- input field for product search functionality -->
     <v-row justify="center">
       <v-col cols="12" md="8" sm="8" xs="10">
-        <v-text-field
-          class="searchProducts"
-          clearable
-          label="Search for Products"
-          prepend-inner-icon="mdi-card-search-outline"
-          v-model="search"
-          variant="outlined"
-          placeholder="Search for products..."
-        />
+        <div class="rounded-input-container">
+          <input
+            type="text"
+            class="rounded-input"
+            placeholder="Search for Products..."
+            v-model="search"
+          />
+          <v-icon class="search-icon" left>mdi-magnify-minus-outline</v-icon>
+        </div>
       </v-col>
     </v-row>
 
     <!-- Category filter chips -->
-    <v-sheet class="py-4 mb-4 px-1">
+    <v-sheet class="py-4 px-1">
       <v-row class="d-flex align-center mt-2" justify="center">
         <v-chip-group
           selected-class="text-primary"
@@ -260,6 +260,44 @@ export default defineComponent({
 </script>
 
 <style>
+.rounded-input-container {
+  position: relative;
+  max-width: 800px;
+  width: 100%;
+}
+
+.rounded-input {
+  width: 100%;
+  height: 55px;
+  padding: 15px 20px;
+  padding-left: 45px; /* Adjust for icon spacing */
+  font-size: 20px;
+  border: none;
+  border-radius: 60px;
+  outline: none;
+  transition: 0.3s ease-in-out;
+  background: linear-gradient(135deg, #dbe0eb, #f3f5f7);
+}
+
+.rounded-input:hover {
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-input:focus {
+  border-color: orange;
+  box-shadow: 0 0 0 3px orange,
+    /* Blue glow on focus */ 0 4px 8px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.1), 0 15px 25px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #757575;
+}
+
 .buttonContainer {
   display: flex;
   justify-content: center;
@@ -322,27 +360,6 @@ export default defineComponent({
   transform: translateY(-5px) scale(1.015);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   background-color: #fafafa;
-}
-
-.searchProducts {
-  font-size: 35px;
-  height: 67px;
-  font-weight: 550;
-  position: fixed;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 40px);
-  max-width: 800px;
-  z-index: 1000;
-  padding: 5px;
-  background-color: #f0ecec;
-  /* border: 1px solid black;
-  border-radius: 40px;
-  max-width: 100%;
-  height: 67px;
-  top: 100px;
-  left: 10%; */
 }
 
 .upButton {

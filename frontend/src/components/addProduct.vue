@@ -188,7 +188,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .header-title {
   text-align: center;
   font-size: 32px;

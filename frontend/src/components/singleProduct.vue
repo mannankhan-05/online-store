@@ -37,7 +37,9 @@
           <v-card-title class="singleProductName">
             {{ selectedProduct.name }}
           </v-card-title>
-          {{ selectedProduct.stock }}
+          <v-card-subtitle class="stock-text">
+            Available Stock: {{ selectedProduct.stock }}
+          </v-card-subtitle>
 
           <v-card-subtitle class="category-text">
             Category: {{ selectedProduct.product_category?.category }}
@@ -276,6 +278,25 @@ export default defineComponent({
   color: #333333;
 }
 
+.stock-text {
+  width: fit-content;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #0dcf14; /* Green for in-stock items */
+  color: white;
+  border-radius: 40px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .stock-text {
+    font-size: 16px; /* Slightly smaller font for mobile */
+    text-align: center;
+  }
+}
+
 .category-text {
   font-size: 18px;
   color: #757575;
@@ -294,13 +315,13 @@ export default defineComponent({
   width: 100%;
   margin-top: 20px;
   font-size: 18px;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   border-radius: 8px;
   background: linear-gradient(45deg, #1e88e5, #42a5f5);
   color: white;
 }
 .AddToCartButton:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 

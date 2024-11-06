@@ -3,7 +3,7 @@
     <!-- input field for product search functionality -->
     <v-row justify="center">
       <v-col cols="12" md="8" sm="8" xs="10">
-        <div class="rounded-input-container">
+        <!-- <div class="rounded-input-container">
           <input
             type="text"
             class="rounded-input"
@@ -11,6 +11,24 @@
             v-model="search"
           />
           <v-icon class="search-icon" left>mdi-magnify-minus-outline</v-icon>
+        </div> -->
+        <div class="rounded-input-container">
+          <v-autocomplete
+            clearable
+            :items="items"
+            append-inner-icon="mdi-send-circle-outline"
+            class="mx-auto"
+            density="comfortable"
+            menu-icon=""
+            placeholder="Search Google or type a URL"
+            prepend-inner-icon="mdi-magnify"
+            style="max-width: 800px"
+            theme="light"
+            variant="solo"
+            auto-select-first
+            item-props
+            rounded
+          ></v-autocomplete>
         </div>
       </v-col>
     </v-row>
@@ -60,7 +78,7 @@
 
     <!-- Displaying the empty icon if the searched product doesn't exists -->
     <v-empty-state
-      v-if="searchProducts.length === 0"
+      v-if="products.length === 0"
       icon="mdi-magnify"
       title="We couldn't find a match."
       text="We couldn't find any product matching your search"
@@ -69,7 +87,7 @@
     <!-- Displaying all the products in a grid -->
     <v-row v-else justify="center" v-show="!productsLoading">
       <v-col
-        v-for="product in searchProducts"
+        v-for="product in products"
         :key="product.id"
         cols="12"
         md="3"
@@ -138,6 +156,28 @@ import axios from "axios";
 export default defineComponent({
   data() {
     return {
+      items: [
+        {
+          prependIcon: "mdi-clock-outline",
+          title: "recipe with chicken",
+        },
+        {
+          prependIcon: "mdi-clock-outline",
+          title: "best hiking trails near me",
+        },
+        {
+          prependIcon: "mdi-clock-outline",
+          title: "how to learn a new language",
+        },
+        {
+          prependIcon: "mdi-clock-outline",
+          title: "DIY home organization ideas",
+        },
+        {
+          prependIcon: "mdi-clock-outline",
+          title: "latest fashion trends",
+        },
+      ],
       products: [] as object[],
       search: "" as string,
       selectedProductId: 0 as number,
@@ -149,14 +189,14 @@ export default defineComponent({
       productsLoading: false as boolean,
     };
   },
-  computed: {
-    // Filtering the products based on the search input
-    searchProducts: function () {
-      return this.products.filter((product: any) => {
-        return product.name.match(this.search);
-      });
-    },
-  },
+  // computed: {
+  //   // Filtering the products based on the search input
+  //   searchProducts: function () {
+  //     return this.products.filter((product: any) => {
+  //       return product.name.match(this.search);
+  //     });
+  //   },
+  // },
   async mounted() {
     this.showAllProducts();
     window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
@@ -266,11 +306,11 @@ export default defineComponent({
   width: 100%;
 }
 
-.rounded-input {
+/* .rounded-input {
   width: 100%;
   height: 55px;
   padding: 15px 20px;
-  padding-left: 45px; /* Adjust for icon spacing */
+  padding-left: 45px;
   font-size: 20px;
   border: none;
   border-radius: 60px;
@@ -286,9 +326,9 @@ export default defineComponent({
 .rounded-input:focus {
   border-color: orange;
   box-shadow: 0 0 0 3px orange,
-    /* Blue glow on focus */ 0 4px 8px rgba(0, 0, 0, 0.1),
+   0 4px 8px rgba(0, 0, 0, 0.1),
     0 10px 20px rgba(0, 0, 0, 0.1), 0 15px 25px rgba(0, 0, 0, 0.05);
-}
+} 
 
 .search-icon {
   position: absolute;
@@ -297,6 +337,7 @@ export default defineComponent({
   transform: translateY(-50%);
   color: #757575;
 }
+*/
 
 .buttonContainer {
   display: flex;

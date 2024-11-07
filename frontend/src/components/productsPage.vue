@@ -15,7 +15,8 @@
         <div class="rounded-input-container">
           <v-autocomplete
             clearable
-            :items="items"
+            :items="productsBySearch"
+            :item-text="productsBySearch.name"
             append-inner-icon="mdi-send-circle-outline"
             class="mx-auto"
             density="comfortable"
@@ -28,6 +29,8 @@
             auto-select-first
             item-props
             rounded
+            v-model="search"
+            @keyup="fetchProductsBySearch"
           ></v-autocomplete>
         </div>
       </v-col>
@@ -156,6 +159,7 @@ import axios from "axios";
 export default defineComponent({
   data() {
     return {
+      productsBySearch: [] as object[],
       items: [
         {
           prependIcon: "mdi-clock-outline",
@@ -295,7 +299,26 @@ export default defineComponent({
         behavior: "smooth",
       });
     },
+    async fetchProductsBySearch() {
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/searchProducts",
+          {
+            searchQuery: this.search,
+          }
+        );
+        this.productsBySearch = response.data;
+        console.log(this.productsBySearch);
+      } catch (err) {
+        console.log("Error fetching products by search: " + err);
+      }
+    },
   },
+  // watch: {
+  //   search(newValue) {
+  //     this.fetchProductsBySearch();
+  //   },
+  // },
 });
 </script>
 

@@ -77,7 +77,7 @@ router.get("/products", getAllProducts);
 
 router.get("/product/:productId", getProductById);
 
-router.get("/searchProducts", getProductsBySearchQuery);
+router.post("/searchProducts", getProductsBySearchQuery);
 
 router.post("/addProduct", createProduct);
 

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Model } from "sequelize";
+import { Op } from "sequelize";
 import product from "../models/product";
 import product_category from "../models/product_category";
 import logger from "../logger";
@@ -92,6 +93,42 @@ export const getProductById = (req: Request, res: Response) => {
       res
         .status(500)
         .json({ error: `Error retrieving product with id ${productId}` });
+    });
+};
+
+// Get products by search query
+export const getProductsBySearchQuery = (req: Request, res: Response) => {
+  const { searchQuery }: { searchQuery: string } = req.body;
+
+  product
+    .findAll({
+      where: {
+        name: {
+          // [Op.like] is a Sequelize operator that performs a SQL LIKE query.
+          [Op.like]: `%${searchQuery}%`,
+        },
+      },
+      include: [
+        {
+          model: product_category,
+        },
+      ],
+    })
+    .then((products) => {
+      logger.info(`Products with search query ${searchQuery} were retrieved`);
+      const result = products.map((product: any) => {
+        if (product.image) {
+          product.image = `http://localhost:4000/productImages/${product.image}`;
+        }
+        return product;
+      });
+      res.json(result);
+    })
+    .catch((err) => {
+      logger.error(
+        `Error retrieving products with search query ${searchQuery} : ${err}`
+      );
+      res.status(500);
     });
 };
 

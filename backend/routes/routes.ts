@@ -14,6 +14,7 @@ import {
 import {
   getAllProducts,
   getProductById,
+  getProductsBySearchQuery,
   createProduct,
   getProductsByCategory,
   editProduct,
@@ -75,6 +76,8 @@ router.put("/updateUserStatus/:userId", updateUserStatus);
 router.get("/products", getAllProducts);
 
 router.get("/product/:productId", getProductById);
+
+router.get("/searchProducts", getProductsBySearchQuery);
 
 router.post("/addProduct", createProduct);
 

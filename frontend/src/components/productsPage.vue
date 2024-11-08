@@ -16,7 +16,8 @@
           <v-autocomplete
             clearable
             :items="productsBySearch"
-            :item-text="productsBySearch.name"
+            item-text="name"
+            item-value="id"
             append-inner-icon="mdi-send-circle-outline"
             class="mx-auto"
             density="comfortable"
@@ -30,7 +31,6 @@
             item-props
             rounded
             v-model="search"
-            @keyup="fetchProductsBySearch"
           ></v-autocomplete>
         </div>
       </v-col>
@@ -201,6 +201,11 @@ export default defineComponent({
   //     });
   //   },
   // },
+  // computed: {
+  //   searchTerm(): string {
+  //     return this.search;
+  //   },
+  // },
   async mounted() {
     this.showAllProducts();
     window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
@@ -299,26 +304,29 @@ export default defineComponent({
         behavior: "smooth",
       });
     },
-    async fetchProductsBySearch() {
+    async fetchProductsBySearch(searchQuery: string) {
       try {
+        console.log("Search query: " + searchQuery);
         const response = await axios.post(
           "http://localhost:4000/searchProducts",
           {
-            searchQuery: this.search,
+            searchQuery: searchQuery,
           }
         );
         this.productsBySearch = response.data;
+        console.log("Products by search: ");
         console.log(this.productsBySearch);
       } catch (err) {
         console.log("Error fetching products by search: " + err);
       }
     },
   },
-  // watch: {
-  //   search(newValue) {
-  //     this.fetchProductsBySearch();
-  //   },
-  // },
+  watch: {
+    search(newSearch: string) {
+      console.log("watching search property : " + newSearch);
+      this.fetchProductsBySearch(newSearch);
+    },
+  },
 });
 </script>
 

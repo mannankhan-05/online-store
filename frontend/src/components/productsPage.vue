@@ -3,7 +3,7 @@
     <!-- input field for product search functionality -->
     <v-row justify="center">
       <v-col cols="12" md="8" sm="8" xs="10">
-        <!-- <div class="rounded-input-container">
+        <div class="rounded-input-container">
           <input
             type="text"
             class="rounded-input"
@@ -11,33 +11,41 @@
             v-model="search"
           />
           <v-icon class="search-icon" left>mdi-magnify-minus-outline</v-icon>
-        </div> -->
-        <div class="rounded-input-container">
-          <v-autocomplete
-            clearable
-            :items="productsBySearch"
-            item-text="name"
-            item-value="id"
-            append-inner-icon="mdi-send-circle-outline"
-            class="mx-auto"
-            density="comfortable"
-            menu-icon=""
-            placeholder="Search Google or type a URL"
-            prepend-inner-icon="mdi-magnify"
-            style="max-width: 800px"
-            theme="light"
-            variant="solo"
-            auto-select-first
-            item-props
-            rounded
-            v-model="search"
-          ></v-autocomplete>
+        </div>
+
+        <!-- autocomplete box -->
+        <div
+          class="autocomplete-box"
+          v-if="productsBySearchQuery.length > 0 && search.length != 0"
+        >
+          <v-card
+            class="autocomplete-card mx-auto"
+            max-width="760"
+            :elevation="12"
+          >
+            <v-list
+              v-for="suggestion in productsBySearchQuery"
+              :key="suggestion.id"
+            >
+              <img
+                :src="suggestion.image"
+                class="autocomplete-suggestion-avatar"
+                alt=""
+              />
+              <h3 class="autocomplete-suggestion-name">
+                {{ suggestion.name }}
+              </h3>
+              <v-icon class="autocomplete-suggestion-icon"
+                >mdi-information</v-icon
+              >
+            </v-list>
+          </v-card>
         </div>
       </v-col>
     </v-row>
 
     <!-- Category filter chips -->
-    <v-sheet class="py-4 px-1">
+    <v-sheet class="py-4 px-1" v-if="search.length == 0">
       <v-row class="d-flex align-center mt-2" justify="center">
         <v-chip-group
           selected-class="text-primary"
@@ -159,29 +167,7 @@ import axios from "axios";
 export default defineComponent({
   data() {
     return {
-      productsBySearch: [] as object[],
-      items: [
-        {
-          prependIcon: "mdi-clock-outline",
-          title: "recipe with chicken",
-        },
-        {
-          prependIcon: "mdi-clock-outline",
-          title: "best hiking trails near me",
-        },
-        {
-          prependIcon: "mdi-clock-outline",
-          title: "how to learn a new language",
-        },
-        {
-          prependIcon: "mdi-clock-outline",
-          title: "DIY home organization ideas",
-        },
-        {
-          prependIcon: "mdi-clock-outline",
-          title: "latest fashion trends",
-        },
-      ],
+      productsBySearchQuery: [] as object[],
       products: [] as object[],
       search: "" as string,
       selectedProductId: 0 as number,
@@ -191,21 +177,9 @@ export default defineComponent({
       totalPages: 0, // total number of pages
       isLoading: false, // To prevent multiple loads
       productsLoading: false as boolean,
+      // hideUpButton: false as boolean,
     };
   },
-  // computed: {
-  //   // Filtering the products based on the search input
-  //   searchProducts: function () {
-  //     return this.products.filter((product: any) => {
-  //       return product.name.match(this.search);
-  //     });
-  //   },
-  // },
-  // computed: {
-  //   searchTerm(): string {
-  //     return this.search;
-  //   },
-  // },
   async mounted() {
     this.showAllProducts();
     window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
@@ -313,9 +287,12 @@ export default defineComponent({
             searchQuery: searchQuery,
           }
         );
-        this.productsBySearch = response.data;
+        if (searchQuery == "") {
+          this.productsBySearchQuery = [];
+        }
+        this.productsBySearchQuery = response.data;
         console.log("Products by search: ");
-        console.log(this.productsBySearch);
+        console.log(this.productsBySearchQuery);
       } catch (err) {
         console.log("Error fetching products by search: " + err);
       }
@@ -337,7 +314,7 @@ export default defineComponent({
   width: 100%;
 }
 
-/* .rounded-input {
+.rounded-input {
   width: 100%;
   height: 55px;
   padding: 15px 20px;
@@ -356,10 +333,9 @@ export default defineComponent({
 
 .rounded-input:focus {
   border-color: orange;
-  box-shadow: 0 0 0 3px orange,
-   0 4px 8px rgba(0, 0, 0, 0.1),
+  box-shadow: 0 0 0 3px orange, 0 4px 8px rgba(0, 0, 0, 0.1),
     0 10px 20px rgba(0, 0, 0, 0.1), 0 15px 25px rgba(0, 0, 0, 0.05);
-} 
+}
 
 .search-icon {
   position: absolute;
@@ -368,7 +344,37 @@ export default defineComponent({
   transform: translateY(-50%);
   color: #757575;
 }
-*/
+
+.autocomplete-box {
+  position: absolute;
+  width: 780px;
+}
+
+.autocomplete-suggestion-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+.autocomplete-suggestion-name {
+  position: absolute;
+  left: 70px;
+  top: 15px;
+  font-weight: 500;
+}
+
+.autocomplete-suggestion-icon {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: orange;
+}
+
+.autocomplete-card {
+  border-radius: 10px;
+}
 
 .buttonContainer {
   display: flex;

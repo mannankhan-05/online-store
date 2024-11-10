@@ -20,97 +20,102 @@
         </div>
         <v-divider class="border-opacity-25 mb-8"></v-divider>
         <div class="footer-content">
-          <!-- <v-col cols="12" lg="6" md="6" sm="6" xs="12"> -->
-          <div class="categories">
-            <h2>Product Categories</h2>
-            <ul>
-              <li><v-icon>mdi-circle-small</v-icon>Clothing</li>
-              <li><v-icon>mdi-circle-small</v-icon>Shoes</li>
-              <li><v-icon>mdi-circle-small</v-icon>Electronics</li>
-              <li><v-icon>mdi-circle-small</v-icon>Books</li>
-              <li><v-icon>mdi-circle-small</v-icon>Personal Care</li>
-              <li><v-icon>mdi-circle-small</v-icon>Food</li>
-              <li><v-icon>mdi-circle-small</v-icon>Beverage</li>
-            </ul>
-          </div>
-          <!-- </v-col> -->
-          <!-- <v-col cols="12" lg="6" md="6" sm="6" xs="12"> -->
-          <v-card class="contact-us-card" width="500">
-            <div class="contact-form">
-              <h1 class="contact-us-heading mb-7">How Can We Help ?</h1>
-              <form class="pl-4 pr-4 pt-2 pb-5">
-                <div class="form-group">
-                  <v-text-field
-                    variant="outlined"
-                    type="text"
-                    label="Your's Name"
-                    required
-                    v-model="name"
-                  ></v-text-field>
+          <v-row justify="center">
+            <v-col cols="12" lg="4" md="4" sm="4" xs="12">
+              <div class="categories">
+                <h2>Product Categories</h2>
+                <ul>
+                  <li><v-icon>mdi-circle-small</v-icon>Clothing</li>
+                  <li><v-icon>mdi-circle-small</v-icon>Shoes</li>
+                  <li><v-icon>mdi-circle-small</v-icon>Electronics</li>
+                  <li><v-icon>mdi-circle-small</v-icon>Books</li>
+                  <li><v-icon>mdi-circle-small</v-icon>Personal Care</li>
+                  <li><v-icon>mdi-circle-small</v-icon>Food</li>
+                  <li><v-icon>mdi-circle-small</v-icon>Beverage</li>
+                </ul>
+              </div>
+              <v-divider
+                class="d-flex d-sm-none border-opacity-25 mt-7 mb-7"
+              ></v-divider>
+            </v-col>
+            <v-col cols="12" lg="8" md="8" sm="8" xs="12">
+              <v-card class="contact-us-card" max-width="500">
+                <div class="contact-form">
+                  <h1 class="contact-us-heading mb-7">How Can We Help ?</h1>
+                  <form class="pl-4 pr-4 pt-2 pb-5">
+                    <div class="form-group">
+                      <v-text-field
+                        variant="outlined"
+                        type="text"
+                        label="Your's Name"
+                        required
+                        v-model="name"
+                      ></v-text-field>
+                    </div>
+                    <div class="form-group">
+                      <v-text-field
+                        variant="outlined"
+                        type="email"
+                        label="Your's Email"
+                        required
+                        v-model="email"
+                      ></v-text-field>
+                    </div>
+                    <div class="form-group">
+                      <v-select
+                        clearable
+                        chips
+                        label="Subject"
+                        :items="[
+                          'General Inquiry',
+                          'Report a Bug',
+                          'Suggestions for Improvement',
+                          'Compliment',
+                          'Complaint',
+                          'Other',
+                        ]"
+                        variant="outlined"
+                        v-model="subject"
+                      >
+                      </v-select>
+                    </div>
+                    <div class="form-group">
+                      <label for="message">Your Remarks:</label>
+                      <v-textarea
+                        variant="outlined"
+                        type="text"
+                        aria-label="Your Remarks"
+                        required
+                        v-model="remarks"
+                      ></v-textarea>
+                    </div>
+                    <div class="submitButtonContainer">
+                      <v-btn
+                        v-if="!loading"
+                        class="submitButton bg-light-green-lighten-1 pa-2"
+                        style="width: 92%"
+                        @click="submitFeedback"
+                        :disabled="!name || !email || !subject || !remarks"
+                      >
+                        Submit
+                      </v-btn>
+                      <v-btn
+                        variant="tonal"
+                        class="d-flex justify-center submitButton bg-light-green-lighten-1 pa-2"
+                        v-if="loading"
+                      >
+                        <v-progress-circular
+                          v-if="loading"
+                          indeterminate
+                          :width="5"
+                        ></v-progress-circular>
+                      </v-btn>
+                    </div>
+                  </form>
                 </div>
-                <div class="form-group">
-                  <v-text-field
-                    variant="outlined"
-                    type="email"
-                    label="Your's Email"
-                    required
-                    v-model="email"
-                  ></v-text-field>
-                </div>
-                <div class="form-group">
-                  <v-select
-                    clearable
-                    chips
-                    label="Subject"
-                    :items="[
-                      'General Inquiry',
-                      'Report a Bug',
-                      'Suggestions for Improvement',
-                      'Compliment',
-                      'Complaint',
-                      'Other',
-                    ]"
-                    variant="outlined"
-                    v-model="subject"
-                  >
-                  </v-select>
-                </div>
-                <div class="form-group">
-                  <label for="message">Your Remarks:</label>
-                  <v-textarea
-                    variant="outlined"
-                    type="text"
-                    aria-label="Your Remarks"
-                    required
-                    v-model="remarks"
-                  ></v-textarea>
-                </div>
-                <div class="submitButtonContainer">
-                  <v-btn
-                    v-if="!loading"
-                    class="submitButton bg-light-green-lighten-1 pa-2"
-                    style="width: 92%"
-                    @click="submitFeedback"
-                    :disabled="!name || !email || !subject || !remarks"
-                  >
-                    Submit
-                  </v-btn>
-                  <v-btn
-                    variant="tonal"
-                    class="d-flex justify-center submitButton bg-light-green-lighten-1 pa-2"
-                    v-if="loading"
-                  >
-                    <v-progress-circular
-                      v-if="loading"
-                      indeterminate
-                      :width="5"
-                    ></v-progress-circular>
-                  </v-btn>
-                </div>
-              </form>
-            </div>
-          </v-card>
-          <!-- </v-col> -->
+              </v-card>
+            </v-col>
+          </v-row>
         </div>
       </footer>
     </v-col>

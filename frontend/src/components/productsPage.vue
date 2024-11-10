@@ -34,7 +34,10 @@
                 v-for="history in searchHistoryBySearchQuery"
                 :key="history.id"
               >
-                <v-list-item-content class="d-flex align-center">
+                <v-list-item-content
+                  @click="search = history.search"
+                  class="d-flex align-center"
+                >
                   <v-icon class="mr-5">mdi-history</v-icon>
                   <v-list-item-title class="searches">{{
                     history.search
@@ -99,11 +102,12 @@
     ></v-empty-state>
 
     <!-- Displaying all the products in a grid -->
-    <v-row v-else justify="center" v-show="!productsLoading">
+    <v-row justify="center" v-else v-show="!productsLoading">
       <v-col
         v-for="product in products"
         :key="product.id"
         cols="12"
+        lg="3"
         md="3"
         sm="6"
         xs="6"
@@ -271,7 +275,7 @@ export default defineComponent({
     handleScroll() {
       // Detect when user is near the bottom of the page
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight - 400; // 100px before the bottom
+      const threshold = document.documentElement.scrollHeight - 600; // 100px before the bottom
       if (scrollPosition >= threshold) {
         this.loadMoreProducts();
       }

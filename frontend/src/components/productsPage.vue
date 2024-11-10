@@ -9,35 +9,38 @@
             class="rounded-input"
             placeholder="Search for Products..."
             v-model="search"
+            @keyup.enter="fetchProductsBySearch(search)"
           />
           <v-icon class="search-icon" left>mdi-magnify-minus-outline</v-icon>
+          <v-icon
+            class="search-icon-right"
+            @click="fetchProductsBySearch(search)"
+            >mdi-send-circle-outline</v-icon
+          >
         </div>
 
         <!-- autocomplete box -->
         <div
           class="autocomplete-box"
-          v-if="productsBySearchQuery.length > 0 && search.length != 0"
+          v-if="searchHistoryBySearchQuery.length > 0 && search.length != 0"
         >
           <v-card
             class="autocomplete-card mx-auto"
             max-width="760"
             :elevation="12"
           >
-            <v-list
-              v-for="suggestion in productsBySearchQuery"
-              :key="suggestion.id"
-            >
-              <img
-                :src="suggestion.image"
-                class="autocomplete-suggestion-avatar"
-                alt=""
-              />
-              <h3 class="autocomplete-suggestion-name">
-                {{ suggestion.name }}
-              </h3>
-              <v-icon class="autocomplete-suggestion-icon"
-                >mdi-information</v-icon
+            <v-list dense>
+              <v-list-item
+                v-for="history in searchHistoryBySearchQuery"
+                :key="history.id"
               >
+                <v-list-item-content class="d-flex align-center">
+                  <v-icon class="mr-5">mdi-history</v-icon>
+                  <v-list-item-title class="searches">{{
+                    history.search
+                  }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
             </v-list>
           </v-card>
         </div>
@@ -164,10 +167,11 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 
+let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
 export default defineComponent({
   data() {
     return {
-      productsBySearchQuery: [] as object[],
+      searchHistoryBySearchQuery: [] as object[],
       products: [] as object[],
       search: "" as string,
       selectedProductId: 0 as number,
@@ -267,7 +271,7 @@ export default defineComponent({
     handleScroll() {
       // Detect when user is near the bottom of the page
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight - 100; // 100px before the bottom
+      const threshold = document.documentElement.scrollHeight - 400; // 100px before the bottom
       if (scrollPosition >= threshold) {
         this.loadMoreProducts();
       }
@@ -280,28 +284,47 @@ export default defineComponent({
     },
     async fetchProductsBySearch(searchQuery: string) {
       try {
-        console.log("Search query: " + searchQuery);
         const response = await axios.post(
           "http://localhost:4000/searchProducts",
           {
             searchQuery: searchQuery,
           }
         );
-        if (searchQuery == "") {
-          this.productsBySearchQuery = [];
-        }
-        this.productsBySearchQuery = response.data;
-        console.log("Products by search: ");
-        console.log(this.productsBySearchQuery);
+        this.search = "";
+        this.products = response.data;
       } catch (err) {
         console.log("Error fetching products by search: " + err);
       }
+    },
+    async fetchHistoryBySearch(searchQuery: string) {
+      // Clear the previous timeout if it exists
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+
+      // Set a new timeout
+      debounceTimeout = setTimeout(async () => {
+        try {
+          const response = await axios.post(
+            "http://localhost:4000/searchHistoriesBySearch",
+            {
+              search: searchQuery,
+            }
+          );
+          if (searchQuery == "") {
+            this.searchHistoryBySearchQuery = [];
+          }
+          this.searchHistoryBySearchQuery = response.data;
+        } catch (err) {
+          console.log("Error fetching search history by search: " + err);
+        }
+      }, 600);
     },
   },
   watch: {
     search(newSearch: string) {
       console.log("watching search property : " + newSearch);
-      this.fetchProductsBySearch(newSearch);
+      this.fetchHistoryBySearch(newSearch);
     },
   },
 });
@@ -339,10 +362,28 @@ export default defineComponent({
 
 .search-icon {
   position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #757575;
+  left: 12px;
+  font-size: 28px;
+  top: 25%;
+  transition: 0.3s ease-in-out;
+}
+.search-icon:hover {
+  transform: scale(1.1);
+  color: orange;
+}
+
+.search-icon-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 34px;
+  color: #888;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+.search-icon-right:hover {
+  transform: scale(1.1);
+  color: orange;
 }
 
 .autocomplete-box {
@@ -374,6 +415,11 @@ export default defineComponent({
 
 .autocomplete-card {
   border-radius: 10px;
+}
+
+.searches {
+  font-size: 18.5px;
+  font-weight: 300;
 }
 
 .buttonContainer {

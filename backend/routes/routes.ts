@@ -52,6 +52,11 @@ import {
   getAProductCategory,
   addProductCategory,
 } from "../controllers/product_category";
+import {
+  getAllSearchHistory,
+  getHistoryBySearch,
+  addSearchHistory,
+} from "../controllers/searchHistory";
 
 // user routes :
 router.get("/users", getAllUsers);
@@ -138,5 +143,12 @@ router.post("/AllProductsByCategories", getProductCategory);
 router.get("/getByCategory", getAProductCategory);
 
 router.post("/addProductCategory", addProductCategory);
+
+// search history routes :
+router.get("/searchHistory", getAllSearchHistory);
+
+router.post("/searchHistoriesBySearch", getHistoryBySearch);
+
+router.post("/addSearchHistory", addSearchHistory);
 
 export default router;

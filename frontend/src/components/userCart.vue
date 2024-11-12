@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <h1 class="text-center mb-3">
-          <v-icon>mdi-cart-arrow-down</v-icon>
+          <v-icon color="orange">mdi-cart-arrow-down</v-icon>
           Cart
         </h1>
         <v-divider :thickness="2"></v-divider>
@@ -84,7 +84,7 @@
           >
             <v-card class="empty-cart-card" elevation="3">
               <v-card-text class="d-flex flex-column align-center">
-                <v-icon large color="primary" class="emptyCartIcon mb-2">
+                <v-icon large color="orange" class="emptyCartIcon mb-2">
                   mdi-cart-outline
                 </v-icon>
                 <h3 class="text-center">Your Cart is Empty</h3>
@@ -93,7 +93,6 @@
                   Browse our products and start shopping!
                 </p>
                 <v-btn
-                  color="primary"
                   outlined
                   class="mt-4 empty-cart-button"
                   @click="pushToProductsPage"
@@ -516,10 +515,13 @@ v-chip {
 }
 
 .empty-cart-button {
-  transition: 0.2s ease-in-out;
+  background-color: orange;
+  color: black;
+  transition: 0.3s ease-in-out;
 }
 
 .empty-cart-button:hover {
+  color: white;
   scale: 1.02;
 }
 

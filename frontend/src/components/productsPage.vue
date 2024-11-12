@@ -52,24 +52,62 @@
 
     <!-- Category filter chips -->
     <v-sheet class="py-4 px-1" v-if="search.length == 0">
-      <v-row class="d-flex align-center mt-2" justify="center">
+      <v-row class="d-flex align-center mt-2 mb-3" justify="center">
         <v-chip-group
-          selected-class="text-primary"
+          selected-class="text-orange"
           mandatory
           variant="label"
           v-model="category"
           @click="sortProductsByCategories"
         >
-          <v-chip variant="label" class="mr-2" @click="showAllProducts"
-            >All</v-chip
-          >
-          <v-chip value="Clothing">Clothing</v-chip>
-          <v-chip value="Shoes">Shoes</v-chip>
-          <v-chip value="Electronics">Electronics</v-chip>
-          <v-chip value="Books">Books</v-chip>
-          <v-chip value="Personal Care">Personal Care</v-chip>
-          <v-chip value="Food">Food</v-chip>
-          <v-chip value="Beverage">Beverage</v-chip>
+          <v-chip variant="label" class="chip mr-2" @click="showAllProducts">
+            <v-avatar left>
+              <v-icon color="orange">mdi-view-list</v-icon>
+            </v-avatar>
+            All
+          </v-chip>
+          <v-chip value="Clothing" class="chip">
+            <v-avatar left>
+              <v-icon color="orange" class="chip-icon">mdi-tshirt-crew</v-icon>
+            </v-avatar>
+            Clothing
+          </v-chip>
+          <v-chip value="Shoes" class="chip">
+            <v-avatar left>
+              <v-icon color="orange">mdi-shoe-formal</v-icon>
+            </v-avatar>
+            Shoes
+          </v-chip>
+          <v-chip value="Electronics" class="chip">
+            <v-avatar left>
+              <v-icon color="orange">mdi-laptop</v-icon>
+            </v-avatar>
+            Electronics
+          </v-chip>
+          <v-chip value="Books" class="chip">
+            <v-avatar left>
+              <v-icon color="orange">mdi-book</v-icon>
+            </v-avatar>
+            Books
+          </v-chip>
+          <v-chip value="Personal Care" class="chip">
+            <v-avatar left>
+              <v-icon color="orange">mdi-face-woman</v-icon>
+            </v-avatar>
+            Personal Care
+          </v-chip>
+          <v-chip value="Food" class="chip">
+            <v-avatar left>
+              <v-icon color="orange">mdi-food-apple</v-icon>
+            </v-avatar>
+            Food
+          </v-chip>
+          <v-chip value="Beverage" class="chip">
+            <v-avatar left>
+              <v-icon color="orange">mdi-glass-cocktail</v-icon>
+            </v-avatar>
+            Beverage
+          </v-chip>
         </v-chip-group>
       </v-row>
     </v-sheet>
@@ -185,7 +223,6 @@ export default defineComponent({
       totalPages: 0, // total number of pages
       isLoading: false, // To prevent multiple loads
       productsLoading: false as boolean,
-      // hideUpButton: false as boolean,
     };
   },
   async mounted() {
@@ -208,14 +245,6 @@ export default defineComponent({
       }
     },
     async sortProductsByCategories() {
-      // let response = await axios.post(
-      //   "http://localhost:4000/productsByCategory",
-      //   {
-      //     category: this.category,
-      //   }
-      // );
-      // this.products = response.data;
-
       try {
         let response1 = await axios.post(
           "http://localhost:4000/AllProductsByCategories",
@@ -227,18 +256,15 @@ export default defineComponent({
         console.log(categoryId);
 
         if (categoryId) {
-          let response2 = await axios.post(
-            "http://localhost:4000/productsByCategory",
-            {
-              category: categoryId,
-            }
+          let response2 = await axios.get(
+            `http://localhost:4000/productsByCategory/${categoryId}`
           );
           this.products = response2.data;
         } else {
           this.products = [];
         }
       } catch (err) {
-        console.log("Error fetching products by category: " + err);
+        throw new Error("Error sorting products by categories: " + err);
       }
     },
     async showAllProducts() {
@@ -424,6 +450,11 @@ export default defineComponent({
 .searches {
   font-size: 18.5px;
   font-weight: 300;
+}
+
+.chip {
+  border: 1px solid orange;
+  transition: 0.3s ease-in-out;
 }
 
 .buttonContainer {

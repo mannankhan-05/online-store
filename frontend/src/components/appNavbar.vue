@@ -14,7 +14,7 @@
 
           <v-spacer></v-spacer>
 
-          <!-- Users total orders -->
+          <!-- orders logo -->
           <router-link
             v-if="isLoggedIn && this.$store.state.userId"
             :to="{
@@ -167,11 +167,7 @@
                   >
                 </v-list-item>
                 <v-list-item class="list" v-if="!isAdmin">
-                  <v-btn
-                    @click="gotoAdminComponent"
-                    color="primary"
-                    class="adminPanelButton"
-                  >
+                  <v-btn @click="gotoAdminComponent" class="adminPanelButton">
                     <v-icon class="mr-3"
                       >mdi-arrow-top-right-thin-circle-outline</v-icon
                     >
@@ -179,11 +175,7 @@
                   >
                 </v-list-item>
                 <v-list-item class="list" v-if="isAdmin">
-                  <v-btn
-                    @click="gotoAdminPanel"
-                    color="primary"
-                    class="adminPanelButton"
-                  >
+                  <v-btn @click="gotoAdminPanel" class="adminPanelButton">
                     <v-icon class="mr-3"
                       >mdi-arrow-top-right-thin-circle-outline</v-icon
                     >
@@ -244,7 +236,7 @@
             <v-card-title
               class="d-flex justify-center text-h5 font-weight-bold"
             >
-              <v-icon>mdi-logout</v-icon>
+              <v-icon color="orange">mdi-logout</v-icon>
               Logout
             </v-card-title>
             <p class="d-flex justify-center pl-3 mb-3 mt-7">
@@ -254,12 +246,15 @@
             <v-btn
               class="mb-3"
               variant="outlined"
+              color="orange"
               text
               @click="logoutDialog = false"
             >
               Cancel
             </v-btn>
-            <v-btn class="bg-black" text @click="logoutUser"> Logout </v-btn>
+            <v-btn class="logoutButton" text @click="logoutUser">
+              Logout
+            </v-btn>
           </v-card>
         </v-dialog>
       </v-col>
@@ -378,7 +373,6 @@ export default defineComponent({
 
 .loginButton:hover,
 .registerButton:hover {
-  /* border: none; */
   transform: scale(1.03);
 }
 
@@ -420,12 +414,15 @@ export default defineComponent({
 }
 
 .adminPanelButton {
+  background: orange;
+  color: black;
   width: 100%;
   transition: 0.3s ease-in-out;
 }
 
 .adminPanelButton:hover {
   transform: scale(1.04);
+  color: white;
 }
 
 .adminBadge {
@@ -442,5 +439,15 @@ export default defineComponent({
   font-weight: 26px;
   padding: 5px;
   margin-left: 10px;
+}
+
+.logoutButton {
+  background-color: orange;
+  color: black;
+  transition: 0.3s ease-in-out;
+}
+
+.logoutButton:hover {
+  color: white;
 }
 </style>

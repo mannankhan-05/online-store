@@ -4,7 +4,7 @@
       <v-col cols="12">
         <div v-if="userOrders.length !== 0">
           <h1 class="text-center mb-3">
-            <v-icon>mdi-history</v-icon>
+            <v-icon color="orange">mdi-history</v-icon>
             Order History
           </h1>
           <v-divider :thickness="2"></v-divider>
@@ -55,7 +55,6 @@
             <v-card-actions class="cardActions">
               <v-btn
                 class="viewDetailsButton"
-                color="primary"
                 variant="outlined"
                 width="100%"
                 @click="viewOrderDetails(order.order_id)"
@@ -140,11 +139,12 @@ export default defineComponent({
 .viewDetailsButton {
   border-radius: 8px;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  color: orange;
+  transition: 0.3s ease-in-out;
 }
 
 .viewDetailsButton:hover {
-  background-color: #2c3e50;
-  color: #ffffff;
+  background-color: orange;
+  color: white;
 }
 </style>

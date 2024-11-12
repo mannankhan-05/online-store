@@ -176,13 +176,20 @@ export const createProduct = (req: Request, res: Response) => {
 };
 
 // to get products by category
-export const getProductsByCategory = (req: Request, res: Response) => {
-  const { category }: { category: number } = req.body;
+export const getProductsByCategory = async (req: Request, res: Response) => {
+  const categoryId: number = parseInt(req.params.categoryId, 10);
 
-  product
-    .findAll({ where: { category: category } })
+  await product
+    .findAll({
+      where: { category: categoryId },
+      include: [
+        {
+          model: product_category,
+        },
+      ],
+    })
     .then((productsByCategories) => {
-      logger.info(`Products by category : ${category} were retrieved`);
+      logger.info(`Products by category : ${categoryId} were retrieved`);
       const result = productsByCategories.map((product: any) => {
         if (product.image) {
           product.image = `http://localhost:4000/productImages/${product.image}`;
@@ -192,7 +199,9 @@ export const getProductsByCategory = (req: Request, res: Response) => {
       res.json(result);
     })
     .catch((err) => {
-      logger.error(`Error retrieving products by category : ${err}`);
+      logger.error(
+        `Error retrieving products by category ${categoryId} : ${err}`
+      );
       res.status(500);
     });
 };

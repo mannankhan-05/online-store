@@ -86,7 +86,7 @@ router.post("/searchProducts", getProductsBySearchQuery);
 
 router.post("/addProduct", createProduct);
 
-router.post("/productsByCategory", getProductsByCategory);
+router.get("/productsByCategory/:categoryId", getProductsByCategory);
 
 router.put("/editProduct/:productId", editProduct);
 

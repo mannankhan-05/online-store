@@ -26,11 +26,7 @@
         v-for="order in orderDetails"
         :key="order.order_id"
       >
-        <v-card
-          :elevation="8"
-          color="grey lighten-4"
-          class="orderDetailsCard mb-10"
-        >
+        <v-card :elevation="8" class="orderDetailsCard mb-10">
           <div class="orderDetailsHeading">Order Details</div>
           <div class="pa-3 pt-6">
             <!-- Order ID -->
@@ -191,7 +187,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(17, 77, 100);
+  background-color: orange;
   color: white;
   font-size: 25px;
   font-weight: bold;
@@ -211,7 +207,7 @@ export default defineComponent({
 .orderItems {
   margin-left: 10px;
   padding: 2px 10px;
-  background-color: rgb(17, 77, 100);
+  background-color: rgb(145, 112, 52);
   border-radius: 40px;
   color: white;
   font-weight: bold;
@@ -245,7 +241,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(24, 70, 88);
+  background-color: orange;
   color: white;
   border-radius: 50%;
   font-weight: bold;

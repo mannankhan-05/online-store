@@ -20,6 +20,30 @@
         </div>
 
         <!-- autocomplete box -->
+        <!-- if (searches is empty) -->
+        <div
+          class="autocomplete-box"
+          v-if="searchHistoryBySearchQuery.length == 0 && search.length != 0"
+        >
+          <v-card
+            class="autocomplete-card mx-auto"
+            max-width="760"
+            :elevation="12"
+          >
+            <v-list dense>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="searches">
+                    <v-icon class="mr-2">mdi-magnify-remove-outline</v-icon>
+                    No search history found
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </div>
+
+        <!-- if (searches is not empty) -->
         <div
           class="autocomplete-box"
           v-if="searchHistoryBySearchQuery.length > 0 && search.length != 0"
@@ -198,6 +222,11 @@
       </v-col>
     </v-row>
 
+    <!-- Loading More Products (Progress Circular) -->
+    <div class="loading-more-products">
+      <v-progress-circular v-if="isLoading" indeterminate></v-progress-circular>
+    </div>
+
     <!-- up button -->
     <div class="upButton d-none d-sm-flex" @click="scrollToTop">
       <v-icon icon="mdi-arrow-up"></v-icon>
@@ -223,10 +252,14 @@ export default defineComponent({
       totalPages: 0, // total number of pages
       isLoading: false, // To prevent multiple loads
       productsLoading: false as boolean,
+      productsByCategoryLimit: 4,
+      productsByCategoryPage: 0,
+      productsByCategoryTotalPages: 0,
     };
   },
   async mounted() {
-    this.showAllProducts();
+    this.page = 0;
+    await this.showAllProducts();
     window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
   },
   methods: {
@@ -245,6 +278,28 @@ export default defineComponent({
       }
     },
     async sortProductsByCategories() {
+      // try {
+      //   let response1 = await axios.post(
+      //     "http://localhost:4000/AllProductsByCategories",
+      //     {
+      //       category: this.category,
+      //     }
+      //   );
+      //   let categoryId = response1.data.id;
+      //   console.log(categoryId);
+
+      //   if (categoryId) {
+      //     let response2 = await axios.get(
+      //       `http://localhost:4000/productsByCategory/${categoryId}`
+      //     );
+      //     this.products = response2.data;
+      //   } else {
+      //     this.products = [];
+      //   }
+      // } catch (err) {
+      //   throw new Error("Error sorting products by categories: " + err);
+      // }
+
       try {
         let response1 = await axios.post(
           "http://localhost:4000/AllProductsByCategories",
@@ -255,23 +310,33 @@ export default defineComponent({
         let categoryId = response1.data.id;
         console.log(categoryId);
 
-        if (categoryId) {
-          let response2 = await axios.get(
-            `http://localhost:4000/productsByCategory/${categoryId}`
-          );
-          this.products = response2.data;
+        const response2 = await axios.get(
+          `http://localhost:4000/productsByCategory/${categoryId}`,
+          {
+            params: {
+              limit: this.productsByCategoryLimit,
+              page: this.productsByCategoryPage, // Pass the current
+            },
+          }
+        );
+
+        if (this.productsByCategoryPage === 0) {
+          this.products = response2.data.products;
         } else {
-          this.products = [];
+          this.products = [...this.products, ...response2.data.products];
         }
+        this.productsByCategoryTotalPages = Math.ceil(
+          response2.data.totalProducts / this.productsByCategoryLimit
+        );
       } catch (err) {
-        throw new Error("Error sorting products by categories: " + err);
+        console.log("Error sorting products by categories: " + err);
       }
     },
     async showAllProducts() {
-      this.productsLoading = true;
-      await setTimeout(() => {
-        this.productsLoading = false;
-      }, 600);
+      // this.productsLoading = true;
+      // await setTimeout(() => {
+      //   this.productsLoading = false;
+      // }, 600);
       try {
         const response = await axios.get("http://localhost:4000/products", {
           params: {
@@ -290,13 +355,34 @@ export default defineComponent({
         console.log("Error fetching all products: " + err);
       }
     },
+    // async loadMoreProducts() {
+    //   if (!this.isLoading && this.page < this.totalPages - 1) {
+    //     this.isLoading = true; // Set loading to prevent multiple triggers
+    //     this.page += 1;
+    //     await this.showAllProducts();
+    //     this.isLoading = false; // Reset loading after fetching products
+    //   }
+    // },
     async loadMoreProducts() {
-      if (!this.isLoading && this.page < this.totalPages - 1) {
-        this.isLoading = true; // Set loading to prevent multiple triggers
+      if (this.isLoading) return; // Prevent multiple triggers
+
+      this.isLoading = true;
+
+      // Load more products for all products if no category is selected
+      if (this.category === "" && this.page < this.totalPages - 1) {
         this.page += 1;
         await this.showAllProducts();
-        this.isLoading = false; // Reset loading after fetching products
       }
+      // Load more products by category if a category is selected
+      else if (
+        this.category !== "" &&
+        this.productsByCategoryPage < this.productsByCategoryTotalPages - 1
+      ) {
+        this.productsByCategoryPage += 1;
+        await this.sortProductsByCategories();
+      }
+
+      this.isLoading = false;
     },
     handleScroll() {
       // Detect when user is near the bottom of the page
@@ -314,6 +400,12 @@ export default defineComponent({
     },
     async fetchProductsBySearch(searchQuery: string) {
       try {
+        // Add search history if it not exists
+        await axios.post("http://localhost:4000/addSearchHistory", {
+          search: searchQuery,
+        });
+
+        // fetching products by search query
         const response = await axios.post(
           "http://localhost:4000/searchProducts",
           {
@@ -508,6 +600,14 @@ export default defineComponent({
 
 .categoryHeading {
   color: black;
+}
+
+.loading-more-products {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
 }
 
 .sheet {

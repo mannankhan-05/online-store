@@ -17,14 +17,17 @@
 
     <!-- Seach User -->
     <v-row justify="center">
-      <v-col cols="12" lg="8" md="8" sm="10" xs="12">
-        <v-text-field
-          v-model="search"
-          clearable
-          label="Search Users"
-          prepend-inner-icon="mdi-account-search-outline"
-          variant="outlined"
-        ></v-text-field>
+      <v-col cols="12" md="8" sm="8" xs="10">
+        <div class="rounded-input-container mb-5">
+          <input
+            type="text"
+            class="rounded-input"
+            placeholder="Search To Find Users"
+            v-model="search"
+          />
+          <v-icon class="search-icon" left>mdi-magnify-minus-outline</v-icon>
+          <v-icon class="search-icon-right">mdi-send-circle-outline</v-icon>
+        </div>
       </v-col>
     </v-row>
 
@@ -45,7 +48,7 @@
       text="We couldn't find any user that matches your search"
     ></v-empty-state>
 
-    <!-- All Users Table -->
+    <!-- All Users -->
     <v-row justify="center">
       <v-col
         cols="12"
@@ -76,10 +79,6 @@
               <v-chip :color="user.isAdmin ? 'green' : 'blue'" dark small>
                 {{ user.isAdmin ? "admin" : "user" }}
               </v-chip>
-              <!-- <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-information-outline</v-icon>
-              </v-btn> -->
             </div>
           </v-card-subtitle>
         </v-card>

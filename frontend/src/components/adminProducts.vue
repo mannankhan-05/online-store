@@ -18,7 +18,10 @@
     <!-- Header Section -->
     <v-row justify="center">
       <v-col cols="12" md="6" sm="12">
-        <h2 class="header-title">Product Administration Dashboard</h2>
+        <h2 class="header-title d-flex justify-center">
+          <v-icon color="orange mr-2">mdi-view-dashboard</v-icon>
+          Product Administration Dashboard
+        </h2>
         <v-divider :thickness="2" class="border-opacity-50"></v-divider>
       </v-col>
     </v-row>
@@ -65,6 +68,11 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Loading More Products (Progress Circular) -->
+    <div class="loading-more-products">
+      <v-progress-circular v-if="isLoading" indeterminate></v-progress-circular>
+    </div>
 
     <!-- edit product dialog -->
     <v-dialog v-model="editProductDialog" persistent max-width="600">
@@ -277,7 +285,7 @@ export default defineComponent({
     handleScroll() {
       // Detect when user is near the bottom of the page
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight - 100; // 100px before the bottom
+      const threshold = document.documentElement.scrollHeight - 600; // 100px before the bottom
       if (scrollPosition >= threshold) {
         this.loadMoreProducts();
       }
@@ -293,7 +301,7 @@ export default defineComponent({
 
 .productCard:hover {
   transform: scale(1.01);
-  box-shadow: 1px 1px 10px 1px black;
+  box-shadow: 1px 1px 10px 1px orange;
 }
 
 .updateButton,
@@ -329,5 +337,13 @@ export default defineComponent({
 
 .v-file-input {
   margin-top: 20px;
+}
+
+.loading-more-products {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
 }
 </style>

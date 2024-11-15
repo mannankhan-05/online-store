@@ -1,11 +1,13 @@
 <template>
   <v-container>
     <!-- Heading of admin panel -->
-    <v-row justify="center" class="admin-heading">
-      <v-col>
-        <v-card elevation="3" class="pt-3 pb-3 rounded admin-panel-card">
-          <h1 class="headline text-center">Admin Panel</h1>
-        </v-card>
+    <v-row>
+      <v-col cols="12">
+        <h1 class="text-center mb-3">
+          <v-icon color="orange">mdi-security-network</v-icon>
+          Admin Panel
+        </h1>
+        <v-divider :thickness="2"></v-divider>
       </v-col>
     </v-row>
 

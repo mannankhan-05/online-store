@@ -25,13 +25,29 @@
               <div class="categories">
                 <h2>Product Categories</h2>
                 <ul>
-                  <li><v-icon>mdi-circle-small</v-icon>Clothing</li>
-                  <li><v-icon>mdi-circle-small</v-icon>Shoes</li>
-                  <li><v-icon>mdi-circle-small</v-icon>Electronics</li>
-                  <li><v-icon>mdi-circle-small</v-icon>Books</li>
-                  <li><v-icon>mdi-circle-small</v-icon>Personal Care</li>
-                  <li><v-icon>mdi-circle-small</v-icon>Food</li>
-                  <li><v-icon>mdi-circle-small</v-icon>Beverage</li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon>Clothing
+                  </li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon>Shoes
+                  </li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon
+                    >Electronics
+                  </li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon>Books
+                  </li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon>Personal
+                    Care
+                  </li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon>Food
+                  </li>
+                  <li>
+                    <v-icon class="dot-color">mdi-circle-small</v-icon>Beverage
+                  </li>
                 </ul>
               </div>
               <v-divider
@@ -92,7 +108,7 @@
                     <div class="submitButtonContainer">
                       <v-btn
                         v-if="!loading"
-                        class="submitButton bg-light-green-lighten-1 pa-2"
+                        class="submitButton pa-2"
                         style="width: 92%"
                         @click="submitFeedback"
                         :disabled="!name || !email || !subject || !remarks"
@@ -101,7 +117,7 @@
                       </v-btn>
                       <v-btn
                         variant="tonal"
-                        class="d-flex justify-center submitButton bg-light-green-lighten-1 pa-2"
+                        class="d-flex justify-center submitButton pa-2"
                         v-if="loading"
                       >
                         <v-progress-circular
@@ -197,7 +213,7 @@ export default defineComponent({
 .icon i:hover {
   cursor: pointer;
   transform: scale(1.2);
-  color: rgb(53, 51, 51);
+  color: rgb(192, 152, 79);
 }
 
 .footer-content {
@@ -271,7 +287,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-content: center;
-  background: rgb(110, 179, 140);
+  background: rgb(192, 152, 79);
   color: black;
 }
 
@@ -291,8 +307,19 @@ button:hover {
 }
 
 .submitButton {
+  background-color: rgb(192, 152, 79);
   font-weight: bold;
   font-weight: 19px;
   border-radius: 50px;
+  transition: 0.3s ease-in-out;
+}
+
+.submitButton:hover {
+  background-color: rgb(158, 127, 69);
+  color: black;
+}
+
+.dot-color {
+  color: rgb(196, 144, 47);
 }
 </style>

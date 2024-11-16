@@ -60,10 +60,7 @@
           <!-- Login and Register buttons -->
           <div class="d-none d-sm-flex" v-if="!isLoggedIn">
             <router-link :to="{ name: 'login' }">
-              <v-btn
-                variant="tonal"
-                class="loginButton bg-black mr-5 font-weight-bold"
-              >
+              <v-btn class="loginButton mr-5 font-weight-bold">
                 <v-icon class="mr-2">mdi-login</v-icon>
                 Login
               </v-btn>
@@ -71,8 +68,8 @@
 
             <router-link :to="{ name: 'signUp' }">
               <v-btn
-                variant="tonal"
-                class="registerButton bg-black mr-8 font-weight-bold"
+                variant="text"
+                class="registerButton mr-8 font-weight-bold"
               >
                 <v-icon class="mr-2">mdi-account-plus</v-icon>
                 Sign Up
@@ -362,12 +359,21 @@ export default defineComponent({
 .nex-cart-heading {
   margin-top: 30px;
   margin-left: 7px;
-  color: rgb(43, 41, 41);
+  color: rgb(168, 123, 39);
+}
+
+.loginButton {
+  background-color: rgb(192, 152, 79);
+  border-radius: 30px;
+  color: white !important;
+}
+
+.registerButton {
+  color: rgb(192, 152, 79) !important;
 }
 
 .loginButton,
 .registerButton {
-  border: 1px solid white;
   transition: 0.2s ease-in-out;
 }
 

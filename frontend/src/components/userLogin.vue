@@ -112,7 +112,7 @@ export default defineComponent({
 
 <style scoped>
 .login-card {
-  background-color: rgba(32, 93, 114, 0.85);
+  background-color: rgb(117, 66, 15);
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -130,7 +130,7 @@ export default defineComponent({
 .v-text-field {
   margin-bottom: 20px;
   color: white;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .button-container {
@@ -142,15 +142,15 @@ export default defineComponent({
   width: 100%;
   font-size: 18px;
   font-weight: 600;
-  color: black;
+  color: rgb(100, 50, 0) !important;
   border: none;
   background-color: white;
   transition: 0.3s ease-in-out;
 }
 
 .loginButton:hover {
-  background-color: rgba(91, 115, 124, 0.85);
-  color: white;
+  background-color: rgb(212, 164, 75);
+  color: white !important;
 }
 
 .loadingButton {

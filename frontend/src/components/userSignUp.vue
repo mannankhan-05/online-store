@@ -155,7 +155,7 @@ export default defineComponent({
 
 <style scoped>
 .signUpForm {
-  background-color: rgba(32, 93, 114, 0.85); /* Matching theme */
+  background-color: rgb(117, 66, 15); /* Matching theme */
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -183,13 +183,14 @@ export default defineComponent({
   width: 100%;
   font-size: 18px;
   font-weight: 600;
-  color: black;
+  border-radius: 30px;
+  color: rgb(100, 50, 0);
   background-color: white;
   transition: 0.3s ease-in-out;
 }
 
 .signUpButton:hover {
-  background-color: rgba(91, 115, 124, 0.85);
+  background-color: rgb(212, 164, 75) !important;
   color: white;
 }
 

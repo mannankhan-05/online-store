@@ -2,8 +2,8 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
-        <div class="resetPassword">
-          <h2 class="mb-10">Forget Password</h2>
+        <v-card :elevation="8" class="resetPassword">
+          <h2 class="card-title mb-10">Forget Password</h2>
           <v-text-field
             clearable
             label="Email"
@@ -31,7 +31,7 @@
               ></v-progress-circular>
             </v-btn>
           </div>
-        </div> </v-col
+        </v-card> </v-col
     ></v-row>
 
     <!-- OTP Overlay -->
@@ -53,13 +53,7 @@
               class="my-4"
               input-class="otp-input"
             ></v-otp-input>
-            <v-btn
-              block
-              class="submitCodeButton mt-4"
-              @click="submitOtp"
-              color="primary"
-              large
-            >
+            <v-btn block class="submitCodeButton mt-4" @click="submitOtp" large>
               Submit
             </v-btn>
           </v-card>
@@ -125,14 +119,36 @@ export default defineComponent({
   max-width: 100%;
   padding: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 12px;
+  background-color: rgb(117, 66, 15);
   box-shadow: 0 2px 5px #ccc;
+}
+
+.card-title {
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+.v-text-field,
+.v-file-input {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 20px;
 }
 
 .resetButton {
   width: 80%;
+  border-radius: 30px;
   font-size: 15px;
+  background-color: white;
+  color: rgb(100, 50, 0);
   font-weight: 550;
+}
+
+.resetButton:hover {
+  background-color: rgb(212, 164, 75) !important;
+  color: white;
 }
 
 .otp-card {
@@ -144,15 +160,21 @@ export default defineComponent({
 
 .otp-input {
   font-size: 24px;
+  font-weight: bold;
   color: black;
   text-align: center;
 }
 
 .submitCodeButton {
+  border-radius: 30px;
+  background-color: rgb(212, 164, 75) !important;
+  color: white !important;
   transition: 0.3s ease-in-out;
 }
 
 .submitCodeButton:hover {
   transform: scale(1.02);
+  background-color: rgb(185, 105, 25) !important;
+  color: rgb(100, 50, 0) !important;
 }
 </style>

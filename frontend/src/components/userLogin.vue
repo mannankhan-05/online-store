@@ -54,7 +54,18 @@
             </v-btn>
           </div>
 
-          <p class="forgetPassword" @click="forgetPassword">Forgot Password?</p>
+          <p class="forgetPassword mb-10" @click="forgetPassword">
+            Forgot Password?
+          </p>
+
+          <div class="dont-have-account">
+            <div class="text">
+              <p class="d-inline pr-2 mt-5">Don't have an account?</p>
+              <span class="create-account" @click="goToSignUpPage"
+                >Create Account</span
+              >
+            </div>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -89,6 +100,9 @@ export default defineComponent({
     },
     forgetPassword() {
       this.$router.push({ name: "forgetPassword" });
+    },
+    goToSignUpPage() {
+      this.$router.push({ name: "signUp" });
     },
   },
   computed: {
@@ -170,5 +184,41 @@ export default defineComponent({
 
 .forgetPassword:hover {
   color: rgb(187, 178, 178);
+}
+
+.dont-have-account {
+  background-color: rgb(209, 165, 84);
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+  margin-top: 25px;
+  bottom: 0;
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-account {
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s;
+  padding-top: 20px;
+}
+
+.create-account:hover {
+  color: rgb(165, 117, 29);
 }
 </style>

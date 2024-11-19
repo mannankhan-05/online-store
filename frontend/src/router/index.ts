@@ -126,10 +126,18 @@ router.beforeEach((to, from, next) => {
     "/",
     "/login",
     "/signUp",
+    "/products",
     "/forget-password",
-    "/reset-password",
   ];
-  const authRequired = !publicPages.includes(to.path);
+
+  // Check if route starts with '/reset-password'
+  const isResetPasswordRoute = to.path.startsWith("/reset-password");
+
+  // Check if route starts with '/user
+  const isUserRoute = to.path.startsWith("/user");
+
+  const authRequired =
+    !publicPages.includes(to.path) && !isResetPasswordRoute && !isUserRoute;
   const loggedIn = isLoggedIn();
 
   if (authRequired && !loggedIn) {

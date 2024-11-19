@@ -354,7 +354,6 @@ export default defineComponent({
       }
     },
     async showAllProducts() {
-      console.log("category : " + this.category);
       try {
         const response = await axios.get("http://localhost:4000/products", {
           params: {

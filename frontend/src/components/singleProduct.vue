@@ -108,19 +108,27 @@
 
     <!-- when the user is not logged In -->
     <v-dialog v-model="dialog" class="centered-dialog">
-      <v-card>
-        <v-card-title class="headline">
-          <v-icon>mdi-arrow-top-right-thin</v-icon>
-          <p>Please Login to Add Items to the Cart</p></v-card-title
-        >
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Close</v-btn
+      <v-card class="not-loggedIn-dialog">
+        <v-card-title>
+          <v-icon large class="dialog-icon">mdi-account-lock</v-icon>
+          <span class="dialog-title"> Access Restricted </span>
+        </v-card-title>
+        <v-card-text class="dialog-message">
+          You need to <span class="dialog-message-words">Log In</span> to add
+          items to your <span class="dialog-message-words">Cart</span>. Please
+          log in or create an account to continue.
+        </v-card-text>
+        <v-card-actions class="dialog-actions">
+          <v-btn color="grey darken-1" text @click="dialog = false">
+            Close
+          </v-btn>
+          <v-btn
+            class="login-button"
+            outlined
+            @click="this.$router.push('/login')"
           >
-          <v-btn color="blue darken-1" text @click="this.$router.push('/login')"
-            >Login</v-btn
-          >
+            Login
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -254,6 +262,63 @@ export default defineComponent({
   left: 15px;
   font-size: 28px;
   color: #708396;
+}
+
+.not-loggedIn-dialog {
+  max-width: 600px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-icon {
+  color: rgb(117, 66, 15);
+  margin-right: 10px;
+}
+
+.dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-left: 5px;
+}
+
+.dialog-message {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.dialog-message-words {
+  color: rgb(117, 66, 15);
+  font-weight: bold;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.centered-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-button {
+  background-color: rgb(117, 66, 15);
+  color: white;
+  border-radius: 25px;
+  padding: 5px 20px;
+  transition: 0.3s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: white;
+  color: rgb(117, 66, 15);
 }
 
 .singleProductImage {

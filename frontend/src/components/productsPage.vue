@@ -82,9 +82,23 @@
           mandatory
           variant="label"
           v-model="category"
-          @click="sortProductsByCategories"
+          @click="
+            () => {
+              resetPagination();
+              sortProductsByCategories();
+            }
+          "
         >
-          <v-chip variant="label" class="chip mr-2" @click="showAllProducts">
+          <v-chip
+            variant="label"
+            class="chip mr-2"
+            @click="
+              () => {
+                resetPagination();
+                showAllProducts();
+              }
+            "
+          >
             <v-avatar left>
               <v-icon color="orange">mdi-view-list</v-icon>
             </v-avatar>
@@ -263,6 +277,13 @@ export default defineComponent({
     window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
   },
   methods: {
+    resetPagination() {
+      this.page = 0;
+      this.totalPages = 0;
+      this.productsByCategoryPage = 0;
+      this.productsByCategoryTotalPages = 0;
+      this.products = [];
+    },
     showFullProduct(productId: number) {
       this.selectedProductId = productId;
       if (this.$store.state.isUserLoggedIn) {
@@ -333,10 +354,7 @@ export default defineComponent({
       }
     },
     async showAllProducts() {
-      // this.productsLoading = true;
-      // await setTimeout(() => {
-      //   this.productsLoading = false;
-      // }, 600);
+      console.log("category : " + this.category);
       try {
         const response = await axios.get("http://localhost:4000/products", {
           params: {
@@ -355,14 +373,6 @@ export default defineComponent({
         console.log("Error fetching all products: " + err);
       }
     },
-    // async loadMoreProducts() {
-    //   if (!this.isLoading && this.page < this.totalPages - 1) {
-    //     this.isLoading = true; // Set loading to prevent multiple triggers
-    //     this.page += 1;
-    //     await this.showAllProducts();
-    //     this.isLoading = false; // Reset loading after fetching products
-    //   }
-    // },
     async loadMoreProducts() {
       if (this.isLoading) return; // Prevent multiple triggers
 

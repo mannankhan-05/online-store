@@ -227,8 +227,9 @@ export default defineComponent({
 .add-product-button {
   width: 100%;
   font-size: 18px;
+  border-radius: 30px;
   font-weight: 600;
-  color: black;
+  color: rgba(19, 142, 184, 0.85);
   border: none;
   background-color: white;
   transition: 0.3s ease-in-out;

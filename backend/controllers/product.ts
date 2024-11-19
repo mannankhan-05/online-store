@@ -175,37 +175,7 @@ export const createProduct = (req: Request, res: Response) => {
   });
 };
 
-// to get products by category
-// export const getProductsByCategory = async (req: Request, res: Response) => {
-//   const categoryId: number = parseInt(req.params.categoryId, 10);
-
-//   await product
-//     .findAll({
-//       where: { category: categoryId },
-//       include: [
-//         {
-//           model: product_category,
-//         },
-//       ],
-//     })
-//     .then((productsByCategories) => {
-//       logger.info(`Products by category : ${categoryId} were retrieved`);
-//       const result = productsByCategories.map((product: any) => {
-//         if (product.image) {
-//           product.image = `http://localhost:4000/productImages/${product.image}`;
-//         }
-//         return product;
-//       });
-//       res.json(result);
-//     })
-//     .catch((err) => {
-//       logger.error(
-//         `Error retrieving products by category ${categoryId} : ${err}`
-//       );
-//       res.status(500);
-//     });
-// };
-
+// Get products by category
 export const getProductsByCategory = async (req: Request, res: Response) => {
   const limit = parseInt(req.query.limit as string) || 4;
   const offset = (parseInt(req.query.page as string) || 0) * limit;

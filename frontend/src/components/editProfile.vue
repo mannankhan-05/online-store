@@ -189,15 +189,16 @@ export default defineComponent({
 .edit-profile-button {
   width: 100%;
   font-size: 18px;
+  border-radius: 30px;
   font-weight: 600;
-  color: black;
+  color: rgba(21, 152, 196, 0.85);
   border: none;
   background-color: white;
   transition: 0.3s ease-in-out;
 }
 
 .edit-profile-button:hover {
-  background-color: rgba(91, 115, 124, 0.85);
+  background-color: rgba(101, 123, 131, 0.85);
   color: white;
 }
 

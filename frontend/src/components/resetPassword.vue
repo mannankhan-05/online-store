@@ -104,7 +104,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .resetPasswordForm {
   background-color: rgb(117, 66, 15);
   margin: 0 auto;

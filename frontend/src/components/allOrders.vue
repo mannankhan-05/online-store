@@ -15,18 +15,45 @@
       </template>
     </v-tooltip>
 
+    <!-- Header Section -->
+    <v-row justify="center">
+      <v-col cols="12" md="6" sm="12">
+        <h2 class="header-title d-flex justify-center">
+          <v-icon color="orange mr-2">mdi-view-dashboard</v-icon>
+          Order Administration Dashboard
+        </h2>
+        <v-divider :thickness="2" class="border-opacity-50"></v-divider>
+      </v-col>
+    </v-row>
+
     <!-- Sort Orders -->
     <v-row justify="center">
       <v-col cols="12" class="d-flex justify-center">
         <v-btn-toggle v-model="sortOrder" class="sortButton">
           <v-chip-group variant="flat" class="mr-3">
-            <v-chip color="primary" label @click="setSortOrder('ascending')">
-              <v-icon icon="mdi-sort-ascending" start></v-icon>
-              Sort By Order Amount</v-chip
+            <v-chip
+              class="sorting-chips"
+              label
+              @click="setSortOrder('ascending')"
             >
-            <v-chip color="primary" label @click="setSortOrder('descending')">
-              <v-icon icon="mdi-sort-descending" start></v-icon>
-              Sort By Order Amount</v-chip
+              <v-icon
+                class="sorting-icons"
+                icon="mdi-sort-ascending"
+                start
+              ></v-icon>
+              Order Amount</v-chip
+            >
+            <v-chip
+              class="sorting-chips"
+              label
+              @click="setSortOrder('descending')"
+            >
+              <v-icon
+                class="sorting-icons"
+                icon="mdi-sort-descending"
+                start
+              ></v-icon>
+              Order Amount</v-chip
             >
           </v-chip-group>
         </v-btn-toggle>
@@ -44,31 +71,39 @@
         v-for="order in orders"
         :key="order.id"
       >
-        <v-card class="mx-auto mb-4" max-width="400" elevation="4">
-          <p class="orderDate mt-2 mb-2">
+        <v-card class="order-card mx-auto mb-4" max-width="400" :elevation="4">
+          <p class="orderDate">
             {{ new Date(order.order_date).toLocaleDateString() }}
           </p>
-          <v-divider></v-divider>
-          <v-card-title class="mt-3 mb-4">
+          <v-divider class="mb-7"></v-divider>
+          <v-card-title class="d-inline mb-8">
             Order ID :
-            <v-btn color="primary" variant="tonal">{{ order.order_id }}</v-btn>
+            <span class="order-id">{{ order.order_id }}</span>
           </v-card-title>
-          <v-card-title class="mb-3">
-            <p>
+          <v-card-title>
+            <p class="mt-4">
               Order Amount :
-              <v-btn color="primary" variant="tonal"
-                >${{ order.order_amount }}</v-btn
+              <span class="order-amount"
+                ><span class="dollar-sign">$</span
+                >{{ order.order_amount }}</span
               >
             </p>
           </v-card-title>
-          <v-card-actions class="actionsAlignment">
-            <v-btn class="viewDetailsButton" color="primary" variant="flat"
-              >View Details</v-btn
-            >
+          <v-card-actions class="actionsAlignment mt-7">
+            <v-btn class="viewDetailsButton">View Details</v-btn>
           </v-card-actions>
         </v-card>
+        <v-divider class="divider-color border-opacity-75"></v-divider>
       </v-col>
     </v-row>
+
+    <!-- Loading More Orders (Progress Circular) -->
+    <div class="loading-more-products">
+      <v-progress-circular
+        v-if="loadingMoreOrders"
+        indeterminate
+      ></v-progress-circular>
+    </div>
   </v-container>
 </template>
 
@@ -82,11 +117,15 @@ export default defineComponent({
       orders: [] as object[],
       sortOrder: "" as string, // Default sorting order
       list: false,
+      limit: 6,
+      page: 0,
+      totalPages: 0,
+      loadingMoreOrders: false,
     };
   },
   async mounted() {
-    let response = await axios.get("http://localhost:4000/orders");
-    this.orders = response.data;
+    window.addEventListener("scroll", this.handleScroll);
+    await this.fetchOrders();
   },
   methods: {
     setSortOrder(order: string) {
@@ -104,15 +143,73 @@ export default defineComponent({
           : priceB - priceA;
       });
     },
+    async fetchOrders() {
+      try {
+        let response = await axios.get("http://localhost:4000/orders", {
+          params: {
+            limit: this.limit,
+            page: this.page,
+          },
+        });
+
+        // When loading more, append the products instead of replacing
+        if (this.page == 0) {
+          this.orders = response.data.orders;
+        } else {
+          this.orders = [...this.orders, ...response.data.orders];
+        }
+        this.totalPages = Math.ceil(response.data.totalOrders / this.limit);
+      } catch (err) {
+        console.log("Error fetching orders: ", err);
+      }
+    },
+    handleScroll() {
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.scrollHeight - 600;
+      if (scrollPosition >= threshold) {
+        this.loadMoreOrders();
+      }
+    },
+    async loadMoreOrders() {
+      if (this.loadingMoreOrders) return;
+
+      this.loadingMoreOrders = true;
+
+      if (this.page < this.totalPages - 1) {
+        this.page++;
+        await this.fetchOrders();
+      }
+      this.loadingMoreOrders = false;
+    },
   },
 });
 </script>
 
-<style>
+<style scoped>
+.order-card {
+  border-radius: 12px;
+}
+
 .orderDate {
+  background-color: rgb(163, 132, 75);
+  height: 36px;
+  color: white;
+  font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.order-id,
+.order-amount {
+  background-color: rgb(238, 230, 230);
+  border-radius: 30px;
+  color: rgb(114, 87, 37);
+  padding: 3px 25px;
+}
+
+.dollar-sign {
+  color: rgb(22, 18, 9);
 }
 
 .actionsAlignment {
@@ -121,12 +218,46 @@ export default defineComponent({
 }
 
 .viewDetailsButton {
+  background-color: rgb(206, 147, 39);
+  border-radius: 30px;
+  color: white;
   width: 95%;
   transition: 0.3s ease-in-out;
 }
 
 .viewDetailsButton:hover {
-  background-color: #f5f5f5;
+  background-color: rgb(163, 132, 75);
+  color: black;
   transform: scale(1.02);
+}
+
+.loading-more-products {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.sorting-chips {
+  background-color: rgb(206, 147, 39);
+  color: black;
+  border-radius: 30px;
+  padding: 3px 25px;
+  transition: 0.3s ease-in-out;
+}
+
+.sorting-chips:hover {
+  color: white;
+}
+
+.sorting-icons {
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.divider-color {
+  color: rgb(150, 119, 61);
 }
 </style>

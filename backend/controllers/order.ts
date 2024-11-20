@@ -6,16 +6,20 @@ import logger from "../logger";
 
 // Get all orders
 export const getAllOrders = async (req: Request, res: Response) => {
-  await order
-    .findAll()
-    .then((orders) => {
-      logger.info("All orders are fetched");
-      res.json(orders);
-    })
-    .catch((err) => {
-      logger.error("Error fetching all orders" + err);
-      res.status(500);
+  const limit = parseInt(req.query.limit as string) || 6;
+  const offset = (parseInt(req.query.page as string) || 0) * limit;
+
+  try {
+    const { count, rows: orders } = await order.findAndCountAll({
+      limit,
+      offset,
     });
+    logger.info("All orders are fetched");
+    res.json({ orders: orders, totalOrders: count });
+  } catch (err) {
+    logger.error(`Error fetching all orders: ${err}`);
+    res.sendStatus(500);
+  }
 };
 
 // Get order by user's id

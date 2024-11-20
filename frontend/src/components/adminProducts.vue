@@ -36,7 +36,7 @@
         sm="5"
         xs="5"
       >
-        <v-card class="productCard mx-auto" max-width="400">
+        <v-card class="productCard mx-auto" :elevation="4" max-width="400">
           <v-img class="productImage" height="200" :src="product.image"></v-img>
           <v-card-title>
             <h4>{{ product.name }}</h4>
@@ -296,6 +296,7 @@ export default defineComponent({
 
 <style scoped>
 .productCard {
+  border-radius: 8px;
   transition: 0.3s ease-in-out;
 }
 

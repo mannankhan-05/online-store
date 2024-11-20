@@ -38,7 +38,8 @@
             {{ selectedProduct.name }}
           </v-card-title>
           <v-card-subtitle class="stock-text">
-            Available Stock: {{ selectedProduct.stock }}
+            Available Stock :
+            <span class="stock-number">{{ selectedProduct.stock }}</span>
           </v-card-subtitle>
 
           <v-card-subtitle class="category-text">
@@ -88,7 +89,6 @@
           <v-btn
             v-if="!loading"
             class="AddToCartButton"
-            color="primary"
             large
             @click="addToCart"
           >
@@ -335,6 +335,8 @@ export default defineComponent({
 
 .product-details-card {
   padding: 20px;
+  border-radius: 12px;
+  box-shadow: 20px 20px 20px 20px rgba(189, 39, 39, 0.5);
 }
 
 .singleProductName {
@@ -347,12 +349,23 @@ export default defineComponent({
   width: fit-content;
   font-size: 18px;
   font-weight: 700;
-  background-color: #0dcf14; /* Green for in-stock items */
-  color: white;
+  color: black;
   border-radius: 40px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+}
+
+.stock-number {
+  display: flex;
+  justify-content: center;
+  width: 40px;
+  background-color: rgb(117, 66, 15);
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  padding: 5px;
+  margin-left: 5px;
 }
 
 @media (max-width: 600px) {
@@ -381,13 +394,14 @@ export default defineComponent({
   margin-top: 20px;
   font-size: 18px;
   transition: all 0.3s ease-in-out;
-  border-radius: 8px;
-  background: linear-gradient(45deg, #1e88e5, #42a5f5);
+  border-radius: 30px;
+  background: rgb(153, 113, 39);
   color: white;
+  transition: 0.3s ease-in-out;
 }
 .AddToCartButton:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.01);
+  color: black;
 }
 
 .descriptionHeading {

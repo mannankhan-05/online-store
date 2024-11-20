@@ -223,10 +223,10 @@
           <div class="buttonContainer">
             <v-btn
               v-if="product.stock > 0"
-              class="bg-black font-weight-md"
+              class="show-full-button font-weight-md"
               width="92%"
               @click="showFullProduct(product.id)"
-              >Show Full</v-btn
+              >Discover More</v-btn
             >
             <v-btn v-else color="red" variant="outlined" width="92%"
               >Out Of Stock</v-btn
@@ -566,10 +566,6 @@ export default defineComponent({
   transition: 0.2s ease-in-out;
 }
 
-.buttonContainer:hover {
-  transform: scale(1.02);
-}
-
 .productImage {
   width: 100%;
   height: 60%;
@@ -593,8 +589,9 @@ export default defineComponent({
 }
 
 .dollar {
-  color: black;
+  color: rgb(143, 110, 49);
   margin-left: 5px;
+  font-weight: bold;
 }
 
 .productCategory {
@@ -604,11 +601,22 @@ export default defineComponent({
   padding-bottom: 3mm;
   font-size: 21px;
   font-weight: 600;
-  color: black;
+  color: rgb(155, 126, 71);
 }
 
 .categoryHeading {
   color: black;
+}
+
+.show-full-button {
+  background-color: rgb(155, 126, 71);
+  color: white !important;
+  border-radius: 30px;
+  transition: 0.3s ease-in-out;
+}
+
+.show-full-button:hover {
+  color: black !important;
 }
 
 .loading-more-products {

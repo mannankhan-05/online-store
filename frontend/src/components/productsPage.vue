@@ -242,7 +242,11 @@
     </div>
 
     <!-- up button -->
-    <div class="upButton d-none d-sm-flex" @click="scrollToTop">
+    <div
+      v-if="showUpButton"
+      class="upButton d-none d-sm-flex"
+      @click="scrollToTop"
+    >
       <v-icon icon="mdi-arrow-up"></v-icon>
     </div>
   </v-container>
@@ -269,6 +273,7 @@ export default defineComponent({
       productsByCategoryLimit: 4,
       productsByCategoryPage: 0,
       productsByCategoryTotalPages: 0,
+      showUpButton: false as boolean,
     };
   },
   async mounted() {
@@ -394,6 +399,9 @@ export default defineComponent({
       this.isLoading = false;
     },
     handleScroll() {
+      // show the up button only when scrolled 100px or more
+      this.showUpButton = window.scrollY > 100;
+
       // Detect when user is near the bottom of the page
       const scrollPosition = window.innerHeight + window.scrollY;
       const threshold = document.documentElement.scrollHeight - 600; // 100px before the bottom

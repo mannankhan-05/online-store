@@ -57,6 +57,10 @@ import {
   getHistoryBySearch,
   addSearchHistory,
 } from "../controllers/searchHistory";
+import {
+  getAllProductsSales,
+  addProductSales,
+} from "../controllers/product_sale";
 
 // user routes :
 router.get("/users", getAllUsers);
@@ -150,5 +154,10 @@ router.get("/searchHistory", getAllSearchHistory);
 router.post("/searchHistoriesBySearch", getHistoryBySearch);
 
 router.post("/addSearchHistory", addSearchHistory);
+
+// product_sale routes :
+router.get("/productSales", getAllProductsSales);
+
+router.post("/addProductSales", addProductSales);
 
 export default router;

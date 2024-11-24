@@ -70,7 +70,6 @@
           v-if="userProductsInCart.length != 0"
           @click="checkout"
           class="checkout-button"
-          color="primary"
           large
           >Proceed to Checkout</v-btn
         >
@@ -409,6 +408,12 @@ export default defineComponent({
               quantity: this.userProductsInCart[i].quantity,
             }
           );
+
+          // to update the sells in the database if product already has some sells
+          await axios.post("http://localhost:4000/addProductSales", {
+            productId: this.userProductsInCart[i].product.id,
+            totalSales: this.userProductsInCart[i].quantity,
+          });
         }
 
         this.loading = false;
@@ -484,8 +489,19 @@ export default defineComponent({
 
 .checkout-button {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   margin-top: 20px;
+  background-color: rgb(134, 104, 47);
+  color: white;
+  border-radius: 30px;
+  font-weight: 28px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.checkout-button:hover {
+  background-color: #e9e3e3;
+  color: rgb(134, 104, 47);
 }
 
 .headline {

@@ -10,7 +10,7 @@
           <router-link :to="{ name: 'home' }">
             <img class="logo" :src="require('../assets/storeLogo.png')" />
           </router-link>
-          <h1 class="nex-cart-heading">NexCart</h1>
+          <h1 class="nex-cart-heading d-none d-sm-flex">NexCart</h1>
 
           <v-spacer></v-spacer>
 
@@ -36,11 +36,7 @@
             v-if="isLoggedIn && this.$store.state.userId"
             :to="{ name: 'cart', params: { userId: this.$store.state.userId } }"
           >
-            <v-btn
-              icon
-              v-if="isLoggedIn"
-              class="cartIconButton d-none d-sm-flex"
-            >
+            <v-btn icon v-if="isLoggedIn" class="cartIconButton">
               <v-badge
                 v-if="this.$store.state.showCartBadge"
                 :content="this.$store.state.userProductsInCart.length"
@@ -147,13 +143,6 @@
                   <v-list-item-title>
                     <v-icon class="mr-2">mdi-view-list</v-icon>
                     Your Orders</v-list-item-title
-                  >
-                </v-list-item>
-
-                <v-list-item @click="gotoCart" class="d-flex d-sm-none">
-                  <v-list-item-title>
-                    <v-icon class="mr-2">mdi-cart-outline</v-icon>
-                    Cart</v-list-item-title
                   >
                 </v-list-item>
 

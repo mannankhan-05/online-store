@@ -1,43 +1,53 @@
 <template>
-  <v-container class="hero-section d-flex justify-center align-center">
-    <v-row align="center" justify="space-between">
-      <!-- Text Section -->
-      <v-col cols="12" md="6" class="text-section">
-        <h1 class="hero-heading">
-          Discover <span class="Everything-word">Everything</span> You
-        </h1>
-        <h2 class="hero-heading mb-4">
-          Love in One <span class="Place-word">Place</span>
-        </h2>
-        <p class="hero-subheading mb-15">
-          From trendy clothes to the latest gadgets, delicious food, and
-          beverages. <span class="subheading-words">We Have It All!</span>
-        </p>
-        <router-link :to="{ name: 'products' }">
-          <v-btn class="shop-now-btn" @click="gotoProducts">
-            Shop Now
-            <v-icon class="button-arrow-icon">mdi-arrow-right</v-icon>
-          </v-btn>
-        </router-link>
-      </v-col>
+  <div>
+    <v-container class="d-flex justify-center align-center">
+      <v-row align="center" justify="space-between">
+        <!-- Text Section -->
+        <v-col cols="12" md="6" xs="12" class="text-section">
+          <h1 class="hero-heading">
+            Discover <span class="Everything-word">Everything</span> You
+          </h1>
+          <h2 class="hero-heading mb-4">
+            Love in One <span class="Place-word">Place</span>
+          </h2>
+          <p class="hero-subheading mb-15">
+            From trendy clothes to the latest gadgets, delicious food, and
+            beverages. <span class="subheading-words">We Have It All!</span>
+          </p>
+          <router-link :to="{ name: 'products' }">
+            <v-btn class="shop-now-btn" @click="gotoProducts">
+              Shop Now
+              <v-icon class="button-arrow-icon">mdi-arrow-right</v-icon>
+            </v-btn>
+          </router-link>
+        </v-col>
 
-      <!-- Image Section -->
-      <v-col cols="12" md="6" class="image-section">
-        <v-img
-          :src="require('@/assets/landingPageImage.svg')"
-          aspect-ratio="1.5"
-          class="hero-image"
-          cover
-        ></v-img>
-      </v-col>
-    </v-row>
-  </v-container>
+        <!-- Image Section -->
+        <v-col cols="12" md="6" xs="12" class="image-section">
+          <v-img
+            :src="require('@/assets/landingPageImage.svg')"
+            aspect-ratio="1.5"
+            class="hero-image d-none d-sm-flex"
+            cover
+          ></v-img>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- Top Selling Products Section -->
+    <top-selling-products />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import topSellingProducts from "../components/topSellingProducts.vue";
 
-export default defineComponent({});
+export default defineComponent({
+  components: {
+    topSellingProducts,
+  },
+});
 </script>
 
 <style scoped>
@@ -58,6 +68,7 @@ export default defineComponent({});
 .hero-heading {
   font-size: 3rem;
   font-weight: bold;
+  color: black;
   line-height: 1.2; /* Adjust spacing between lines */
 }
 

@@ -27,7 +27,15 @@ export const getAllProductsSales = (req: Request, res: Response) => {
     })
     .then((productSales) => {
       logger.info("Fetched all products sales record.");
-      res.json(productSales);
+
+      const result = productSales.map((productSale: any) => {
+        if(productSale.product.image){
+          productSale.product.image = `http://localhost:4000/productImages/${productSale.product.image}`;
+        }
+        return productSale
+      })
+
+      res.json(result);
     })
     .catch((err) => {
       logger.error("Error fetching all products sales record : " + err);

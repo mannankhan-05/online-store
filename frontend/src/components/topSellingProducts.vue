@@ -4,13 +4,17 @@
     <div>
       <v-divider class="border-opacity-50 header-top-divider"></v-divider>
       <h1 class="d-flex justify-center">
+        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
+        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
+        <v-icon color="orange" class="mr-4 diamond-icon"
+          >mdi-star-outline</v-icon
+        >
         <span class="top-selling-heading">Top Selling Products</span>
         <v-icon color="orange" class="ml-4 diamond-icon"
-          >mdi-cards-diamond</v-icon
+          >mdi-star-outline</v-icon
         >
-        <v-icon color="orange" class="diamond-icon">mdi-cards-diamond</v-icon>
-        <v-icon color="orange" class="diamond-icon">mdi-cards-diamond</v-icon>
-        <v-icon color="orange" class="diamond-icon">mdi-cards-diamond</v-icon>
+        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
+        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
       </h1>
       <v-divider class="border-opacity-50 header-bottom-divider"></v-divider>
     </div>
@@ -31,14 +35,18 @@
             sm="6"
             xs="12"
           >
-            <v-card :elevation="12">
-              <v-img :src="product.image" height="200px" contain></v-img>
+            <v-card :elevation="4" class="selling-products-card">
+              <v-img :src="product.product.image" height="200px" contain>
+                <v-icon class="image-star-icon">mdi-star</v-icon>
+              </v-img>
               <v-card-title>
                 <h3>{{ product.product.name }}</h3>
               </v-card-title>
-              <v-card-text>{{ product.product.description }}</v-card-text>
+              <v-card-text>{{
+                elipses(product.product.description, 30)
+              }}</v-card-text>
               <v-card-actions>
-                <v-btn color="primary">Buy Now</v-btn>
+                <v-btn class="learn-more-button">Learn More</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -65,6 +73,9 @@ export default defineComponent({
       for (let i = 0; i < this.topSellingProducts.length; i += 4) {
         this.groupedProducts.push(this.topSellingProducts.slice(i, i + 4));
       }
+    },
+    elipses(word: string, length: number) {
+      return word.length > length ? word.substring(0, length) + "..." : word;
     },
   },
   async mounted() {
@@ -97,5 +108,35 @@ export default defineComponent({
 .diamond-icon {
   margin-top: 7px;
   font-size: 2rem;
+}
+
+.selling-products-card {
+  transition: 0.3s ease-in-out;
+}
+
+.selling-products-card:hover {
+  transform: scale(1.05);
+}
+
+.image-star-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  color: orange;
+}
+
+.learn-more-button {
+  width: 100%;
+  padding: 4px 20px;
+  background-color: rgb(206, 206, 82);
+  color: black;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: 0.2s ease-in-out;
+}
+
+.learn-more-button:hover {
+  background-color: rgb(156, 156, 58);
+  color: white;
 }
 </style>

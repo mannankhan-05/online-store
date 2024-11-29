@@ -1,26 +1,32 @@
 <template>
   <v-container class="carousel-container">
     <!-- Heading of top rated -->
-    <div>
-      <v-divider class="border-opacity-50 header-top-divider"></v-divider>
+    <div class="mb-10">
+      <!-- <v-divider class="border-opacity-50 header-top-divider"></v-divider> -->
       <h1 class="d-flex justify-center">
-        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
+        <!-- <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
         <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
         <v-icon color="orange" class="mr-4 diamond-icon"
           >mdi-star-outline</v-icon
-        >
-        <span class="top-selling-heading">Top Selling Products</span>
-        <v-icon color="orange" class="ml-4 diamond-icon"
+        > -->
+        <v-icon class="crown-icon mt-2 mr-2">mdi-crown-outline</v-icon>
+        <h2 class="top-selling-heading">Top Selling Products</h2>
+        <!-- <v-icon color="orange" class="ml-4 diamond-icon"
           >mdi-star-outline</v-icon
         >
         <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
-        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon>
+        <v-icon color="orange" class="diamond-icon">mdi-star-outline</v-icon> -->
       </h1>
-      <v-divider class="border-opacity-50 header-bottom-divider"></v-divider>
+      <!-- <v-divider class="border-opacity-50 header-bottom-divider"></v-divider> -->
     </div>
 
     <!-- Products in carousel -->
-    <v-carousel hide-delimiters v-if="groupedProducts.length != 0">
+    <v-carousel
+      hide-delimiters
+      height="auto"
+      class="custom-carousel"
+      v-if="groupedProducts.length != 0"
+    >
       <v-carousel-item
         v-for="(productGroup, index) in groupedProducts"
         :key="index"
@@ -31,7 +37,7 @@
             :key="product.id"
             cols="12"
             lg="3"
-            md="3"
+            md="4"
             sm="6"
             xs="12"
           >
@@ -94,6 +100,20 @@ export default defineComponent({
 <style scoped>
 .carousel-container {
   margin-top: 100px;
+  background: linear-gradient(
+    135deg,
+    #fff7e6,
+    #ffe0b3
+  ); /* Gradient background */
+  padding: 20px;
+  border-radius: 15px; /* Smooth edges */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-carousel {
+  max-height: 500px; /* Limit carousel height */
+  overflow: hidden;
+  background-color: transparent; /* Ensure it matches container */
 }
 
 .header-top-divider {
@@ -116,6 +136,19 @@ export default defineComponent({
 
 .selling-products-card:hover {
   transform: scale(1.05);
+}
+
+.crown-icon {
+  font-size: 2.5rem;
+  margin-right: 10px;
+  color: #cc8d30; /* Match the theme */
+  animation: fadeIn 1s ease-in-out;
+}
+
+.top-selling-heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #663300;
 }
 
 .image-star-icon {

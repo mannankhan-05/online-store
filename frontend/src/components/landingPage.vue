@@ -36,16 +36,21 @@
 
     <!-- Top Selling Products Section -->
     <top-selling-products />
+
+    <!-- All Categories Section -->
+    <all-categories />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import topSellingProducts from "../components/topSellingProducts.vue";
+import allCategories from "../components/allCategories.vue";
 
 export default defineComponent({
   components: {
     topSellingProducts,
+    allCategories,
   },
 });
 </script>

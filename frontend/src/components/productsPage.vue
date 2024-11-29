@@ -226,9 +226,9 @@
               class="show-full-button font-weight-md"
               width="92%"
               @click="showFullProduct(product.id)"
-              >Discover More</v-btn
+              >Discover Full</v-btn
             >
-            <v-btn v-else color="red" variant="outlined" width="92%"
+            <v-btn v-else class="out-of-stock-button" width="92%"
               >Out Of Stock</v-btn
             >
           </div>
@@ -625,6 +625,12 @@ export default defineComponent({
 
 .show-full-button:hover {
   color: black !important;
+}
+
+.out-of-stock-button {
+  background-color: red;
+  color: white !important;
+  border-radius: 30px;
 }
 
 .loading-more-products {

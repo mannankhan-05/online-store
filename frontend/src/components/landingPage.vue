@@ -39,6 +39,9 @@
 
     <!-- All Categories Section -->
     <all-categories />
+
+    <!-- Log In Section -->
+    <login-section />
   </div>
 </template>
 
@@ -46,11 +49,13 @@
 import { defineComponent } from "vue";
 import topSellingProducts from "../components/topSellingProducts.vue";
 import allCategories from "../components/allCategories.vue";
+import loginSection from "../components/loginSection.vue";
 
 export default defineComponent({
   components: {
     topSellingProducts,
     allCategories,
+    loginSection,
   },
 });
 </script>

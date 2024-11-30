@@ -26,13 +26,13 @@
             }}</span>
             products tailored for you!
           </div>
-          <v-btn class="explore-btn">
-            Explore Now
-            <v-icon right>mdi-arrow-right</v-icon>
-          </v-btn>
         </v-card>
       </v-col>
     </v-row>
+    <v-btn class="explore-btn">
+      Explore Now
+      <v-icon right>mdi-arrow-right</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
@@ -82,7 +82,7 @@ export default defineComponent({
 }
 
 .category-card {
-  height: 270px;
+  height: 200px;
   padding: 20px;
   background: linear-gradient(135deg, #fff7e6, #ffe0b3);
   border-radius: 15px;

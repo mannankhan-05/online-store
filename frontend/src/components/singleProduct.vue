@@ -33,7 +33,7 @@
 
       <!-- Product Details -->
       <v-col cols="12" sm="6" md="6">
-        <v-card class="product-details-card" elevation="2">
+        <v-card class="product-details-card">
           <v-card-title class="singleProductName">
             {{ selectedProduct.name }}
           </v-card-title>
@@ -326,7 +326,7 @@ export default defineComponent({
   height: auto;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgb(116, 91, 46);
   transition: transform 0.3s ease-in-out;
 }
 .singleProductImage:hover {
@@ -336,7 +336,7 @@ export default defineComponent({
 .product-details-card {
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 20px 20px 20px 20px rgba(189, 39, 39, 0.5);
+  box-shadow: 0 4px 12px rgb(116, 91, 46);
 }
 
 .singleProductName {

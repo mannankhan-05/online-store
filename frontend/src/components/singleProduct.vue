@@ -91,6 +91,7 @@
             class="AddToCartButton"
             large
             @click="addToCart"
+            :disabled="selectedProduct.stock === 0"
           >
             Add To Cart
           </v-btn>

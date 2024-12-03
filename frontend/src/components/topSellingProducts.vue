@@ -41,7 +41,7 @@
             sm="6"
             xs="12"
           >
-            <v-card :elevation="4" class="selling-products-card">
+            <v-card :elevation="4" class="selling-products-card mb-5 mr-2 ml-2">
               <v-img :src="product.product.image" height="200px" contain>
                 <v-icon class="image-star-icon">mdi-star</v-icon>
               </v-img>
@@ -52,7 +52,11 @@
                 elipses(product.product.description, 30)
               }}</v-card-text>
               <v-card-actions>
-                <v-btn class="learn-more-button">Learn More</v-btn>
+                <v-btn
+                  class="learn-more-button"
+                  @click="gotoProduct(product.product.id)"
+                  >Buy Now</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-col>
@@ -82,6 +86,13 @@ export default defineComponent({
     },
     elipses(word: string, length: number) {
       return word.length > length ? word.substring(0, length) + "..." : word;
+    },
+    gotoProduct(productId: number) {
+      // Redirect to product page
+      this.$router.push({
+        name: "fullProduct",
+        params: { userId: 0, productId: productId },
+      });
     },
   },
   async mounted() {

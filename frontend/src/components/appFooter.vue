@@ -57,7 +57,7 @@
             <v-col cols="12" lg="8" md="8" sm="8" xs="12">
               <v-card class="contact-us-card" max-width="500">
                 <div class="contact-form">
-                  <h1 class="contact-us-heading mb-7">How Can We Help ?</h1>
+                  <h1 class="contact-us-heading mb-7">Your's Feedback ?</h1>
                   <form class="pl-4 pr-4 pt-2 pb-5">
                     <div class="form-group">
                       <v-text-field
@@ -288,7 +288,7 @@ button:hover {
   justify-content: center;
   align-content: center;
   background: rgb(192, 152, 79);
-  color: black;
+  color: white;
 }
 
 .contact-us-card {

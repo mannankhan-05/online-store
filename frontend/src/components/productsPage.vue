@@ -104,7 +104,7 @@
             </v-avatar>
             All
           </v-chip>
-          <v-chip value="Clothing" class="chip">
+          <!-- <v-chip value="Clothing" class="chip">
             <v-avatar left>
               <v-icon color="orange" class="chip-icon">mdi-tshirt-crew</v-icon>
             </v-avatar>
@@ -145,6 +145,14 @@
               <v-icon color="orange">mdi-glass-cocktail</v-icon>
             </v-avatar>
             Beverage
+          </v-chip> -->
+          <v-chip
+            class="chip"
+            :value="category.category"
+            v-for="category in allCategories"
+            :key="category.id"
+          >
+            {{ category.category }}
           </v-chip>
         </v-chip-group>
       </v-row>
@@ -262,6 +270,7 @@ export default defineComponent({
     return {
       searchHistoryBySearchQuery: [] as object[],
       products: [] as object[],
+      allCategories: [] as object[],
       search: "" as string,
       selectedProductId: 0 as number,
       category: "" as string,
@@ -279,6 +288,7 @@ export default defineComponent({
   async mounted() {
     this.page = 0;
     await this.showAllProducts();
+    await this.getAllCategories();
     window.addEventListener("scroll", this.handleScroll); // Add scroll event listener
   },
   methods: {
@@ -288,6 +298,11 @@ export default defineComponent({
       this.productsByCategoryPage = 0;
       this.productsByCategoryTotalPages = 0;
       this.products = [];
+    },
+    async getAllCategories() {
+      const response = await axios.get("http://localhost:4000/allCategories");
+      this.allCategories = response.data;
+      console.log(this.allCategories);
     },
     showFullProduct(productId: number) {
       this.selectedProductId = productId;

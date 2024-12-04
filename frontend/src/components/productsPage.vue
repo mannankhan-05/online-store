@@ -82,20 +82,13 @@
           mandatory
           variant="label"
           v-model="category"
-          @click="
-            () => {
-              resetPagination();
-              sortProductsByCategories();
-            }
-          "
         >
           <v-chip
             variant="label"
             class="chip mr-2"
             @click="
               () => {
-                resetPagination();
-                showAllProducts();
+                handleChipClick('');
               }
             "
           >
@@ -104,53 +97,17 @@
             </v-avatar>
             All
           </v-chip>
-          <!-- <v-chip value="Clothing" class="chip">
-            <v-avatar left>
-              <v-icon color="orange" class="chip-icon">mdi-tshirt-crew</v-icon>
-            </v-avatar>
-            Clothing
-          </v-chip>
-          <v-chip value="Shoes" class="chip">
-            <v-avatar left>
-              <v-icon color="orange">mdi-shoe-formal</v-icon>
-            </v-avatar>
-            Shoes
-          </v-chip>
-          <v-chip value="Electronics" class="chip">
-            <v-avatar left>
-              <v-icon color="orange">mdi-laptop</v-icon>
-            </v-avatar>
-            Electronics
-          </v-chip>
-          <v-chip value="Books" class="chip">
-            <v-avatar left>
-              <v-icon color="orange">mdi-book</v-icon>
-            </v-avatar>
-            Books
-          </v-chip>
-          <v-chip value="Personal Care" class="chip">
-            <v-avatar left>
-              <v-icon color="orange">mdi-face-woman</v-icon>
-            </v-avatar>
-            Personal Care
-          </v-chip>
-          <v-chip value="Food" class="chip">
-            <v-avatar left>
-              <v-icon color="orange">mdi-food-apple</v-icon>
-            </v-avatar>
-            Food
-          </v-chip>
-          <v-chip value="Beverage" class="chip">
-            <v-avatar left>
-              <v-icon color="orange">mdi-glass-cocktail</v-icon>
-            </v-avatar>
-            Beverage
-          </v-chip> -->
           <v-chip
             class="chip"
             :value="category.category"
             v-for="category in allCategories"
             :key="category.id"
+            @click="
+              () => {
+                resetPagination();
+                handleChipClick(category.category);
+              }
+            "
           >
             {{ category.category }}
           </v-chip>
@@ -299,6 +256,16 @@ export default defineComponent({
       this.productsByCategoryTotalPages = 0;
       this.products = [];
     },
+    async handleChipClick(chip: string) {
+      await this.resetPagination();
+      if (chip == "") {
+        this.category = "";
+        await this.showAllProducts();
+      } else {
+        this.category = chip;
+        await this.sortProductsByCategories();
+      }
+    },
     async getAllCategories() {
       const response = await axios.get("http://localhost:4000/allCategories");
       this.allCategories = response.data;
@@ -319,28 +286,6 @@ export default defineComponent({
       }
     },
     async sortProductsByCategories() {
-      // try {
-      //   let response1 = await axios.post(
-      //     "http://localhost:4000/AllProductsByCategories",
-      //     {
-      //       category: this.category,
-      //     }
-      //   );
-      //   let categoryId = response1.data.id;
-      //   console.log(categoryId);
-
-      //   if (categoryId) {
-      //     let response2 = await axios.get(
-      //       `http://localhost:4000/productsByCategory/${categoryId}`
-      //     );
-      //     this.products = response2.data;
-      //   } else {
-      //     this.products = [];
-      //   }
-      // } catch (err) {
-      //   throw new Error("Error sorting products by categories: " + err);
-      // }
-
       try {
         let response1 = await axios.post(
           "http://localhost:4000/AllProductsByCategories",

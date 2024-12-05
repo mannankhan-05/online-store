@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import user_product from "../models/user_product";
+import sequelize from "../config/database";
 import user from "../models/user";
 import product from "../models/product";
 import logger from "../logger";
@@ -105,25 +106,20 @@ export const removeProductFromCart = (req: Request, res: Response) => {
 };
 
 // Update the quantity of the product in the user's cart by 1
-// export const incrementProductQuantity = (req: Request, res: Response) => {
-//   const userId: number = req.params.userId;
-//   const productId: number = req.params.productId;
+export const incrementProductQuantity = (req: Request, res: Response) => {
+  const productId = req.params.productId;
 
-//   user_product
-//     .put({
-//       // This avoids to first query the current quantity, allowing you to perform the update directly in the database.
-//       quantity: sequelize.literal("quantity + 1"),
-//       where: {
-//         user_id: userId,
-//         product_id: productId,
-//       },
-//     })
-//     .then(() => {
-//       logger.info("Product quantity was incremented successfully");
-//       res.sendStatus(200);
-//     })
-//     .catch((err) => {
-//       logger.error("Error incrementing product quantity", err);
-//       res.status(500);
-//     });
-// };
+  user_product
+    .update(
+      { quantity: sequelize.literal("quantity + 1") }, // Increment quantity
+      { where: { product_id: productId } } // Condition
+    )
+    .then(() => {
+      logger.info("Product quantity was incremented successfully");
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      logger.error("Error incrementing product quantity", err);
+      res.status(500);
+    });
+};

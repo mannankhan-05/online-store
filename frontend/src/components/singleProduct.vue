@@ -15,6 +15,17 @@
       </template>
     </v-tooltip>
 
+    <!-- Alert for stock unavailability -->
+    <v-alert
+      class="mb-7"
+      v-if="stockUnavailable"
+      closable
+      title="Stock Unavailable"
+      text="The stock is not available for the selected quantity."
+      type="warning"
+      variant="tonal"
+    ></v-alert>
+
     <!-- Cicular after item is added to the cart -->
     <div v-if="showAddedToCart" class="fadeInOut addedToCartDiv">
       <div class="addedToCartText">Item added to cart!</div>
@@ -173,6 +184,8 @@ export default defineComponent({
       dialog: false,
       loading: false,
       showAddedToCart: false,
+      productAlreadyInCart: false,
+      stockUnavailable: false,
     };
   },
   computed: {
@@ -209,24 +222,42 @@ export default defineComponent({
       }
     },
     async addToCart() {
+      // check the availability of stock
+      if (this.selectedProduct.stock < this.quantity) {
+        this.stockUnavailable = true;
+        setTimeout(() => {
+          this.stockUnavailable = false;
+        }, 4000);
+        return;
+      }
+
       this.loading = true;
+
       if (!this.isUserLoggedIn) {
         this.dialog = true;
       } else {
+        // get all products in the cart
+        let userProducts = await axios.get(
+          `http://localhost:4000/userProducts/${this.$store.state.userId}`
+        );
+        this.userProductsInCart = userProducts.data;
         // Check if the product is already in the cart
-        if (
-          this.userProductsInCart.some(
-            (product) =>
-              product.product_id ===
-              parseInt(
-                Array.isArray(this.$route.params.productId)
-                  ? this.$route.params.productId[0] // Use the first element if it's an array
-                  : this.$route.params.productId // Otherwise, use it as is
-              )
-          )
-        ) {
+        for (let i = 0; i < this.userProductsInCart.length; i++) {
+          if (
+            Number(this.$route.params.productId) ==
+            this.userProductsInCart[i].product_id
+          ) {
+            this.productAlreadyInCart = true;
+            break;
+          }
+        }
+
+        // If the product is already in the cart
+        if (this.productAlreadyInCart) {
           // Update the quantity of the product in the cart
-          console.log("Product already in the cart");
+          await axios.put(
+            `http://localhost:4000/incrementProductQuantity/${this.$route.params.productId}`
+          );
         } else {
           // Add the product to the cart if it's not already there
           await axios.post("http://localhost:4000/addUserProduct", {
@@ -234,13 +265,6 @@ export default defineComponent({
             product_id: this.$route.params.productId,
             quantity: this.quantity,
           });
-
-          // await axios.put(
-          //   `http://localhost:4000/decrementStock/${this.$route.params.productId}`,
-          //   {
-          //     quantity: this.quantity,
-          //   }
-          // );
 
           await this.$store.dispatch("getUserProductsInCart");
           await this.$store.commit("showCartBadge");

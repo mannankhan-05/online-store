@@ -18,28 +18,27 @@ export const getAllSearchHistory = (req: Request, res: Response) => {
 };
 
 //get search history be relevant to search
-export const getHistoryBySearch = (req: Request, res: Response) => {
+export const getHistoryBySearch = async (req: Request, res: Response) => {
   const { search }: { search: string } = req.body;
+  const limit = parseInt(req.query.limit as string) || 5;
 
-  searchHistory
-    .findAll({
+  try {
+    const { count, rows: searches } = await searchHistory.findAndCountAll({
+      limit,
       where: {
         search: {
           // [Op.like] is a Sequelize operator that performs a SQL LIKE query.
           [Op.like]: `%${search}%`,
         },
       },
-    })
-    .then((searchHistory) => {
-      logger.info(`Search history related to ${search} is retrieved`);
-      res.json(searchHistory);
-    })
-    .catch((err) => {
-      logger.error(
-        `Error retrieving search history by search : ${search} : ` + err
-      );
-      res.sendStatus(500);
     });
+
+    logger.info(`Search history retrieved successfully for query: "${search}"`);
+    res.json({ searches, total: count });
+  } catch (err) {
+    logger.error("Error retrieving search history");
+    res.sendStatus(500);
+  }
 };
 
 // add a new search history

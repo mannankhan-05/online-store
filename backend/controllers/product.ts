@@ -97,14 +97,18 @@ export const getProductById = (req: Request, res: Response) => {
 };
 
 // Get products by search query
-export const getProductsBySearchQuery = (req: Request, res: Response) => {
-  const { searchQuery }: { searchQuery: string } = req.body;
+export const getProductsBySearchQuery = async (req: Request, res: Response) => {
+  try {
+    const { searchQuery }: { searchQuery: string } = req.body;
+    const limit = parseInt(req.query.limit as string) || 4;
+    const offset = (parseInt(req.query.page as string) || 0) * limit;
 
-  product
-    .findAll({
+    // Fetch products
+    const { count, rows: products } = await product.findAndCountAll({
+      limit,
+      offset,
       where: {
         name: {
-          // [Op.like] is a Sequelize operator that performs a SQL LIKE query.
           [Op.like]: `%${searchQuery}%`,
         },
       },
@@ -113,23 +117,24 @@ export const getProductsBySearchQuery = (req: Request, res: Response) => {
           model: product_category,
         },
       ],
-    })
-    .then((products) => {
-      logger.info(`Products with search query ${searchQuery} were retrieved`);
-      const result = products.map((product: any) => {
-        if (product.image) {
-          product.image = `http://localhost:4000/productImages/${product.image}`;
-        }
-        return product;
-      });
-      res.json(result);
-    })
-    .catch((err) => {
-      logger.error(
-        `Error retrieving products with search query ${searchQuery} : ${err}`
-      );
-      res.status(500);
     });
+
+    const result = products.map((product: any) => {
+      if (product.image) {
+        product.image = `http://localhost:4000/productImages/${product.image}`;
+      }
+      return product;
+    });
+
+    // Respond with products and total count
+    logger.info(`Products with search query "${searchQuery}" were retrieved`);
+    res.json({ products: result, totalProducts: count });
+  } catch (err) {
+    logger.error(
+      `Error retrieving products with search query "${req.body.searchQuery}": ${err}`
+    );
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
 };
 
 // Create a new product

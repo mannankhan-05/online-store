@@ -9,7 +9,12 @@
             class="rounded-input"
             placeholder="Search for Products..."
             v-model="search"
-            @keyup.enter="fetchProductsBySearch(search)"
+            @keyup.enter="
+              () => {
+                resetPagination();
+                fetchProductsBySearch(search);
+              }
+            "
           />
           <v-icon class="search-icon" left>mdi-magnify-minus-outline</v-icon>
           <v-icon
@@ -240,6 +245,9 @@ export default defineComponent({
       productsByCategoryPage: 0,
       productsByCategoryTotalPages: 0,
       showUpButton: false as boolean,
+      searchProductsLimit: 4,
+      searchProductsPage: 0,
+      searchProductsTotalPages: 0,
     };
   },
   async mounted() {
@@ -254,6 +262,8 @@ export default defineComponent({
       this.totalPages = 0;
       this.productsByCategoryPage = 0;
       this.productsByCategoryTotalPages = 0;
+      this.searchProductsPage = 0;
+      this.searchProductsTotalPages = 0;
       this.products = [];
     },
     async handleChipClick(chip: string) {
@@ -355,6 +365,14 @@ export default defineComponent({
         this.productsByCategoryPage += 1;
         await this.sortProductsByCategories();
       }
+      // Load more products by search if a search query is entered
+      else if (
+        this.search.length > 0 &&
+        this.searchProductsPage < this.searchProductsTotalPages - 1
+      ) {
+        this.searchProductsPage += 1;
+        await this.fetchProductsBySearch(this.search);
+      }
 
       this.isLoading = false;
     },
@@ -387,10 +405,23 @@ export default defineComponent({
           "http://localhost:4000/searchProducts",
           {
             searchQuery: searchQuery,
+          },
+          {
+            params: {
+              limit: this.searchProductsLimit,
+              page: this.searchProductsPage,
+            },
           }
         );
-        this.search = "";
-        this.products = response.data;
+
+        if (this.searchProductsPage === 0) {
+          this.products = response.data.products;
+        } else {
+          this.products = [...this.products, ...response.data.products];
+        }
+        this.searchProductsTotalPages = Math.ceil(
+          response.data.totalProducts / this.searchProductsLimit
+        );
       } catch (err) {
         console.log("Error fetching products by search: " + err);
       }
@@ -413,7 +444,7 @@ export default defineComponent({
           if (searchQuery == "") {
             this.searchHistoryBySearchQuery = [];
           }
-          this.searchHistoryBySearchQuery = response.data;
+          this.searchHistoryBySearchQuery = response.data.searches;
         } catch (err) {
           console.log("Error fetching search history by search: " + err);
         }

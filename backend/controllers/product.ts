@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Model } from "sequelize";
 import { Op } from "sequelize";
+import db from "../config/database";
 import product from "../models/product";
 import product_category from "../models/product_category";
 import logger from "../logger";
@@ -217,40 +218,82 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
 };
 
 // to decrement the stock of a product
-export const decrementStockByOne = (req: Request, res: Response) => {
+// export const decrementStockByOne = (req: Request, res: Response) => {
+//   const productId: number = parseInt(req.params.productId, 10);
+//   const quantity: number = req.body.quantity;
+
+//   product
+//     .findByPk(productId)
+//     .then((product: any) => {
+//       if (product.stock > 0) {
+//         product
+//           .update(
+//             { stock: product.stock - quantity },
+//             { where: { id: productId } }
+//           )
+//           .then(() => {
+//             logger.info(`Stock of product with id ${productId} is decremented`);
+//             res.sendStatus(200);
+//           })
+//           .catch((err: unknown) => {
+//             logger.error(
+//               `Error decrementing stock of product with id ${productId} : ${err}`
+//             );
+//             res.sendStatus(500);
+//           });
+//       } else {
+//         logger.warn(`Stock of product with id ${productId} is 0`);
+//         res.sendStatus(400);
+//       }
+//     })
+//     .catch((err) => {
+//       logger.error(
+//         `Error retrieving product with id ${productId} to decrement stock : ${err}`
+//       );
+//       res.sendStatus(500);
+//     });
+// };
+
+export const decrementStockByOne = async (req: Request, res: Response) => {
   const productId: number = parseInt(req.params.productId, 10);
   const quantity: number = req.body.quantity;
 
-  product
-    .findByPk(productId)
-    .then((product: any) => {
-      if (product.stock > 0) {
-        product
-          .update(
-            { stock: product.stock - quantity },
-            { where: { id: productId } }
-          )
-          .then(() => {
-            logger.info(`Stock of product with id ${productId} is decremented`);
-            res.sendStatus(200);
-          })
-          .catch((err: unknown) => {
-            logger.error(
-              `Error decrementing stock of product with id ${productId} : ${err}`
-            );
-            res.sendStatus(500);
-          });
-      } else {
-        logger.warn(`Stock of product with id ${productId} is 0`);
-        res.sendStatus(400);
-      }
-    })
-    .catch((err) => {
-      logger.error(
-        `Error retrieving product with id ${productId} to decrement stock : ${err}`
-      );
-      res.sendStatus(500);
+  // A transaction groups operations together to ensure atomicity—either all succeed, or none do.
+  const transaction = await db.transaction();
+
+  try {
+    const productRow: any = await product.findOne({
+      where: { id: productId },
+      lock: transaction.LOCK.UPDATE, // Lock the row for update
+      transaction,
     });
+
+    if (!productRow) {
+      logger.warn(`Product with id ${productId} not found`);
+      await transaction.rollback();
+      return res.sendStatus(404);
+    }
+
+    // check stock availability
+    if (productRow.stock >= quantity) {
+      productRow.stock -= quantity;
+      await productRow.save({ transaction });
+
+      logger.info(`Stock of product with id ${productId} is decremented`);
+      await transaction.commit(); // commit the transaction
+      return res.sendStatus(200);
+    } else {
+      logger.warn(`Insufficient Stock of product with id ${productId}`);
+      await transaction.rollback();
+      return res.sendStatus(400);
+    }
+  } catch (err) {
+    logger.error(
+      `Error decrementing stock of product with id ${productId} : ${err}`
+    );
+    await transaction.rollback();
+    return res.sendStatus(500);
+  }
 };
 
 // to edit a product

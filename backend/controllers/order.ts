@@ -68,7 +68,8 @@ export const createNewOrder = async (req: Request, res: Response) => {
       const usersOrder = user
         .findOne({ where: { id: userId } })
         .then((u: any) => {
-          orderConfirmationMail(u.email, orderId, orderAmount);
+          // orderConfirmationMail(u.email, orderId, orderAmount);
+          console.log("Order confirmation mail sent");
         });
 
       res.json(order);

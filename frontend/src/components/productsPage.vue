@@ -30,22 +30,22 @@
           class="autocomplete-box"
           v-if="searchHistoryBySearchQuery.length == 0 && search.length != 0"
         >
-          <v-card
-            class="autocomplete-card mx-auto"
-            max-width="760"
-            :elevation="12"
-          >
-            <v-list dense>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="searches">
-                    <v-icon class="mr-2">mdi-magnify-remove-outline</v-icon>
-                    No search history found
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
+          <v-row>
+            <v-col cols="12" lg="7" md="7" sm="8" xs="8">
+              <v-card class="autocomplete-card mx-auto" :elevation="12">
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title class="searches">
+                        <v-icon class="mr-2">mdi-magnify-remove-outline</v-icon>
+                        No search history found
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
         </div>
 
         <!-- if (searches is not empty) -->
@@ -53,28 +53,28 @@
           class="autocomplete-box"
           v-if="searchHistoryBySearchQuery.length > 0 && search.length != 0"
         >
-          <v-card
-            class="autocomplete-card mx-auto"
-            max-width="760"
-            :elevation="12"
-          >
-            <v-list dense>
-              <v-list-item
-                v-for="history in searchHistoryBySearchQuery"
-                :key="history.id"
-              >
-                <v-list-item-content
-                  @click="search = history.search"
-                  class="d-flex align-center"
-                >
-                  <v-icon class="mr-5">mdi-history</v-icon>
-                  <v-list-item-title class="searches">{{
-                    history.search
-                  }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
+          <v-row>
+            <v-col cols="12" lg="7" md="7" sm="8" xs="8">
+              <v-card class="autocomplete-card mx-auto" :elevation="12">
+                <v-list dense>
+                  <v-list-item
+                    v-for="history in searchHistoryBySearchQuery"
+                    :key="history.id"
+                  >
+                    <v-list-item-content
+                      @click="search = history.search"
+                      class="d-flex align-center"
+                    >
+                      <v-icon class="mr-5">mdi-history</v-icon>
+                      <v-list-item-title class="searches">{{
+                        history.search
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
         </div>
       </v-col>
     </v-row>
@@ -155,12 +155,12 @@
         cols="12"
         lg="3"
         md="3"
-        sm="6"
+        sm="4"
         xs="6"
       >
         <v-sheet
           :elevation="2"
-          max-width="300"
+          max-width="350"
           :height="360"
           border
           rounded
@@ -382,7 +382,7 @@ export default defineComponent({
 
       // Detect when user is near the bottom of the page
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight - 600; // 100px before the bottom
+      const threshold = document.documentElement.scrollHeight - 800; // 800px before the bottom
       if (scrollPosition >= threshold) {
         this.loadMoreProducts();
       }
@@ -518,7 +518,8 @@ export default defineComponent({
 
 .autocomplete-box {
   position: absolute;
-  width: 780px;
+  width: 100%;
+  /* width: 780px; */
 }
 
 .autocomplete-suggestion-avatar {
@@ -544,6 +545,7 @@ export default defineComponent({
 }
 
 .autocomplete-card {
+  width: 100%;
   border-radius: 10px;
 }
 

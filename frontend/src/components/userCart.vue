@@ -446,8 +446,8 @@ export default defineComponent({
 
 <style scoped>
 .product-card {
-  max-width: 300px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 350px;
+  box-shadow: 2px 2px 7px 2px rgb(134, 111, 67);
   transition: transform 0.3s;
 }
 

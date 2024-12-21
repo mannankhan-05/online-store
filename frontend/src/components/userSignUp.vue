@@ -10,6 +10,7 @@
             variant="outlined"
             prepend-inner-icon="mdi-account"
             v-model="name"
+            class="text-field-color"
           ></v-text-field>
           <v-file-input
             clearable
@@ -18,6 +19,7 @@
             variant="outlined"
             prepend-inner-icon="mdi-camera"
             v-model="image"
+            class="text-field-color"
             @change="handleFileChange($event)"
           >
             <template v-slot:selection="{ text }">
@@ -34,6 +36,7 @@
             variant="outlined"
             prepend-inner-icon="mdi-email"
             v-model="email"
+            class="text-field-color"
           ></v-text-field>
           <v-text-field
             clearable
@@ -43,6 +46,7 @@
             variant="outlined"
             prepend-inner-icon="mdi-lock"
             v-model="password"
+            class="text-field-color"
           >
             <template v-slot:append-inner>
               <v-icon @click="passwordVisible = !passwordVisible">
@@ -52,21 +56,14 @@
               </v-icon>
             </template>
           </v-text-field>
-          <v-checkbox
-            v-model="terms"
-            label="I accept the terms and conditions"
-          ></v-checkbox>
           <div class="button-container">
             <v-btn
-              v-if="!loading"
               :disabled="signUpButtonDisabled"
               variant="contained"
               class="signUpButton"
               @click="registerUser"
             >
-              Sign Up
-            </v-btn>
-            <v-btn variant="contained" class="loadingButton" v-if="loading">
+              <span v-if="!loading">Sign Up</span>
               <v-progress-circular
                 v-if="loading"
                 indeterminate
@@ -92,7 +89,6 @@ export default defineComponent({
       imageUrl: "",
       email: "",
       password: "",
-      terms: false,
       loading: false,
       passwordVisible: false,
     };
@@ -144,7 +140,6 @@ export default defineComponent({
         !this.image ||
         !this.email ||
         !this.password ||
-        !this.terms ||
         !this.passwordLength ||
         !this.emailFormat
       );
@@ -209,5 +204,10 @@ export default defineComponent({
 .loadingButton {
   width: 100%;
   justify-content: center;
+}
+
+.text-field-color {
+  color: #ffcc00 !important;
+  font-weight: bold;
 }
 </style>

@@ -26,10 +26,15 @@
       variant="tonal"
     ></v-alert>
 
-    <!-- Cicular after item is added to the cart -->
-    <div v-if="showAddedToCart" class="fadeInOut addedToCartDiv">
-      <div class="addedToCartText">Item added to cart!</div>
-    </div>
+    <!-- Snackbar after item is added to the cart -->
+    <v-snackbar v-model="snackbar">
+      <h3>Product is added to the Cart!</h3>
+      <template v-slot:actions>
+        <v-btn color="yellow" variant="text" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
 
     <v-row class="product-details-row" justify="center">
       <!-- Product Image -->
@@ -98,16 +103,12 @@
 
           <!-- Add to Cart Button -->
           <v-btn
-            v-if="!loading"
             class="AddToCartButton"
             large
             @click="addToCart"
             :disabled="selectedProduct.stock === 0"
           >
-            Add To Cart
-          </v-btn>
-
-          <v-btn v-if="loading" variant="tonal" class="signInButton">
+            <span v-if="!loading">Add To Cart</span>
             <v-progress-circular
               v-if="loading"
               indeterminate
@@ -183,9 +184,9 @@ export default defineComponent({
       quantity: 1,
       dialog: false,
       loading: false,
-      showAddedToCart: false,
       productAlreadyInCart: false,
       stockUnavailable: false,
+      snackbar: false,
     };
   },
   computed: {
@@ -268,12 +269,12 @@ export default defineComponent({
 
           await this.$store.dispatch("getUserProductsInCart");
           await this.$store.commit("showCartBadge");
-          this.showAddedToCart = true;
+          this.snackbar = true;
         }
       }
       this.loading = false;
       setTimeout(() => {
-        this.showAddedToCart = false;
+        this.snackbar = false;
       }, 4000);
     },
   },
@@ -463,63 +464,14 @@ export default defineComponent({
   align-items: center;
 }
 
-.addedToCartDiv {
-  width: 80%;
-  margin: 0 auto;
-  padding: 10px;
-  border-radius: 20px;
-  background-color: rgba(76, 175, 80, 0.9);
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
-  animation: fadeOut 4s forwards;
-}
-
 .addedToCartText {
   margin-left: 8px; /* Space between the spinner and text */
   font-size: 20px;
   color: black;
 }
 
-.fadeInOut {
-  animation: fadeOut 2s forwards;
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  10% {
-    opacity: 0.9;
-  }
-  20% {
-    opacity: 0.8;
-  }
-  30% {
-    opacity: 0.7;
-  }
-  40% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  60% {
-    opacity: 0.4;
-  }
-  70% {
-    opacity: 0.3;
-  }
-  80% {
-    opacity: 0.2;
-  }
-  90% {
-    opacity: 0.1;
-  }
-  100% {
-    opacity: 0;
-    display: none; /* Optionally hide element after fading out */
-  }
+.snackbar-background-color {
+  background-color: rgb(153, 113, 39);
+  color: white;
 }
 </style>

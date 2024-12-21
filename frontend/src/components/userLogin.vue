@@ -11,7 +11,7 @@
             variant="outlined"
             prepend-inner-icon="mdi-email"
             v-model="email"
-            :rules="[emailFormat ? () => true : 'Please enter a valid email']"
+            class="text-field-color"
           ></v-text-field>
 
           <v-text-field
@@ -22,7 +22,7 @@
             variant="outlined"
             prepend-inner-icon="mdi-lock"
             v-model="password"
-            :rules="[passwordLength ? () => true : 'Password is too short']"
+            class="text-field-color"
           >
             <template v-slot:append-inner>
               <v-icon @click="passwordVisible = !passwordVisible">
@@ -35,16 +35,12 @@
 
           <div class="button-container">
             <v-btn
-              v-if="!loading"
               :disabled="loginButtonDisabled"
               variant="contained"
               class="loginButton"
               @click="loginUser"
             >
-              Login
-            </v-btn>
-
-            <v-btn variant="contained" class="loadingButton" v-if="loading">
+              <span v-if="!loading">Login</span>
               <v-progress-circular
                 v-if="loading"
                 indeterminate
@@ -220,5 +216,10 @@ export default defineComponent({
 
 .create-account:hover {
   color: rgb(165, 117, 29);
+}
+
+.text-field-color {
+  color: #ffcc00 !important;
+  font-weight: bold;
 }
 </style>

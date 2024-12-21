@@ -29,11 +29,11 @@ export const getAllProductsSales = (req: Request, res: Response) => {
       logger.info("Fetched all products sales record.");
 
       const result = productSales.map((productSale: any) => {
-        if(productSale.product.image){
+        if (productSale.product.image) {
           productSale.product.image = `http://localhost:4000/productImages/${productSale.product.image}`;
         }
-        return productSale
-      })
+        return productSale;
+      });
 
       res.json(result);
     })

@@ -17,6 +17,7 @@ import allOrders from "@/components/allOrders.vue";
 import userAllOrders from "@/components/userAllOrders.vue";
 import orderDetailsPage from "@/components/orderDetailsPage.vue";
 import landingPage from "@/components/landingPage.vue";
+import allSales from "@/components/allSales.vue";
 
 // function to check login status
 function isLoggedIn(): boolean {
@@ -103,6 +104,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin/:userId/allOrders",
     name: "allOrders",
     component: allOrders,
+  },
+  {
+    path: "/admin/:userId/Sales",
+    name: "allSales",
+    component: allSales,
   },
   {
     path: "/user/:userId/allOrders",

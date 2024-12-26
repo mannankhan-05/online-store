@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { orderConfirmationMail } from "../mails/orderConfirmationMail";
+import { Op } from "sequelize";
 import order from "../models/order";
 import user from "../models/user";
 import logger from "../logger";
@@ -78,4 +79,36 @@ export const createNewOrder = async (req: Request, res: Response) => {
       logger.error("Error creating new order" + err);
       res.status(500);
     });
+};
+
+// Get total sales 1 day, 7 days, 30 days
+export const getTotalSales = async (req: Request, res: Response) => {
+  const { days }: { days: number } = req.body;
+  console.log(`Days parameter: ${days}`);
+  const today = new Date();
+  const lastDate = new Date(today);
+
+  lastDate.setDate(today.getDate() - days);
+
+  console.log(
+    `Date range: ${lastDate.toISOString()} to ${today.toISOString()}`
+  );
+
+  try {
+    const totalSales = await order.sum("order_amount", {
+      where: {
+        createdAt: {
+          // The date range using Sequelize's Op.gte (greater than or equal to) and Op.lte (less than or equal to) operators.
+          [Op.gte]: lastDate,
+          [Op.lte]: today,
+        },
+      },
+    });
+    console.log(`Total sales: ${totalSales}`);
+    logger.info(`Total sales for ${days} days fetched`);
+    res.json(totalSales);
+  } catch (err) {
+    logger.error(`Error fetching total sales for ${days} days: ${err}`);
+    res.sendStatus(500);
+  }
 };

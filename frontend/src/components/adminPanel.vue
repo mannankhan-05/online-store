@@ -77,6 +77,19 @@
         </v-sheet>
       </v-col>
 
+      <!-- See All Sales -->
+      <v-col cols="12" md="4" sm="6" xs="10" class="d-flex justify-center">
+        <v-sheet
+          :height="200"
+          :width="350"
+          class="sheet-button fade-in sheet-view-sales"
+          @click="gotoAllSales"
+        >
+          <v-icon class="icon-style">mdi-google-analytics</v-icon>
+          <h3 class="button-text">View Sales</h3>
+        </v-sheet>
+      </v-col>
+
       <!-- Add Product Category Dialog -->
       <v-col cols="12" xs="12" sm="8" md="4">
         <v-dialog v-model="addProductCategoryDialog" max-width="440" persistant>
@@ -151,6 +164,9 @@ export default defineComponent({
     },
     gotoAllOrders() {
       this.$router.push({ name: "allOrders" });
+    },
+    gotoAllSales() {
+      this.$router.push({ name: "allSales" });
     },
     async addCategory() {
       this.loading = true;
@@ -234,6 +250,10 @@ export default defineComponent({
 
 .sheet-add-category {
   background: linear-gradient(135deg, #ab47bc, #ba68c8);
+}
+
+.sheet-view-sales {
+  background: linear-gradient(135deg, #64b5f6, #f44336);
 }
 
 /* Adding hover and focus effects */

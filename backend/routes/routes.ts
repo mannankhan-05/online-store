@@ -39,6 +39,7 @@ import {
   createNewOrder,
   getAllOrders,
   getOrderByUserId,
+  getTotalSales,
 } from "../controllers/order";
 import {
   getAllOrderItems,
@@ -127,6 +128,8 @@ router.get("/orders", getAllOrders);
 router.get("/orders/:userId", getOrderByUserId);
 
 router.post("/createNewOrder", createNewOrder);
+
+router.get("/totalSales", getTotalSales);
 
 // order_item routes :
 router.get("/orderItems", getAllOrderItems);

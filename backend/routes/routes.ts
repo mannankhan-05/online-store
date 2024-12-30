@@ -129,7 +129,7 @@ router.get("/orders/:userId", getOrderByUserId);
 
 router.post("/createNewOrder", createNewOrder);
 
-router.get("/totalSales", getTotalSales);
+router.post("/totalSales", getTotalSales);
 
 // order_item routes :
 router.get("/orderItems", getAllOrderItems);

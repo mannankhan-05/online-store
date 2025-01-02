@@ -182,25 +182,33 @@
               </div>
             </v-col>
           </v-row>
-          <div class="productCategory">
+          <!-- <div class="productCategory">
             <div class="d-inline">
               <p class="categoryHeading font-weight-thin d-inline">
                 category :
               </p>
               {{ product.product_category.category }}
             </div>
-          </div>
+          </div> -->
           <div class="buttonContainer">
             <v-btn
               v-if="product.stock > 0"
               class="show-full-button font-weight-md"
-              width="92%"
+              width="70%"
               @click="showFullProduct(product.id)"
               >Discover Full</v-btn
             >
             <v-btn v-else class="out-of-stock-button" width="92%"
               >Out Of Stock</v-btn
             >
+            <v-btn
+              v-if="product.stock > 0"
+              class="add-to-cart-button"
+              height="36px"
+              width="20px"
+            >
+              <v-icon color="white">mdi-cart-arrow-down</v-icon>
+            </v-btn>
           </div>
         </v-sheet>
       </v-col>
@@ -561,8 +569,9 @@ export default defineComponent({
 
 .buttonContainer {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   margin-bottom: 10px;
+  margin-left: 10px;
   margin-top: auto;
   transition: 0.2s ease-in-out;
 }
@@ -584,9 +593,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   top: 72%;
-  margin-left: 10px;
   font-size: 20px;
-  color: rgb(59, 58, 58);
+  color: rgb(143, 110, 49);
 }
 
 .dollar {
@@ -610,20 +618,41 @@ export default defineComponent({
 }
 
 .show-full-button {
-  background-color: rgb(155, 126, 71);
-  color: white !important;
+  background-color: rgb(235, 231, 231);
+  color: black !important;
   border-radius: 30px;
   transition: 0.3s ease-in-out;
 }
 
 .show-full-button:hover {
-  color: black !important;
+  background-color: rgb(155, 126, 71);
+  color: white !important;
 }
 
 .out-of-stock-button {
   background-color: red;
   color: white !important;
   border-radius: 30px;
+}
+
+.add-to-cart-button {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 20px;
+  height: 80px;
+  padding: 3px;
+  border-radius: 65px;
+  right: 10px;
+  bottom: 10px;
+  font-size: 20px;
+  background: rgb(146, 123, 79);
+  transition: 0.3s ease-in-out;
+}
+
+.add-to-cart-button:hover {
+  background: white;
+  color: black !important;
 }
 
 .loading-more-products {
@@ -635,6 +664,8 @@ export default defineComponent({
 }
 
 .sheet {
+  position: relative; /* Ensures correct positioning for absolute children */
+  overflow: visible; /* Allows the icon to be visible outside the boundaries */
   transition: transform 0.3s ease, box-shadow 0.3s ease,
     background-color 0.3s ease;
 }

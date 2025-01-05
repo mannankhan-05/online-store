@@ -193,6 +193,7 @@
           <div class="buttonContainer">
             <v-btn
               v-if="product.stock > 0"
+              variant="tonal"
               class="show-full-button font-weight-md"
               width="70%"
               @click="showFullProduct(product.id)"
@@ -201,14 +202,26 @@
             <v-btn v-else class="out-of-stock-button" width="92%"
               >Out Of Stock</v-btn
             >
-            <v-btn
+            <!-- add to cart button -->
+            <!-- <v-tooltip text="Add To Cart" location="top">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  v-if="product.stock > 0"
+                  class="add-to-cart-button"
+                  height="36px"
+                  width="20px"
+                  @click="addToCart(product.id)"
+                > -->
+            <v-icon
               v-if="product.stock > 0"
-              class="add-to-cart-button"
-              height="36px"
-              width="20px"
+              :class="wishlist ? 'wishlist-icon-false' : 'wishlist-icon'"
+              @click="wishlist = true"
+              >mdi-heart-multiple</v-icon
             >
-              <v-icon color="white">mdi-cart-arrow-down</v-icon>
-            </v-btn>
+            <!-- </v-btn>
+              </template>
+            </v-tooltip> -->
           </div>
         </v-sheet>
       </v-col>
@@ -256,6 +269,7 @@ export default defineComponent({
       searchProductsLimit: 4,
       searchProductsPage: 0,
       searchProductsTotalPages: 0,
+      wishlist: true as boolean,
     };
   },
   async mounted() {
@@ -618,8 +632,8 @@ export default defineComponent({
 }
 
 .show-full-button {
-  background-color: rgb(235, 231, 231);
-  color: black !important;
+  color: rgb(126, 93, 32) !important;
+  font-weight: bold;
   border-radius: 30px;
   transition: 0.3s ease-in-out;
 }
@@ -635,7 +649,7 @@ export default defineComponent({
   border-radius: 30px;
 }
 
-.add-to-cart-button {
+/* .add-to-cart-button {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -646,13 +660,36 @@ export default defineComponent({
   right: 10px;
   bottom: 10px;
   font-size: 20px;
-  background: rgb(146, 123, 79);
+  background: orange;
+  color: white !important;
   transition: 0.3s ease-in-out;
 }
 
 .add-to-cart-button:hover {
-  background: white;
-  color: black !important;
+  background: rgb(185, 123, 7);
+} */
+
+.wishlist-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 33px;
+  color: black;
+  transition: 0.3s ease-in-out;
+}
+
+.wishlist-icon:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.wishlist-icon-false {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 33px;
+  color: orange;
+  transition: 0.3s ease-in-out;
 }
 
 .loading-more-products {

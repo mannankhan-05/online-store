@@ -47,7 +47,45 @@
         ></v-img>
       </v-col>
 
-      <!-- Product Details -->
+      <!-- Product Description -->
+
+      <v-col cols="12" sm="6" md="6">
+        <h2 class="descriptionHeading">Description</h2>
+        <p class="singleProductDescription">
+          {{ selectedProduct.description }}
+        </p>
+      </v-col>
+    </v-row>
+
+    <!-- when the user is not logged In -->
+    <v-dialog v-model="dialog" class="centered-dialog">
+      <v-card class="not-loggedIn-dialog">
+        <v-card-title>
+          <v-icon large class="dialog-icon">mdi-account-lock</v-icon>
+          <span class="dialog-title"> Access Restricted </span>
+        </v-card-title>
+        <v-card-text class="dialog-message">
+          You need to <span class="dialog-message-words">Log In</span> to add
+          items to your <span class="dialog-message-words">Cart</span>. Please
+          log in or create an account to continue.
+        </v-card-text>
+        <v-card-actions class="dialog-actions">
+          <v-btn color="grey darken-1" text @click="dialog = false">
+            Close
+          </v-btn>
+          <v-btn
+            class="login-button"
+            outlined
+            @click="this.$router.push('/login')"
+          >
+            Login
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Product Details -->
+    <v-row justify="center">
       <v-col cols="12" sm="6" md="6">
         <v-card class="product-details-card">
           <v-card-title class="singleProductName">
@@ -116,45 +154,6 @@
             ></v-progress-circular>
           </v-btn>
         </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- when the user is not logged In -->
-    <v-dialog v-model="dialog" class="centered-dialog">
-      <v-card class="not-loggedIn-dialog">
-        <v-card-title>
-          <v-icon large class="dialog-icon">mdi-account-lock</v-icon>
-          <span class="dialog-title"> Access Restricted </span>
-        </v-card-title>
-        <v-card-text class="dialog-message">
-          You need to <span class="dialog-message-words">Log In</span> to add
-          items to your <span class="dialog-message-words">Cart</span>. Please
-          log in or create an account to continue.
-        </v-card-text>
-        <v-card-actions class="dialog-actions">
-          <v-btn color="grey darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn
-            class="login-button"
-            outlined
-            @click="this.$router.push('/login')"
-          >
-            Login
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- Product Description -->
-    <v-row>
-      <v-col cols="12">
-        <h2 class="descriptionHeading text-decoration-underline">
-          Description
-        </h2>
-        <p class="singleProductDescription">
-          {{ selectedProduct.description }}
-        </p>
       </v-col>
     </v-row>
   </v-container>
@@ -282,6 +281,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Pacifico&family=SUSE:wght@100..800&display=swap");
 .backButton {
   position: fixed;
   top: 80px;
@@ -350,13 +350,8 @@ export default defineComponent({
 .singleProductImage {
   width: 100%;
   height: auto;
+  border: 2px solid rgb(131, 95, 28);
   border-radius: 12px;
-  border: none;
-  box-shadow: 0 4px 12px rgb(116, 91, 46);
-  transition: transform 0.3s ease-in-out;
-}
-.singleProductImage:hover {
-  transform: scale(1.05);
 }
 
 .product-details-card {
@@ -431,14 +426,15 @@ export default defineComponent({
 }
 
 .descriptionHeading {
-  font-size: 26px;
-  color: #424242;
+  font-family: "Pacifico", serif;
+  font-size: 32px;
+  color: rgb(131, 95, 28);
 }
 
 .singleProductDescription {
   font-size: 18px;
   color: #5f6368;
-  line-height: 1.6;
+  line-height: 1.3;
   padding: 10px 0;
 }
 

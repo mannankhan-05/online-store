@@ -48,12 +48,111 @@
       </v-col>
 
       <!-- Product Description -->
-
       <v-col cols="12" sm="6" md="6">
         <h2 class="descriptionHeading">Description</h2>
         <p class="singleProductDescription">
           {{ selectedProduct.description }}
         </p>
+
+        <!-- Product Details Card -->
+        <v-col cols="12" sm="12" md="12">
+          <v-card class="product-details-card">
+            <v-card-title class="singleProductName">
+              {{ selectedProduct.name }}
+            </v-card-title>
+            <v-card-subtitle class="stock-text">
+              Available Stock :
+              <span class="stock-number">{{ selectedProduct.stock }}</span>
+            </v-card-subtitle>
+
+            <v-card-subtitle class="category-text">
+              Category: {{ selectedProduct.product_category?.category }}
+            </v-card-subtitle>
+
+            <!-- Quantity Selector -->
+            <v-row class="quantity-row">
+              <v-col cols="6" sm="6" class="d-flex align-center">
+                <v-btn
+                  @click="decreaseQuantity"
+                  class="inc-dec-buttons"
+                  variant="outlined"
+                  ><v-icon>mdi-minus</v-icon></v-btn
+                >
+                <v-row>
+                  <v-col cols="12" xs="12">
+                    <v-text-field
+                      v-model="quantity"
+                      variant="outlined"
+                      type="number"
+                      min="1"
+                      label="Quantity"
+                      class="quantity-field"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-btn
+                  @click="increaseQuantity"
+                  class="inc-dec-buttons"
+                  variant="outlined"
+                  ><v-icon>mdi-plus</v-icon></v-btn
+                >
+              </v-col>
+
+              <!-- Total Price -->
+              <v-col cols="6" class="d-flex justify-end align-center">
+                <div>
+                  <v-chip class="totalPrice" color="primary" dark>
+                    ${{ totalPrice }}
+                  </v-chip>
+                </div>
+              </v-col>
+            </v-row>
+
+            <!-- Add to Cart Button -->
+            <v-btn
+              class="AddToCartButton"
+              large
+              @click="addToCart"
+              :disabled="selectedProduct.stock === 0"
+            >
+              <span v-if="!loading">Add To Cart</span>
+              <v-progress-circular
+                v-if="loading"
+                indeterminate
+                :width="5"
+              ></v-progress-circular>
+            </v-btn>
+          </v-card>
+        </v-col>
+      </v-col>
+    </v-row>
+
+    <!-- Divider -->
+    <v-row justify="center" align="center">
+      <v-col cols="5">
+        <v-divider class="mt-10 mb-10 border-opacity-25"></v-divider>
+      </v-col>
+      <v-col cols="auto" class="text-center">
+        <v-icon color="orange">mdi-star</v-icon>
+      </v-col>
+      <v-col cols="5">
+        <v-divider class="mt-10 mb-10 border-opacity-25"></v-divider>
+      </v-col>
+    </v-row>
+
+    <!-- Add a product review -->
+    <div class="d-flex justify-center mb-5 reivews-section-heading">
+      Reviews Section
+    </div>
+    <v-row justify="center">
+      <v-col cols="12" lg="8" md="8" sm="10" xs="12">
+        <v-textarea
+          label="Your review matters to us! "
+          row-height="15"
+          rows="1"
+          variant="outlined"
+          auto-grow
+        ></v-textarea>
       </v-col>
     </v-row>
 
@@ -83,79 +182,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <!-- Product Details -->
-    <v-row justify="center">
-      <v-col cols="12" sm="6" md="6">
-        <v-card class="product-details-card">
-          <v-card-title class="singleProductName">
-            {{ selectedProduct.name }}
-          </v-card-title>
-          <v-card-subtitle class="stock-text">
-            Available Stock :
-            <span class="stock-number">{{ selectedProduct.stock }}</span>
-          </v-card-subtitle>
-
-          <v-card-subtitle class="category-text">
-            Category: {{ selectedProduct.product_category?.category }}
-          </v-card-subtitle>
-
-          <!-- Quantity Selector -->
-          <v-row class="quantity-row">
-            <v-col cols="6" sm="6" class="d-flex align-center">
-              <v-btn
-                @click="decreaseQuantity"
-                class="inc-dec-buttons"
-                variant="outlined"
-                ><v-icon>mdi-minus</v-icon></v-btn
-              >
-              <v-row>
-                <v-col cols="12" xs="12">
-                  <v-text-field
-                    v-model="quantity"
-                    variant="outlined"
-                    type="number"
-                    min="1"
-                    label="Quantity"
-                    class="quantity-field"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-btn
-                @click="increaseQuantity"
-                class="inc-dec-buttons"
-                variant="outlined"
-                ><v-icon>mdi-plus</v-icon></v-btn
-              >
-            </v-col>
-
-            <!-- Total Price -->
-            <v-col cols="6" class="d-flex justify-end align-center">
-              <div>
-                <v-chip class="totalPrice" color="primary" dark>
-                  ${{ totalPrice }}
-                </v-chip>
-              </div>
-            </v-col>
-          </v-row>
-
-          <!-- Add to Cart Button -->
-          <v-btn
-            class="AddToCartButton"
-            large
-            @click="addToCart"
-            :disabled="selectedProduct.stock === 0"
-          >
-            <span v-if="!loading">Add To Cart</span>
-            <v-progress-circular
-              v-if="loading"
-              indeterminate
-              :width="5"
-            ></v-progress-circular>
-          </v-btn>
-        </v-card>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
@@ -469,5 +495,10 @@ export default defineComponent({
 .snackbar-background-color {
   background-color: rgb(153, 113, 39);
   color: white;
+}
+
+.reivews-section-heading {
+  font-family: "Pacifico", serif;
+  font-size: 32px;
 }
 </style>

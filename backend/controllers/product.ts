@@ -217,43 +217,7 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
   }
 };
 
-// to decrement the stock of a product
-// export const decrementStockByOne = (req: Request, res: Response) => {
-//   const productId: number = parseInt(req.params.productId, 10);
-//   const quantity: number = req.body.quantity;
-
-//   product
-//     .findByPk(productId)
-//     .then((product: any) => {
-//       if (product.stock > 0) {
-//         product
-//           .update(
-//             { stock: product.stock - quantity },
-//             { where: { id: productId } }
-//           )
-//           .then(() => {
-//             logger.info(`Stock of product with id ${productId} is decremented`);
-//             res.sendStatus(200);
-//           })
-//           .catch((err: unknown) => {
-//             logger.error(
-//               `Error decrementing stock of product with id ${productId} : ${err}`
-//             );
-//             res.sendStatus(500);
-//           });
-//       } else {
-//         logger.warn(`Stock of product with id ${productId} is 0`);
-//         res.sendStatus(400);
-//       }
-//     })
-//     .catch((err) => {
-//       logger.error(
-//         `Error retrieving product with id ${productId} to decrement stock : ${err}`
-//       );
-//       res.sendStatus(500);
-//     });
-// };
-
+// To decrement stock by one
 export const decrementStockByOne = async (req: Request, res: Response) => {
   const productId: number = parseInt(req.params.productId, 10);
   const quantity: number = req.body.quantity;

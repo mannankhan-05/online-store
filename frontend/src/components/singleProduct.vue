@@ -141,20 +141,62 @@
     </v-row>
 
     <!-- Add a product review -->
-    <div class="d-flex justify-center mb-5 reivews-section-heading">
-      Reviews Section
-    </div>
     <v-row justify="center">
-      <v-col cols="12" lg="8" md="8" sm="10" xs="12">
-        <v-textarea
-          label="Your review matters to us! "
-          row-height="15"
-          rows="1"
-          variant="outlined"
-          auto-grow
-        ></v-textarea>
+      <v-col cols="12" lg="6" md="6" sm="8" xs="10">
+        <v-btn class="addReviewButton" @click="gotoAddReviewPage">
+          <v-icon class="mr-5">mdi-comment-text-multiple-outline</v-icon>
+          Share Your Feedback
+        </v-btn>
       </v-col>
     </v-row>
+
+    <!-- Add Review Dialog -->
+    <v-dialog v-model="addReviewDialog" max-width="600">
+      <v-card class="reviewDialog pa-3">
+        <!-- Add Comment -->
+        <v-card-title>
+          <v-icon large class="dialog-icon"
+            >mdi-comment-text-multiple-outline</v-icon
+          >
+          <span class="dialog-title"> Add a Comment </span>
+        </v-card-title>
+        <v-card-text>
+          <v-textarea
+            label="Your review matters to us! "
+            row-height="15"
+            rows="1"
+            variant="outlined"
+            auto-grow
+          ></v-textarea>
+        </v-card-text>
+
+        <!-- Add Rating -->
+        <v-card-title>
+          <v-icon large class="dialog-icon"
+            >mdi-star-box-multiple-outline</v-icon
+          >
+          <span class="dialog-title"> Add a Rating </span>
+        </v-card-title>
+        <v-card-text>
+          <v-rating
+            hover
+            :length="5"
+            :size="41"
+            v-model="ratingValue"
+            color="red-lighten-3"
+            active-color="warning"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="grey darken-1" text @click="addReviewDialog = false">
+            Close
+          </v-btn>
+          <v-btn class="login-button" outlined @click="submitReview">
+            Submit
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- when the user is not logged In -->
     <v-dialog v-model="dialog" class="centered-dialog">
@@ -206,12 +248,14 @@ export default defineComponent({
         category: "",
         stock: 0,
       } as Record<string, any>,
-      quantity: 1,
-      dialog: false,
-      loading: false,
-      productAlreadyInCart: false,
-      stockUnavailable: false,
-      snackbar: false,
+      quantity: 1 as number,
+      dialog: false as boolean,
+      loading: false as boolean,
+      productAlreadyInCart: false as boolean,
+      stockUnavailable: false as boolean,
+      snackbar: false as boolean,
+      addReviewDialog: false as boolean,
+      ratingValue: 0 as number,
     };
   },
   computed: {
@@ -301,6 +345,13 @@ export default defineComponent({
       setTimeout(() => {
         this.snackbar = false;
       }, 4000);
+    },
+    gotoAddReviewPage() {
+      this.addReviewDialog = true;
+    },
+    async submitReview() {
+      // Add the review to the database
+      console.log("Rating: ", this.ratingValue);
     },
   },
 });
@@ -500,5 +551,25 @@ export default defineComponent({
 .reivews-section-heading {
   font-family: "Pacifico", serif;
   font-size: 32px;
+}
+
+.addReviewButton {
+  width: 100%;
+  background-color: whitesmoke;
+  color: rgb(128, 95, 34);
+  border-radius: 25px;
+  padding: 5px 20px;
+  transition: 0.3s ease-in-out;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.addReviewButton:hover {
+  background-color: rgb(128, 95, 34);
+  color: whitesmoke;
+}
+
+.reviewDialog {
+  border-radius: 12px;
 }
 </style>

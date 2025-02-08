@@ -63,7 +63,11 @@ import {
   getAllProductsSales,
   addProductSales,
 } from "../controllers/product_sale";
-import { getAllReviews, addReview } from "../controllers/product_review";
+import {
+  getAllReviews,
+  getReviewsByProductId,
+  addReview,
+} from "../controllers/product_review";
 
 // user routes :
 router.get("/users", getAllUsers);
@@ -169,6 +173,8 @@ router.post("/addProductSales", addProductSales);
 
 // product_review routes :
 router.get("/allReviews", getAllReviews);
+
+router.get("/reviews/:productId", getReviewsByProductId);
 
 router.post("/addReview", addReview);
 

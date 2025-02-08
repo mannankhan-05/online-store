@@ -27,6 +27,31 @@ export const getAllReviews = (req: Request, res: Response) => {
     });
 };
 
+// to get reviews of a product
+export const getReviewsByProductId = (req: Request, res: Response) => {
+  const productId: number = parseInt(req.params.productId);
+
+  product_review
+    .findAll({
+      where: { product_id: productId },
+      include: [
+        {
+          model: user,
+        },
+      ],
+    })
+    .then((reviews) => {
+      logger.info(`Reviews of product with id ${productId} are retrieved`);
+      res.json(reviews);
+    })
+    .catch((err) => {
+      logger.error(
+        `Error retrieving reviews of product with id ${productId}: ${err}`
+      );
+      res.sendStatus(500);
+    });
+};
+
 // to add a review
 export const addReview = (req: Request, res: Response) => {
   const {

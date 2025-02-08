@@ -130,13 +130,44 @@
     <!-- Divider -->
     <v-row justify="center" align="center">
       <v-col cols="5">
-        <v-divider class="mt-10 mb-10 border-opacity-25"></v-divider>
+        <v-divider class="mt-10 mb-5 border-opacity-25"></v-divider>
       </v-col>
       <v-col cols="auto" class="text-center">
         <v-icon color="orange">mdi-star</v-icon>
       </v-col>
       <v-col cols="5">
-        <v-divider class="mt-10 mb-10 border-opacity-25"></v-divider>
+        <v-divider class="mt-10 mb-5 border-opacity-25"></v-divider>
+      </v-col>
+    </v-row>
+
+    <!-- Product Reviews -->
+    <v-row justify="center">
+      <v-col
+        v-for="review in productReviews"
+        :key="review.id"
+        cols="12"
+        lg="10"
+        md="10"
+        sm="10"
+        xs="12"
+      >
+        <div class="product-comment-box mb-3">
+          <v-row>
+            <v-col cols="12" lg="8" md="8" sm="8" xs="12">
+              <span class="user-name">{{ review.user.name }}</span>
+              <div>{{ review.review }}</div>
+            </v-col>
+            <v-col cols="12" lg="4" md="4" sm="4" xs="12">
+              <v-rating
+                class="product-rating"
+                :value="review.rating"
+                color="red-lighten-3"
+                active-color="orange"
+                readonly
+              ></v-rating>
+            </v-col>
+          </v-row>
+        </div>
       </v-col>
     </v-row>
 
@@ -167,6 +198,7 @@
             rows="1"
             variant="outlined"
             auto-grow
+            v-model="review"
           ></v-textarea>
         </v-card-text>
 
@@ -182,7 +214,7 @@
             hover
             :length="5"
             :size="41"
-            v-model="ratingValue"
+            v-model="rating"
             color="red-lighten-3"
             active-color="warning"
           />
@@ -248,6 +280,7 @@ export default defineComponent({
         category: "",
         stock: 0,
       } as Record<string, any>,
+      productReviews: [] as object[],
       quantity: 1 as number,
       dialog: false as boolean,
       loading: false as boolean,
@@ -255,7 +288,8 @@ export default defineComponent({
       stockUnavailable: false as boolean,
       snackbar: false as boolean,
       addReviewDialog: false as boolean,
-      ratingValue: 0 as number,
+      review: "" as string,
+      rating: 0 as number,
     };
   },
   computed: {
@@ -278,6 +312,12 @@ export default defineComponent({
         `http://localhost:4000/product/${this.$route.params.productId}`
       );
       this.selectedProduct = response.data;
+
+      // to get all reviews of the product
+      const reviews = await axios.get(
+        `http://localhost:4000/reviews/${this.$route.params.productId}`
+      );
+      this.productReviews = reviews.data;
     } catch (err) {
       console.log("Error fetching single product: " + err);
     }
@@ -350,8 +390,14 @@ export default defineComponent({
       this.addReviewDialog = true;
     },
     async submitReview() {
-      // Add the review to the database
-      console.log("Rating: ", this.ratingValue);
+      await axios.post("http://localhost:4000/addReview", {
+        product_id: this.$route.params.productId,
+        user_id: this.$store.state.userId,
+        review: this.review,
+        rating: this.rating,
+      });
+
+      this.addReviewDialog = false;
     },
   },
 });
@@ -571,5 +617,20 @@ export default defineComponent({
 
 .reviewDialog {
   border-radius: 12px;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 13px;
+  color: rgb(117, 66, 15);
+}
+
+.product-comment-box {
+  background-color: rgb(238, 234, 231);
+  padding: 2px 13px;
+  font-size: 18px;
+  border-radius: 5px;
+  border-top-right-radius: 20px;
+  color: black;
 }
 </style>

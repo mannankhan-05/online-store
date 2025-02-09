@@ -195,33 +195,13 @@
               v-if="product.stock > 0"
               variant="tonal"
               class="show-full-button font-weight-md"
-              width="70%"
+              width="95%"
               @click="showFullProduct(product.id)"
               >Discover Full</v-btn
             >
             <v-btn v-else class="out-of-stock-button" width="92%"
               >Out Of Stock</v-btn
             >
-            <!-- add to cart button -->
-            <!-- <v-tooltip text="Add To Cart" location="top">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  v-if="product.stock > 0"
-                  class="add-to-cart-button"
-                  height="36px"
-                  width="20px"
-                  @click="addToCart(product.id)"
-                > -->
-            <v-icon
-              v-if="product.stock > 0"
-              :class="wishlist ? 'wishlist-icon-false' : 'wishlist-icon'"
-              @click="wishlist = true"
-              >mdi-heart-multiple</v-icon
-            >
-            <!-- </v-btn>
-              </template>
-            </v-tooltip> -->
           </div>
         </v-sheet>
       </v-col>
@@ -269,7 +249,6 @@ export default defineComponent({
       searchProductsLimit: 4,
       searchProductsPage: 0,
       searchProductsTotalPages: 0,
-      wishlist: true as boolean,
     };
   },
   async mounted() {

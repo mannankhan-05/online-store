@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-container class="d-flex justify-center align-center">
-      <v-row align="center" justify="space-between">
+      <v-row align="center" justify="space-between" no-gutters>
         <!-- Text Section -->
-        <v-col cols="12" md="6" xs="12" class="text-section">
+        <v-col cols="12" md="6" xs="12" class="text-section pa-10">
           <h1 class="hero-heading">
             Discover <span class="Everything-word">Everything</span> You
           </h1>
           <h2 class="hero-heading mb-4">
             Love in One <span class="Place-word">Place</span>
           </h2>
-          <p class="hero-subheading mb-15">
+          <p class="hero-subheading mt-8 mb-15">
             From trendy clothes to the latest gadgets, delicious food, and
             beverages. <span class="subheading-words">We Have It All!</span>
           </p>
@@ -70,13 +70,17 @@ export default defineComponent({
 }
 
 .text-section {
+  height: 390px;
+  background-color: #e3e6e9;
   text-align: left;
   color: #fff;
   animation: slideInFromLeft 1s ease-in-out;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
 }
 
 .hero-heading {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: bold;
   color: black;
   line-height: 1.2; /* Adjust spacing between lines */
@@ -89,7 +93,7 @@ export default defineComponent({
 }
 
 .hero-subheading {
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 20px;
   color: black;
 }
@@ -133,7 +137,8 @@ export default defineComponent({
 }
 
 .hero-image {
-  border-radius: 40px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 /* Animations */

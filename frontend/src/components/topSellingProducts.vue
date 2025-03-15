@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -97,7 +97,7 @@ export default defineComponent({
   },
   async mounted() {
     try {
-      const response = await axios.get(`http://localhost:4000/productSales`);
+      const response = await axiosInstance.get(`/productSales`);
       this.topSellingProducts = response.data;
       await this.groupProducts(); // Group products into sets of 4
       console.log(this.groupedProducts);

@@ -225,7 +225,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
 export default defineComponent({
@@ -278,7 +278,7 @@ export default defineComponent({
       }
     },
     async getAllCategories() {
-      const response = await axios.get("http://localhost:4000/allCategories");
+      const response = await axiosInstance.get("/allCategories");
       this.allCategories = response.data;
       console.log(this.allCategories);
     },
@@ -298,17 +298,14 @@ export default defineComponent({
     },
     async sortProductsByCategories() {
       try {
-        let response1 = await axios.post(
-          "http://localhost:4000/AllProductsByCategories",
-          {
-            category: this.category,
-          }
-        );
+        let response1 = await axiosInstance.post("/AllProductsByCategories", {
+          category: this.category,
+        });
         let categoryId = response1.data.id;
         console.log(categoryId);
 
-        const response2 = await axios.get(
-          `http://localhost:4000/productsByCategory/${categoryId}`,
+        const response2 = await axiosInstance.get(
+          `/productsByCategory/${categoryId}`,
           {
             params: {
               limit: this.productsByCategoryLimit,
@@ -331,7 +328,7 @@ export default defineComponent({
     },
     async showAllProducts() {
       try {
-        const response = await axios.get("http://localhost:4000/products", {
+        const response = await axiosInstance.get("/products", {
           params: {
             limit: this.limit,
             page: this.page, // Pass the current page (offset = page * limit)
@@ -397,13 +394,13 @@ export default defineComponent({
     async fetchProductsBySearch(searchQuery: string) {
       try {
         // Add search history if it not exists
-        await axios.post("http://localhost:4000/addSearchHistory", {
+        await axiosInstance.post("/addSearchHistory", {
           search: searchQuery,
         });
 
         // fetching products by search query
-        const response = await axios.post(
-          "http://localhost:4000/searchProducts",
+        const response = await axiosInstance.post(
+          "/searchProducts",
           {
             searchQuery: searchQuery,
           },
@@ -436,8 +433,8 @@ export default defineComponent({
       // Set a new timeout
       debounceTimeout = setTimeout(async () => {
         try {
-          const response = await axios.post(
-            "http://localhost:4000/searchHistoriesBySearch",
+          const response = await axiosInstance.post(
+            "/searchHistoriesBySearch",
             {
               search: searchQuery,
             }

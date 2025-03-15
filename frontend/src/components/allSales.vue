@@ -89,7 +89,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -101,19 +101,19 @@ export default defineComponent({
   },
   async mounted() {
     // week sales
-    let response = await axios.post("http://localhost:4000/totalSales", {
+    let response = await axiosInstance.post("/totalSales", {
       days: 10,
     });
     this.weekSales = response.data;
 
     // month sales
-    let response2 = await axios.post("http://localhost:4000/totalSales", {
+    let response2 = await axiosInstance.post("/totalSales", {
       days: 30,
     });
     this.monthSales = response2.data;
 
     // yearly sales
-    let response3 = await axios.post("http://localhost:4000/totalSales", {
+    let response3 = await axiosInstance.post("/totalSales", {
       days: 365,
     });
     this.yearSales = response3.data;

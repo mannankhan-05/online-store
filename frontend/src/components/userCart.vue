@@ -258,7 +258,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 interface Product {
   id: number;
@@ -304,8 +304,8 @@ export default defineComponent({
     };
   },
   async mounted() {
-    let response = await axios.get(
-      `http://localhost:4000/userProducts/${this.$route.params.userId}`
+    let response = await axiosInstance.get(
+      `/userProducts/${this.$route.params.userId}`
     );
     this.userProductsInCart = response.data;
 
@@ -327,8 +327,8 @@ export default defineComponent({
 
       try {
         // get the information of the user if exists
-        let response = await axios.get(
-          `http://localhost:4000/userAddress/${this.$store.state.userId}`
+        let response = await axiosInstance.get(
+          `/userAddress/${this.$store.state.userId}`
         );
 
         if (response.data) {
@@ -346,8 +346,8 @@ export default defineComponent({
       }
     },
     async emptyCart() {
-      await axios.delete(
-        `http://localhost:4000/deleteProductsFromCart/${this.$route.params.userId}`
+      await axiosInstance.delete(
+        `/deleteProductsFromCart/${this.$route.params.userId}`
       );
 
       this.userProductsInCart = [];
@@ -358,8 +358,8 @@ export default defineComponent({
         console.log("User Information going");
 
         try {
-          await axios.put(
-            `http://localhost:4000/checkUserInformation/${this.$store.state.userId}`,
+          await axiosInstance.put(
+            `/checkUserInformation/${this.$store.state.userId}`,
             {
               address: this.userDeliveryAddress,
               phoneNumber: this.userPhoneNumber,
@@ -387,7 +387,7 @@ export default defineComponent({
       } else if (this.step == 3) {
         this.loading = true;
         // create the order in the database
-        await axios.post("http://localhost:4000/createNewOrder", {
+        await axiosInstance.post("/createNewOrder", {
           orderId: this.orderId,
           orderItems: this.userProductsInCart.length,
           orderAmount: this.totalOrderAmount,
@@ -396,21 +396,21 @@ export default defineComponent({
 
         // create order items in the database
         for (let i = 0; i < this.userProductsInCart.length; i++) {
-          await axios.post("http://localhost:4000/createOrderItem", {
+          await axiosInstance.post("/createOrderItem", {
             orderId: this.orderId,
             productId: this.userProductsInCart[i].product.id,
           });
 
           // decrement the stock of the product
-          await axios.put(
-            `http://localhost:4000/decrementStock/${this.userProductsInCart[i].product.id}`,
+          await axiosInstance.put(
+            `/decrementStock/${this.userProductsInCart[i].product.id}`,
             {
               quantity: this.userProductsInCart[i].quantity,
             }
           );
 
           // to update the sells in the database if product already has some sells
-          await axios.post("http://localhost:4000/addProductSales", {
+          await axiosInstance.post("/addProductSales", {
             productId: this.userProductsInCart[i].product.id,
             totalSales: this.userProductsInCart[i].quantity,
           });
@@ -422,7 +422,7 @@ export default defineComponent({
       }
     },
     async removeProductFromCart(productId: number) {
-      await axios.delete("http://localhost:4000/removeProductFromCart", {
+      await axiosInstance.delete("/removeProductFromCart", {
         data: {
           userId: this.$store.state.userId,
           productId: productId,

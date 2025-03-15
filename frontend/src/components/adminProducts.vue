@@ -179,7 +179,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -209,7 +209,7 @@ export default defineComponent({
   methods: {
     async showAllProducts() {
       try {
-        const response = await axios.get("http://localhost:4000/products", {
+        const response = await axiosInstance.get("/products", {
           params: {
             limit: this.limit, // Pass the limit
             page: this.page, // Pass the current page (offset = page * limit)
@@ -228,9 +228,7 @@ export default defineComponent({
     },
     async editProduct(productId: number) {
       // Get product by id
-      let response = await axios.get(
-        `http://localhost:4000/product/${productId}`
-      );
+      let response = await axiosInstance.get(`/product/${productId}`);
       this.editingProduct = response.data;
 
       this.editProductDialog = true;
@@ -244,8 +242,8 @@ export default defineComponent({
       formData.append("productImage", this.editingProduct.image);
       formData.append("stock", String(this.editingProduct.stock));
 
-      await axios.put(
-        `http://localhost:4000/editProduct/${this.editingProduct.id}`,
+      await axiosInstance.put(
+        `/editProduct/${this.editingProduct.id}`,
         formData,
         {
           headers: {
@@ -259,7 +257,7 @@ export default defineComponent({
     },
     async deleteProduct(productId: number) {
       // Delete product
-      await axios.delete(`http://localhost:4000/deleteProduct/${productId}`);
+      await axiosInstance.delete(`/deleteProduct/${productId}`);
 
       // Update products
       this.products = this.products.filter(

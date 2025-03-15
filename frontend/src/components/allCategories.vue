@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -47,7 +47,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    const response = await axios.get("http://localhost:4000/allCategories");
+    const response = await axiosInstance.get("/allCategories");
     this.categories = response.data;
   },
 });

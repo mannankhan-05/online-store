@@ -141,7 +141,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -152,8 +152,8 @@ export default defineComponent({
     };
   },
   async mounted() {
-    let response1 = await axios.get(
-      `http://localhost:4000/orderDetails/${this.$route.params.orderId}`,
+    let response1 = await axiosInstance.get(
+      `/orderDetails/${this.$route.params.orderId}`,
       {
         params: {
           limit: 1,
@@ -162,8 +162,8 @@ export default defineComponent({
     );
     this.orderDetails = response1.data;
 
-    let response2 = await axios.get(
-      `http://localhost:4000/orderItems/${this.$route.params.orderId}`
+    let response2 = await axiosInstance.get(
+      `/orderItems/${this.$route.params.orderId}`
     );
     this.orderItems = response2.data;
     console.log(this.orderItems);

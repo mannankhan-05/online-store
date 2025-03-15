@@ -89,7 +89,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -99,7 +99,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    let response = await axios.get("http://localhost:4000/users");
+    let response = await axiosInstance.get("/users");
     this.users = response.data;
   },
   computed: {

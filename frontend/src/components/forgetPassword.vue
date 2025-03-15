@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -82,7 +82,7 @@ export default defineComponent({
     async sendVerificationCode() {
       this.loading = true;
 
-      let response = await axios.post("http://localhost:4000/forgetPassword", {
+      let response = await axiosInstance.post("/forgetPassword", {
         email: this.email,
       });
       this.verificationCode = response.data.code;

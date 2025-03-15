@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default createStore({
   state: {
@@ -65,15 +65,11 @@ export default createStore({
         formData.append("email", email);
         formData.append("password", password);
 
-        const response = await axios.post(
-          "http://localhost:4000/registerUser",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const response = await axiosInstance.post("/registerUser", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         state.isUserLoggedIn = true; // means, the user is logged in
         commit("setIsUserLoggedIn", true);
@@ -101,7 +97,7 @@ export default createStore({
     },
     async loginUser({ state, commit }, { email, password, router }) {
       try {
-        const response = await axios.post("http://localhost:4000/loginUser", {
+        const response = await axiosInstance.post("/loginUser", {
           email,
           password,
         });
@@ -140,8 +136,8 @@ export default createStore({
       formData.append("password", password);
 
       try {
-        const response = await axios.put(
-          `http://localhost:4000/editUser/${state.userId}`,
+        const response = await axiosInstance.put(
+          `/editUser/${state.userId}`,
           formData,
           {
             headers: {
@@ -162,8 +158,8 @@ export default createStore({
     },
     async editUserEmail({ state, commit }, { email }) {
       try {
-        const response = await axios.put(
-          `http://localhost:4000/updateUserEmail/${state.userId}`,
+        const response = await axiosInstance.put(
+          `/updateUserEmail/${state.userId}`,
           {
             email: email,
           }
@@ -179,8 +175,8 @@ export default createStore({
     },
     async editUserStatus({ state, commit }) {
       try {
-        const response = await axios.put(
-          `http://localhost:4000/updateUserStatus/${state.userId}`
+        const response = await axiosInstance.put(
+          `/updateUserStatus/${state.userId}`
         );
         const isAdmin: boolean = response.data.isAdmin;
         console.log("isAdmin: ", isAdmin);
@@ -216,8 +212,8 @@ export default createStore({
     },
     async getUserProductsInCart({ state, commit }) {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/userProducts/${state.userId}`
+        const response = await axiosInstance.get(
+          `/userProducts/${state.userId}`
         );
         commit("setUserProductsInCart", response.data);
       } catch (err) {

@@ -140,7 +140,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -156,7 +156,7 @@ export default defineComponent({
     async submitFeedback() {
       try {
         this.loading = true;
-        await axios.post("http://localhost:4000/addFeedback", {
+        await axiosInstance.post("/addFeedback", {
           name: this.name,
           email: this.email,
           subject: this.subject,

@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -79,8 +79,8 @@ export default defineComponent({
     };
   },
   async mounted() {
-    const response = await axios.get(
-      `http://localhost:4000/orders/${this.$store.state.userId}`
+    const response = await axiosInstance.get(
+      `/orders/${this.$store.state.userId}`
     );
     this.userOrders = response.data;
   },

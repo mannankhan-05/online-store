@@ -109,7 +109,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -125,7 +125,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    let response = await axios.get("http://localhost:4000/allCategories");
+    let response = await axiosInstance.get("/allCategories");
     // Map response data to extract category names
     this.categories = response.data.map(
       (item: { category: string }) => item.category
@@ -133,7 +133,7 @@ export default defineComponent({
   },
   methods: {
     async addProduct() {
-      const response = await axios.get("http://localhost:4000/getByCategory", {
+      const response = await axiosInstance.get("/getByCategory", {
         params: {
           category: this.category,
         },
@@ -150,7 +150,7 @@ export default defineComponent({
       formData.append("category", categoryId);
       formData.append("stock", this.stock != null ? this.stock.toString() : "");
 
-      await axios.post("http://localhost:4000/addProduct", formData, {
+      await axiosInstance.post("/addProduct", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

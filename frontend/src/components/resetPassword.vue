@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   name: "resetPassword",
@@ -89,12 +89,9 @@ export default defineComponent({
     async resetPassword() {
       this.loading = true;
       if (this.password == this.confirmedPassword) {
-        axios.put(
-          `http://localhost:4000/resetPassword/${this.$route.params.userId}`,
-          {
-            password: this.confirmedPassword,
-          }
-        );
+        axiosInstance.put(`/resetPassword/${this.$route.params.userId}`, {
+          password: this.confirmedPassword,
+        });
       } else {
         console.log("Passwords do not match");
       }

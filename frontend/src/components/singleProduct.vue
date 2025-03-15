@@ -261,7 +261,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 interface UserCartProducts {
   user_id: number;
@@ -303,19 +303,19 @@ export default defineComponent({
   async mounted() {
     try {
       // user's all products in the cart
-      let userProducts = await axios.get(
-        `http://localhost:4000/userProducts/${this.$store.state.userId}`
+      let userProducts = await axiosInstance.get(
+        `/userProducts/${this.$store.state.userId}`
       );
       this.userProductsInCart = userProducts.data;
 
-      const response = await axios.get(
-        `http://localhost:4000/product/${this.$route.params.productId}`
+      const response = await axiosInstance.get(
+        `/product/${this.$route.params.productId}`
       );
       this.selectedProduct = response.data;
 
       // to get all reviews of the product
-      const reviews = await axios.get(
-        `http://localhost:4000/reviews/${this.$route.params.productId}`
+      const reviews = await axiosInstance.get(
+        `/reviews/${this.$route.params.productId}`
       );
       this.productReviews = reviews.data;
     } catch (err) {
@@ -347,8 +347,8 @@ export default defineComponent({
         this.dialog = true;
       } else {
         // get all products in the cart
-        let userProducts = await axios.get(
-          `http://localhost:4000/userProducts/${this.$store.state.userId}`
+        let userProducts = await axiosInstance.get(
+          `/userProducts/${this.$store.state.userId}`
         );
         this.userProductsInCart = userProducts.data;
         // Check if the product is already in the cart
@@ -365,12 +365,12 @@ export default defineComponent({
         // If the product is already in the cart
         if (this.productAlreadyInCart) {
           // Update the quantity of the product in the cart
-          await axios.put(
-            `http://localhost:4000/incrementProductQuantity/${this.$route.params.productId}`
+          await axiosInstance.put(
+            `/incrementProductQuantity/${this.$route.params.productId}`
           );
         } else {
           // Add the product to the cart if it's not already there
-          await axios.post("http://localhost:4000/addUserProduct", {
+          await axiosInstance.post("/addUserProduct", {
             user_id: this.$route.params.userId,
             product_id: this.$route.params.productId,
             quantity: this.quantity,
@@ -390,7 +390,7 @@ export default defineComponent({
       this.addReviewDialog = true;
     },
     async submitReview() {
-      await axios.post("http://localhost:4000/addReview", {
+      await axiosInstance.post("/addReview", {
         product_id: this.$route.params.productId,
         user_id: this.$store.state.userId,
         review: this.review,

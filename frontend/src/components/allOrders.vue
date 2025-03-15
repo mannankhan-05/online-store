@@ -109,7 +109,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export default defineComponent({
   data() {
@@ -145,7 +145,7 @@ export default defineComponent({
     },
     async fetchOrders() {
       try {
-        let response = await axios.get("http://localhost:4000/orders", {
+        let response = await axiosInstance.get("/orders", {
           params: {
             limit: this.limit,
             page: this.page,

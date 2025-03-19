@@ -3,6 +3,7 @@ import logger from "./logger";
 import cors from "cors";
 import db from "./config/database";
 import router from "./routes/routes";
+import path from "path";
 const app = express();
 
 const PORT = process.env.PORT || 4000;
@@ -14,7 +15,8 @@ app.use(cors());
 app.use(router);
 
 // to serve static files from the productImages directory
-app.use("/productImages", express.static("productImages"));
+// app.use("/productImages", express.static("productImages"));
+app.use("/userImages", express.static(path.join(__dirname, "userImages")));
 
 // to serve static files from the userImages directory
 app.use("/userImages", express.static("userImages"));

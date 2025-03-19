@@ -308,7 +308,7 @@ export default defineComponent({
       const userImage = this.$store.state.userImage;
       if (userImage) {
         // constructing a url for the user image
-        return `https://online-store-production-16af.up.railway.app/userImages/${userImage}`;
+        return `http://localhost:4000/userImages/${userImage}`;
       } else {
         return "";
       }

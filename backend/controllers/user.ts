@@ -8,6 +8,7 @@ import logger from "../logger";
 import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
+import baseURL from "../api/productionApi";
 const saltRounds = 5;
 
 interface User {
@@ -67,7 +68,7 @@ export const getUserDetailsById = (req: Request, res: Response) => {
       if (user) {
         logger.info(`Details of user with id ${userId} is retrieved`);
         if (user.image) {
-          user.image = `http://localhost:4000/userImages/${user.image}`;
+          user.image = `${baseURL}/userImages/${user.image}`;
         }
         res.json(user);
       } else {

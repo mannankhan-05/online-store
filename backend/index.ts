@@ -15,8 +15,8 @@ app.use(cors());
 app.use(router);
 
 // to serve static files from the productImages directory
-// app.use("/productImages", express.static("productImages"));
-app.use("/userImages", express.static(path.join(__dirname, "userImages")));
+app.use("/productImages", express.static("productImages"));
+// app.use("/userImages", express.static(path.join(__dirname, "userImages")));
 
 // to serve static files from the userImages directory
 app.use("/userImages", express.static("userImages"));
